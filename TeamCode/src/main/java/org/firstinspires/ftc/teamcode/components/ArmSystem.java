@@ -1,19 +1,25 @@
 package org.firstinspires.ftc.teamcode.components;
 
-import android.util.Log;
+import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
 
+import android.util.Log;
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.params.DriveParams;
 
 public class ArmSystem {
     public static final int GROUND = 0; //VALUE TBD
+
+    public static final int BACKBOARD = 1000; //value TBD
     public static final int ARM_LIMIT = 100; //VALUE TBD
-    public static final int SERVO_GROUND = 1; //VALUE TBD;
+    public static final int SERVO_GROUND = 1; //VALUE TBD
+    public static final double ENCODER_TO_SERVO = 0; //VALUE TBD
 
     public enum Direction {
         UP,
@@ -25,8 +31,6 @@ public class ArmSystem {
     public Servo rightServo;
     public IntakeSystem intake;
     private int mTargetPosition;
-
-
 
     public ArmSystem(DcMotor motor1, DcMotor motor2, Servo servo1, Servo servo2, Servo intake1, Servo intake2){
         this.armLeft = motor1;
@@ -51,10 +55,7 @@ public class ArmSystem {
     public boolean driveToLevel(int targetPosition, double power){
         armLeft.setDirection(DcMotorSimple.Direction.FORWARD);
         armRight.setDirection(DcMotorSimple.Direction.REVERSE);
-        if(mTargetPosition == 0){
-            armLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            armRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        }
+
         if(mTargetPosition != targetPosition){
             mTargetPosition = targetPosition;
             armLeft.setTargetPosition(targetPosition);
@@ -64,11 +65,13 @@ public class ArmSystem {
             armRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             armRight.setPower(power);
         }
+        else
+        {
+
+        }
         int offsetLeft = Math.abs(armLeft.getCurrentPosition() - targetPosition);
         int offsetRight = Math.abs(armRight.getCurrentPosition() - targetPosition);
-        Log.d("what is happening", offsetLeft + " " + offsetRight + " " + armLeft.getCurrentPosition() + " " + armRight.getCurrentPosition() + " power " + armLeft.getPower() + " " + armRight.getPower());
         if(targetPosition != 0 && offsetLeft < 20 && offsetRight < 20 ){
-            Log.d("reached", armLeft.getCurrentPosition() + " " + armRight.getCurrentPosition() + " power " + armLeft.getPower() + " " + armRight.getPower() );
             return true;
         }
         else if (targetPosition > 0 && offsetLeft < 15 && offsetRight < 20){
@@ -77,24 +80,44 @@ public class ArmSystem {
         return false;
     }
 
-    public void armToGround(){
-        if(driveToLevel(GROUND, 0.1)) {
+    public boolean armToGround(){
+        if(driveToLevel(GROUND, 0.5)) {
             armRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             armLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             armRight.setPower(0);
             armLeft.setPower(0);
+            return true;
         }
         leftServo.setPosition(SERVO_GROUND);
         rightServo.setPosition(SERVO_GROUND);
+        return false;
+    }
+    public boolean armToBackboard(){
+        if(driveToLevel(BACKBOARD, 0.5)) {
+            armRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            armLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            armRight.setPower(0);
+            armLeft.setPower(0);
+            return true;
+        }
+        leftServo.setPosition(SERVO_GROUND);
+        rightServo.setPosition(SERVO_GROUND);
+        return false;
+    }
+    public void lockArm()
+    {
+        driveToLevel((armLeft.getCurrentPosition() + armRight.getCurrentPosition())/2, 0.5);
     }
     public void driveArm(Direction direction, double pow){
         if(direction == Direction.UP && (armLeft.getCurrentPosition() >= ARM_LIMIT || armRight.getCurrentPosition() >= ARM_LIMIT))
         {
-            killMotors();
+            armLeft.setPower(0);
+            armRight.setPower(0);
         }
         if(direction == Direction.DOWN && (armLeft.getCurrentPosition() <= 5 || armRight.getCurrentPosition() <= 5))
         {
-            killMotors();
+            armLeft.setPower(0);
+            armRight.setPower(0);
         }
         if(direction == direction.UP)
         {
@@ -110,14 +133,15 @@ public class ArmSystem {
         armLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         armRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         armLeft.setPower(pow);//change to velocity
-        armRight.setPower(pow); 
+        armRight.setPower(pow);
+//        telemetry.addData("Position left:", armLeft.getCurrentPosition());
+//        telemetry.addData("Position Right:", armRight.getCurrentPosition());
+//        telemetry.update();
 
-        leftServo.setPosition(armLeft.getCurrentPosition());//scale to range of inputs for servo
-        rightServo.setPosition(armLeft.getCurrentPosition());//scale to range of inputs for servo
-    }
-    public void killMotors(){
-        armLeft.setPower(0);
-        armRight.setPower(0);
+        leftServo.setPosition(((armLeft.getCurrentPosition() + armRight.getCurrentPosition())/2) * ENCODER_TO_SERVO);
+        rightServo.setPosition(((armLeft.getCurrentPosition() + armRight.getCurrentPosition())/2) * ENCODER_TO_SERVO);
+        armLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        armRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
     public void intake(){
         intake.intake();
@@ -130,7 +154,7 @@ public class ArmSystem {
     public static class IntakeSystem {
         private final Servo intakeLeft;
         private final Servo intakeRight;
-        private final int INTAKE_POS = 1; //VALUE TBD
+        private final int INTAKE_POS = 0; //VALUE TBD
         private final int OUTTAKE_POS = 1; //VALUE TBD
 
         public IntakeSystem(Servo intake1, Servo intake2){

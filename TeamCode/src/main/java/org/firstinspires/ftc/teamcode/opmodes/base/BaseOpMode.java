@@ -38,7 +38,7 @@ public abstract class BaseOpMode extends OpMode {
                 hardwareMap.get(Servo.class, "servo_right"),
                 hardwareMap.get(Servo.class, "intake_left"),
                 hardwareMap.get(Servo.class, "intake_right")
-                );
+        );
 
         // Initialize Launcher
 //        launcher = new Launcher(hardwareMap.get(Servo.class, "left_hand"));

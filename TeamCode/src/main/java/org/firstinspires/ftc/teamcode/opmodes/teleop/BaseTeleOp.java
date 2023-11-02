@@ -8,6 +8,10 @@ import org.firstinspires.ftc.teamcode.opmodes.base.BaseOpMode;
 
 @TeleOp(name = "Base TeleOp", group="TeleOp")
 public class BaseTeleOp extends BaseOpMode {
+    boolean armRaising = false;
+
+    boolean driving = false;
+    boolean armLowering = false;
     public void loop() {
         float rx = (float) Math.pow(gamepad1.right_stick_x, 3);
         float lx = (float) Math.pow(gamepad1.left_stick_x, 3);
@@ -15,29 +19,53 @@ public class BaseTeleOp extends BaseOpMode {
 
 //        driveSystem.drive(rx, lx, ly);
 
-        ArmSystem.Direction direction = ArmSystem.Direction.UP;
-        double power = 0;
 
         // dpad up joystick arm up
         if (gamepad1.dpad_up) {
-            power = 0.1;
+            armSystem.driveArm(ArmSystem.Direction.UP, 0.8);
+            driving = true;
+        }
+        else
+        {
+            driving = false;
         }
 
         //dpad down joystick arm down
         if (gamepad1.dpad_down) {
-            direction = ArmSystem.Direction.DOWN;
-            power = 0.1;
+            armSystem.driveArm(ArmSystem.Direction.DOWN, 0.8);
+            driving = true;
         }
-        armSystem.driveArm(direction, power);
+        else
+        {
+            driving = false;
+        }
 
         // y button airplane launch
         if (gamepad1.y) {
 //            launcher.launch();
         }
 
-        // a button intake preset level
+        if (gamepad1.x) {
+            armRaising = true;
+            armLowering = false;
+        }
+        if(armRaising && armSystem.armToBackboard())
+        {
+            armRaising = false;
+        }
+
         if (gamepad1.a) {
-            armSystem.armToGround();
+            armLowering = true;
+            armRaising = false;
+        }
+        if(armLowering && armSystem.armToGround())
+        {
+            armLowering = false;
+        }
+
+        if(!armRaising && !armLowering && !driving)
+        {
+            armSystem.lockArm();
         }
 
         // left trigger left intake expansion
@@ -49,7 +77,4 @@ public class BaseTeleOp extends BaseOpMode {
             armSystem.outtake();
         }
     }
-
-
-
 }
