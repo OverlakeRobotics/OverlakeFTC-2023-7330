@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.opmodes.auton;
 
+import static org.firstinspires.ftc.teamcode.components.GamePositions.*;
+
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -120,16 +122,35 @@ public class RedTeamStartClose extends LinearOpMode {
     //**********************************************************************************************
 
     private void buildLeftPath(SampleMecanumDrive drive) {
-        // @TODO Insert the left path with markers here (path 3)
+        trajectory = drive.trajectorySequenceBuilder(RED_START_POS_1)
+                .splineTo(RED_OBJECT_POS_3.vec(), RED_OBJECT_POS_3.getHeading())
+                .addTemporalMarker(() -> dropPurplePixel()) // This action should take X seconds or less, where X is the .waitSeconds below
+                .waitSeconds(1)
+                .lineToLinearHeading(RED_BACKDROP_LEFT)
+                .addTemporalMarker(() -> placeYellowPixel())
+                .build();
     }
 
     private void buildCenterPath(SampleMecanumDrive drive) {
-        // @TODO Insert the center path with markers here (path 2)
+        trajectory = drive.trajectorySequenceBuilder(RED_START_POS_1)
+                .splineTo(RED_OBJECT_POS_2_1.vec(), RED_OBJECT_POS_2_1.getHeading())
+                .splineTo(RED_OBJECT_POS_2_2.vec(), RED_OBJECT_POS_2_2.getHeading())
+                .addTemporalMarker(() -> dropPurplePixel()) // This action should take X seconds or less, where X is the .waitSeconds below
+                .waitSeconds(1)
+                .lineToSplineHeading(RED_BACKDROP_CENTER)
+                .addTemporalMarker(() -> placeYellowPixel())
+                .build();
 
     }
 
     private void buildRightPath(SampleMecanumDrive drive) {
-        // @TODO Insert the left path with markers here (path 1)
+        trajectory = drive.trajectorySequenceBuilder(RED_START_POS_1)
+                .splineToSplineHeading(RED_OBJECT_POS_1, Math.toRadians (70))
+                .addTemporalMarker(() -> dropPurplePixel()) // This action should take X seconds or less, where X is the .waitSeconds below
+                .waitSeconds(1)
+                .lineToLinearHeading(RED_BACKDROP_RIGHT)
+                .addTemporalMarker(() -> placeYellowPixel())
+                .build();
     }
 
     private void placeYellowPixel() {

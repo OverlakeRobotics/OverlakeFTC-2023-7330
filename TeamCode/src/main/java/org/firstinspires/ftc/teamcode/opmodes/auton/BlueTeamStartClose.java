@@ -1,12 +1,6 @@
 package org.firstinspires.ftc.teamcode.opmodes.auton;
 
-import static org.firstinspires.ftc.teamcode.components.GamePositions.BLUE_BACKDROP_CENTER;
-import static org.firstinspires.ftc.teamcode.components.GamePositions.BLUE_BACKDROP_LEFT;
-import static org.firstinspires.ftc.teamcode.components.GamePositions.BLUE_BACKDROP_RIGHT;
-import static org.firstinspires.ftc.teamcode.components.GamePositions.BLUE_OBJECT_POS_1;
-import static org.firstinspires.ftc.teamcode.components.GamePositions.BLUE_OBJECT_POS_2;
-import static org.firstinspires.ftc.teamcode.components.GamePositions.BLUE_OBJECT_POS_3;
-import static org.firstinspires.ftc.teamcode.components.GamePositions.BLUE_START_POS_1;
+import static org.firstinspires.ftc.teamcode.components.GamePositions.*;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -140,33 +134,40 @@ public class BlueTeamStartClose extends LinearOpMode {
 
     private void buildLeftPath(SampleMecanumDrive drive) {
         trajectory = drive.trajectorySequenceBuilder(BLUE_START_POS_1)
-                .splineToSplineHeading(BLUE_OBJECT_POS_1, Math.toRadians (0))
+                .splineToSplineHeading(BLUE_OBJECT_POS_1, Math.toRadians (-75))
                 .addTemporalMarker(() -> dropPurplePixel()) // This action should take X seconds or less, where X is the .waitSeconds below
                 .waitSeconds(1)
-                .splineToSplineHeading(BLUE_BACKDROP_LEFT, Math.toRadians(180))
+                .lineToSplineHeading(BLUE_BACKDROP_LEFT)
                 .addTemporalMarker(() -> placeYellowPixel())
                 .build();
+
+        // Ready to test
     }
 
     private void buildCenterPath(SampleMecanumDrive drive) {
         trajectory = drive.trajectorySequenceBuilder(BLUE_START_POS_1)
-                .splineToSplineHeading(BLUE_OBJECT_POS_2, Math.toRadians (0))
+                .splineTo(BLUE_OBJECT_POS_2_1.vec(), BLUE_OBJECT_POS_2_1.getHeading())
+                .splineTo(BLUE_OBJECT_POS_2_2.vec(), BLUE_OBJECT_POS_2_2.getHeading())
                 .addTemporalMarker(() -> dropPurplePixel()) // This action should take X seconds or less, where X is the .waitSeconds below
                 .waitSeconds(1)
-                .splineToSplineHeading(BLUE_BACKDROP_CENTER, Math.toRadians(180))
+                .lineToSplineHeading(BLUE_BACKDROP_CENTER)
                 .addTemporalMarker(() -> placeYellowPixel())
                 .build();
+
+        // Ready to test
     }
 
     private void buildRightPath(SampleMecanumDrive drive) {
 
         trajectory = drive.trajectorySequenceBuilder(BLUE_START_POS_1)
-                .splineToSplineHeading(BLUE_OBJECT_POS_3, Math.toRadians (0))
+                .splineTo(BLUE_OBJECT_POS_3.vec(), BLUE_OBJECT_POS_3.getHeading())
                 .addTemporalMarker(() -> dropPurplePixel()) // This action should take X seconds or less, where X is the .waitSeconds below
                 .waitSeconds(1)
-                .splineToSplineHeading(BLUE_BACKDROP_RIGHT, Math.toRadians(180))
+                .lineToLinearHeading(BLUE_BACKDROP_RIGHT)
                 .addTemporalMarker(() -> placeYellowPixel())
                 .build();
+
+        // Ready to test
     }
 
     private void placeYellowPixel() {
