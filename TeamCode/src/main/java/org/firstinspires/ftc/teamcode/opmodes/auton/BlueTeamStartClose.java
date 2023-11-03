@@ -101,6 +101,7 @@ public class BlueTeamStartClose extends LinearOpMode {
                 hardwareMap.get(Servo.class, "intake_right")
         );
         drive = new SampleMecanumDrive(hardwareMap);
+        drive.setPoseEstimate (BLUE_START_POS_1);
 
         detector = new TensorFlowDetector("2023_Blue_Team_Object_3770.tflite", new String[]{"Blue_Owl"}, telemetry, hardwareMap);
         detector.initModel();
@@ -137,7 +138,7 @@ public class BlueTeamStartClose extends LinearOpMode {
                 .splineToSplineHeading(BLUE_OBJECT_POS_1, Math.toRadians (-75))
                 .addTemporalMarker(() -> dropPurplePixel()) // This action should take X seconds or less, where X is the .waitSeconds below
                 .waitSeconds(1)
-                .lineToSplineHeading(BLUE_BACKDROP_LEFT)
+                .splineToSplineHeading(BLUE_BACKDROP_LEFT, Math.toRadians(0))
                 .addTemporalMarker(() -> placeYellowPixel())
                 .build();
 
