@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.opmodes.auton;
 
+import static org.firstinspires.ftc.teamcode.components.GamePositions.*;
+
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -120,16 +122,45 @@ public class RedTeamStartFar extends LinearOpMode {
     //**********************************************************************************************
 
     private void buildLeftPath(SampleMecanumDrive drive) {
-        // @TODO Insert the left path with markers here (path 6)
+        trajectory = drive.trajectorySequenceBuilder(RED_START_POS_2)
+                .splineToSplineHeading(RED_OBJECT_POS_5_1, Math.toRadians(100))
+                .splineToSplineHeading(RED_OBJECT_POS_5_2, Math.toRadians(90))
+                .waitSeconds(1)
+                .lineToConstantHeading(RED_OBJECT_POS_5_4.vec())
+                .turn(Math.toRadians(60))
+                .lineToConstantHeading(RED_OBJECT_POS_5_3.vec())
+                .splineToSplineHeading(RED_WAYPOINT_1, Math.toRadians(0))
+                .splineToSplineHeading(RED_WAYPOINT_1_5, Math.toRadians(0))
+                .splineToSplineHeading(RED_WAYPOINT_2, Math.toRadians(-45))
+                .splineToSplineHeading(RED_BACKDROP_RIGHT, Math.toRadians(0))
+                .build();
     }
 
     private void buildCenterPath(SampleMecanumDrive drive) {
-        // @TODO Insert the center path with markers here (path 5)
+        trajectory = drive.trajectorySequenceBuilder(RED_START_POS_2)
+                .splineToSplineHeading(RED_OBJECT_POS_6_1, Math.toRadians(100))
+                .splineToSplineHeading(RED_OBJECT_POS_6_2, Math.toRadians(90))
+                .waitSeconds(1)
+                .splineToConstantHeading(RED_OBJECT_POS_6_3.vec(), RED_OBJECT_POS_6_3.getHeading())
+                .splineToSplineHeading(RED_WAYPOINT_1, Math.toRadians(0))
+                .splineToSplineHeading(RED_WAYPOINT_1_5, Math.toRadians(0))
+                .splineToSplineHeading(RED_WAYPOINT_2, Math.toRadians(-45))
+                .splineToSplineHeading(RED_BACKDROP_CENTER, Math.toRadians(0))
+                .build();
 
     }
 
     private void buildRightPath(SampleMecanumDrive drive) {
-        // @TODO Insert the left path with markers here (path 4)
+        trajectory = drive.trajectorySequenceBuilder(RED_START_POS_2)
+                .splineToSplineHeading(RED_OBJECT_POS_4_1, Math.toRadians(100))
+                .splineToSplineHeading(RED_OBJECT_POS_4_2, Math.toRadians(30))
+                .waitSeconds(1)
+                .splineToSplineHeading(RED_OBJECT_POS_4_3, Math.toRadians(-135))
+                .splineToSplineHeading(RED_WAYPOINT_1, Math.toRadians(0))
+                .splineToSplineHeading(RED_WAYPOINT_1_5, Math.toRadians(0))
+                .splineToSplineHeading(RED_WAYPOINT_2, Math.toRadians(-45))
+                .splineToSplineHeading(RED_BACKDROP_RIGHT, Math.toRadians(0))
+                .build();
     }
 
     private void placeYellowPixel() {
