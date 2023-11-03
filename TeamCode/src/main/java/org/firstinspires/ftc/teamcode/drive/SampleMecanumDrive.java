@@ -55,7 +55,7 @@ import static org.firstinspires.ftc.teamcode.drive.DriveConstants.kV;
  */
 @Config
 public class SampleMecanumDrive extends MecanumDrive {
-    public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(8, 0, 0);
+    public static PIDCoefficients TRANSLATIONAL_PID = new PIDCoefficients(6, 0, 0);
     public static PIDCoefficients HEADING_PID = new PIDCoefficients(3.5, 0, 0);
 
     public static double LATERAL_MULTIPLIER = 1;
@@ -101,10 +101,10 @@ public class SampleMecanumDrive extends MecanumDrive {
 //        imu.initialize(parameters);
         // COMMENTED OUT BECAUSE IT SAID SO, IF SOMETHING BREAKS ITS NOT MY FAULT
 
-        leftFront = hardwareMap.get(DcMotorEx.class, "leftFront");
-        leftRear = hardwareMap.get(DcMotorEx.class, "leftBack");
-        rightRear = hardwareMap.get(DcMotorEx.class, "rightBack");
-        rightFront = hardwareMap.get(DcMotorEx.class, "rightFront");
+        leftFront = hardwareMap.get(DcMotorEx.class, "FRONTLEFT");
+        leftRear = hardwareMap.get(DcMotorEx.class, "BACKLEFT");
+        rightRear = hardwareMap.get(DcMotorEx.class, "FRONTRIGHT");
+        rightFront = hardwareMap.get(DcMotorEx.class, "BACKRIGHT");
 
         leftRear.setDirection(DcMotorSimple.Direction.REVERSE);
         leftFront.setDirection(DcMotorSimple.Direction.REVERSE);
