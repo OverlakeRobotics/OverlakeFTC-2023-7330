@@ -13,6 +13,9 @@ import org.firstinspires.ftc.teamcode.components.TensorFlowDetector;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
+import java.util.LinkedList;
+import java.util.Queue;
+
 @Autonomous(name = "Blue Team Autonomous Close", group = "Autonomous")
 public class BlueTeamStartClose extends LinearOpMode {
 
@@ -27,6 +30,8 @@ public class BlueTeamStartClose extends LinearOpMode {
     // Fields
     private char path;
     private TrajectorySequence trajectory;
+
+    private Queue<TrajectorySequence> trajectories = new LinkedList<>();
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -134,11 +139,13 @@ public class BlueTeamStartClose extends LinearOpMode {
     //**********************************************************************************************
 
     private void buildLeftPath(SampleMecanumDrive drive) {
+
+
         trajectory = drive.trajectorySequenceBuilder(BLUE_START_POS_1)
-                .splineToSplineHeading(BLUE_OBJECT_POS_1, Math.toRadians (-75))
+                .splineToSplineHeading(BLUE_OBJECT_POS_1, Math.toRadians(-90))
                 .addTemporalMarker(() -> dropPurplePixel()) // This action should take X seconds or less, where X is the .waitSeconds below
                 .waitSeconds(1)
-                .splineToSplineHeading(BLUE_BACKDROP_LEFT, Math.toRadians(0))
+                .lineToSplineHeading(BLUE_BACKDROP_LEFT)
                 .addTemporalMarker(() -> placeYellowPixel())
                 .build();
 

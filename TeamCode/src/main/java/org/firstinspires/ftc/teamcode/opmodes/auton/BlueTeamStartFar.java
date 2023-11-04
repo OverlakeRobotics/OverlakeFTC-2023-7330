@@ -30,11 +30,11 @@ public class BlueTeamStartFar extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
-
+        telemetry.addLine("test 1");
         initialize();
-
+        telemetry.addLine("test 2");
         findModel(); // This will sometimes, but not always wait for start
-
+        telemetry.update();
         while (!isStarted()) {
             sleep(10);
         }
@@ -43,28 +43,39 @@ public class BlueTeamStartFar extends LinearOpMode {
     }
 
     private void findModel() {
-
+        telemetry.addLine("test 3");
         while (!isStarted()) {
             detector.updateRecognitions();
-            sleep (250);
-            if (detector.getHighestConfidenceRecognition().getConfidence() > 0.95) {
-                break;
+            detector.updateTelemetry(true, true, true, true, true);
+            telemetry.addLine("Current Threshold: " + detector.getConfidenceThreshold());
+            telemetry.update();
+            sleep(250);
+            if (detector.getNumRecognitions() != 0) {
+                if (detector.getHighestConfidenceRecognition().getConfidence() > 0.95) {
+                    break;
+                }
             }
-        } // Keep searching for the model until the opMode is started. If the model is found with
+
+        }// Keep searching for the model until the opMode is started. If the model is found with
         // high confidence, stop searching lest the model breaks
 
         if (detector.getNumRecognitions() == 0) {
             telemetry.addData("Object Detected - ", "No object was detected with a confidence above %f", detector.getConfidenceThreshold());
-            telemetry.addData("Path Chosen - ", "Estimated angle = NULL deg, ready to follow r path");
+            telemetry.addData("Path Chosen - ", "Estimated angle = NULL deg, ready to follow 'r' path");
+            telemetry.update();
+
             path = 'r';
         } else if (detector.getHighestConfidenceRecognition().estimateAngleToObject(AngleUnit.DEGREES) < DEG_THRESHOLD) {
             telemetry.addData("Object Detected - ", "A(n) %s was found with %f confidence", detector.getHighestConfidenceRecognition().getLabel(), detector.getHighestConfidenceRecognition().getConfidence());
             path = 'l';
             telemetry.addData("Path Chosen - ", "Estimated angle = %f deg, ready to follow %c path", detector.getHighestConfidenceRecognition().estimateAngleToObject(AngleUnit.DEGREES), path);
+            telemetry.update();
+
         } else {
             path = 'c';
             telemetry.addData("Path Chosen - ", "Estimated angle = %f deg, ready to follow %c path", detector.getHighestConfidenceRecognition().estimateAngleToObject(AngleUnit.DEGREES), path);
-        } // Set the path to the appropriate path ('l'eft, 'r'ight, 'c'enter), and update the telemetry to let us know whats going on
+            telemetry.update();
+        }
 
         if (path == 'l') {
             buildLeftPath(drive);
@@ -75,7 +86,6 @@ public class BlueTeamStartFar extends LinearOpMode {
         } else {
             throw new IllegalStateException("Path was not 'c', 'l', or 'r'");
         }// build the appropriate path
-
     }
 
 
@@ -90,29 +100,11 @@ public class BlueTeamStartFar extends LinearOpMode {
                 hardwareMap.get(Servo.class, "intake_right")
         );
         drive = new SampleMecanumDrive(hardwareMap);
+        drive.setPoseEstimate(BLUE_START_POS_2);
 
         detector = new TensorFlowDetector("2023_Blue_Team_Object_3770.tflite", new String[]{"Blue_Owl"}, telemetry, hardwareMap);
         detector.initModel();
 
-
-        { // Old Code
-            //detector.updateRecognitions();
-            //Recognition teamObject = detector.getHighestConfidenceRecognition();
-
-//        if (teamObject == null) {
-//            telemetry.addData("Object Detected - ", "No object was detected with a confidence above %f", detector.getConfidenceThreshold());
-//            telemetry.addData("Path Chosen - ", "Estimated angle = NULL deg, ready to follow c path");
-//            path = 'r';
-//        } else {
-//            telemetry.addData("Object Detected - ", "A(n) %s was found with %f confidence", teamObject.getLabel(), teamObject.getConfidence());
-//            if (teamObject.estimateAngleToObject(AngleUnit.DEGREES) < DEG_THRESHOLD) {
-//                path = 'l';
-//            } else {
-//                path = 'c';
-//            }
-//            telemetry.addData("Path Chosen - ", "Estimated angle = %f deg, ready to follow %c path", teamObject.estimateAngleToObject(AngleUnit.DEGREES), path);
-//        }
-        }
 
     }
 
