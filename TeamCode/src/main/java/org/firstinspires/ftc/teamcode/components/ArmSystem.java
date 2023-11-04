@@ -17,7 +17,7 @@ public class ArmSystem {
     public static final int GROUND = 0; //VALUE TBD
 
     public static final int BACKBOARD = 1000; //value TBD
-    public static final int ARM_LIMIT = 1000; //VALUE TBD
+    public static final int ARM_LIMIT = 100; //VALUE TBD
     public static final int SERVO_GROUND = 1; //VALUE TBD
     public static final double ENCODER_TO_SERVO = 0; //VALUE TBD
     private static final int DROP_HEIGHT = 100;
