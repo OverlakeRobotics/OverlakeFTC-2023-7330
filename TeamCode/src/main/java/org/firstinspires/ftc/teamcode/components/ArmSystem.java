@@ -211,9 +211,9 @@ public class ArmSystem {
 
         }
         if (armSide == 'l') {
-            // outtakeLeft();
+            outtakeLeft();
         } else if (armSide == 'r') {
-            // outtakeRight();
+            outtakeRight();
         } else {
             throw new IllegalArgumentException("armSide should be 'l' or 'r'");
         }
@@ -230,9 +230,9 @@ public class ArmSystem {
 
         }
         if (armSide == 'l') {
-            //outtakeLeft();
+            outtakeLeft();
         } else if (armSide == 'r') {
-            // outtakeRight();
+            outtakeRight();
         } else {
             throw new IllegalArgumentException("armSide should be 'l' or 'r'");
         }
