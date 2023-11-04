@@ -41,7 +41,7 @@ public abstract class BaseOpMode extends OpMode {
         );
 
         // Initialize Launcher
-//        launcher = new Launcher(hardwareMap.get(Servo.class, "left_hand"));
+ //       launcher = new Launcher(hardwareMap.get(Servo.class, "airplane_servo"));
 
     }
 

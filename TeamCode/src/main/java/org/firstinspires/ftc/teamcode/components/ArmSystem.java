@@ -17,7 +17,7 @@ public class ArmSystem {
     public static final int GROUND = 0; //VALUE TBD
 
     public static final int BACKBOARD = 1000; //value TBD
-    public static final int ARM_LIMIT = 100; //VALUE TBD
+    public static final int ARM_LIMIT = 1000; //VALUE TBD
     public static final int SERVO_GROUND = 1; //VALUE TBD
     public static final double ENCODER_TO_SERVO = 0; //VALUE TBD
 
@@ -25,11 +25,20 @@ public class ArmSystem {
         UP,
         DOWN,
     }
+    public enum ArmState {
+        ARM_RAISING,
+        ARM_LOWERING,
+        ARM_LOCKED,
+        ARM_DRIVING_UP,
+        ARM_DRIVING_DOWN
+    }
     private DcMotor armLeft;
     public DcMotor armRight;
     public Servo leftServo;
     public Servo rightServo;
     public IntakeSystem intake;
+
+    public int currentPos;
     private int mTargetPosition;
 
     public ArmSystem(DcMotor motor1, DcMotor motor2, Servo servo1, Servo servo2, Servo intake1, Servo intake2){
@@ -37,8 +46,10 @@ public class ArmSystem {
         this.armRight = motor2;
         this.leftServo = servo1;
         this.rightServo = servo2;
-        armLeft.setDirection(DcMotorSimple.Direction.FORWARD);
-        armRight.setDirection(DcMotorSimple.Direction.REVERSE);
+        leftServo.setPosition(0);
+        rightServo.setPosition(1);
+        armLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+        armRight.setDirection(DcMotorSimple.Direction.FORWARD);
         initMotors();
         intake = new IntakeSystem(intake1, intake2);
         mTargetPosition = 0;
@@ -53,8 +64,8 @@ public class ArmSystem {
     }
 
     public boolean driveToLevel(int targetPosition, double power){
-        armLeft.setDirection(DcMotorSimple.Direction.FORWARD);
-        armRight.setDirection(DcMotorSimple.Direction.REVERSE);
+        armLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+        armRight.setDirection(DcMotorSimple.Direction.FORWARD);
 
         if(mTargetPosition != targetPosition){
             mTargetPosition = targetPosition;
@@ -65,10 +76,7 @@ public class ArmSystem {
             armRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             armRight.setPower(power);
         }
-        else
-        {
 
-        }
         int offsetLeft = Math.abs(armLeft.getCurrentPosition() - targetPosition);
         int offsetRight = Math.abs(armRight.getCurrentPosition() - targetPosition);
         if(targetPosition != 0 && offsetLeft < 20 && offsetRight < 20 ){
@@ -81,7 +89,7 @@ public class ArmSystem {
     }
 
     public boolean armToGround(){
-        if(driveToLevel(GROUND, 0.5)) {
+        if(driveToLevel(GROUND, 0.2)) {
             armRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             armLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             armRight.setPower(0);
@@ -93,7 +101,7 @@ public class ArmSystem {
         return false;
     }
     public boolean armToBackboard(){
-        if(driveToLevel(BACKBOARD, 0.5)) {
+        if(driveToLevel(BACKBOARD, 0.2)) {
             armRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             armLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             armRight.setPower(0);
@@ -104,51 +112,71 @@ public class ArmSystem {
         rightServo.setPosition(SERVO_GROUND);
         return false;
     }
-    public void lockArm()
+    public void lockArm(boolean firstCall)
     {
-        driveToLevel((armLeft.getCurrentPosition() + armRight.getCurrentPosition())/2, 0.5);
+        if(firstCall) {
+            currentPos = (armLeft.getCurrentPosition() + armRight.getCurrentPosition()) / 2;
+        }
+        driveToLevel(currentPos, 0.5);
+    }
+    public double getMotorPower()
+    {
+        return armLeft.getPower();
     }
     public void driveArm(Direction direction, double pow){
+        /*
         if(direction == Direction.UP && (armLeft.getCurrentPosition() >= ARM_LIMIT || armRight.getCurrentPosition() >= ARM_LIMIT))
         {
             armLeft.setPower(0);
             armRight.setPower(0);
         }
-        if(direction == Direction.DOWN && (armLeft.getCurrentPosition() <= 5 || armRight.getCurrentPosition() <= 5))
+        if(direction == Direction.DOWN && (armLeft.getCurrentPosition() <= 0 || armRight.getCurrentPosition() <= 0))
         {
             armLeft.setPower(0);
             armRight.setPower(0);
         }
+
+         */
         if(direction == direction.UP)
-        {
-            armLeft.setDirection(DcMotorSimple.Direction.FORWARD);
-            armRight.setDirection(DcMotorSimple.Direction.REVERSE);
-        }
-        else
         {
             armLeft.setDirection(DcMotorSimple.Direction.REVERSE);
             armRight.setDirection(DcMotorSimple.Direction.FORWARD);
         }
+        if(direction == direction.DOWN)
+        {
+            armLeft.setDirection(DcMotorSimple.Direction.FORWARD);
+            armRight.setDirection(DcMotorSimple.Direction.REVERSE);
+        }
 
         armLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         armRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        armLeft.setPower(pow);//change to velocity
+        armLeft.setPower(pow);
         armRight.setPower(pow);
-//        telemetry.addData("Position left:", armLeft.getCurrentPosition());
-//        telemetry.addData("Position Right:", armRight.getCurrentPosition());
-//        telemetry.update();
+
+        Log.d("leftPosition", "" + armLeft.getCurrentPosition());
 
         leftServo.setPosition(((armLeft.getCurrentPosition() + armRight.getCurrentPosition())/2) * ENCODER_TO_SERVO);
         rightServo.setPosition(((armLeft.getCurrentPosition() + armRight.getCurrentPosition())/2) * ENCODER_TO_SERVO);
         armLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         armRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
-    public void intake(){
-        intake.intake();
+    public void killMotors()
+    {
+        armRight.setPower(0);
+        armLeft.setPower(0);
+    }
+    public void intakeLeft(){
+        intake.intakeLeft();
+    }
+    public void intakeRight(){
+        intake.intakeRight();
     }
 
-    public void outtake(){
-        intake.outtake();
+    public void outtakeLeft(){
+        intake.outtakeLeft();
+    }
+    public void outtakeRight(){
+        intake.outtakeRight();
     }
 
     public static class IntakeSystem {
@@ -160,15 +188,19 @@ public class ArmSystem {
         public IntakeSystem(Servo intake1, Servo intake2){
             this.intakeLeft = intake1;
             this.intakeRight = intake2;
-            intake();
+
         }
-        public void intake(){
+        public void intakeLeft(){
             intakeLeft.setPosition(INTAKE_POS);
+        }
+        public void intakeRight(){
             intakeRight.setPosition(INTAKE_POS);
         }
 
-        public void outtake(){
+        public void outtakeLeft(){
             intakeLeft.setPosition(OUTTAKE_POS);
+        }
+        public void outtakeRight(){
             intakeRight.setPosition(OUTTAKE_POS);
         }
     }
