@@ -143,10 +143,10 @@ public class BlueTeamStartClose extends LinearOpMode {
 
         trajectory = drive.trajectorySequenceBuilder(BLUE_START_POS_1)
                 .splineToSplineHeading(BLUE_OBJECT_POS_1, Math.toRadians(-90))
-                .addTemporalMarker(() -> dropPurplePixel()) // This action should take X seconds or less, where X is the .waitSeconds below
+                .addTemporalMarker(() -> armSystem.dropPurplePixel('l')) // This action should take X seconds or less, where X is the .waitSeconds below
                 .waitSeconds(1)
                 .lineToSplineHeading(BLUE_BACKDROP_LEFT)
-                .addTemporalMarker(() -> placeYellowPixel())
+                .addTemporalMarker(() -> armSystem.placeYellowPixel('r'))
                 .build();
 
         // Ready to test
@@ -156,10 +156,10 @@ public class BlueTeamStartClose extends LinearOpMode {
         trajectory = drive.trajectorySequenceBuilder(BLUE_START_POS_1)
                 .splineTo(BLUE_OBJECT_POS_2_1.vec(), BLUE_OBJECT_POS_2_1.getHeading())
                 .splineTo(BLUE_OBJECT_POS_2_2.vec(), BLUE_OBJECT_POS_2_2.getHeading())
-                .addTemporalMarker(() -> dropPurplePixel()) // This action should take X seconds or less, where X is the .waitSeconds below
+                .addTemporalMarker(() -> armSystem.dropPurplePixel('l')) // This action should take X seconds or less, where X is the .waitSeconds below
                 .waitSeconds(1)
                 .lineToSplineHeading(BLUE_BACKDROP_CENTER)
-                .addTemporalMarker(() -> placeYellowPixel())
+                .addTemporalMarker(() -> armSystem.placeYellowPixel('r'))
                 .build();
 
         // Ready to test
@@ -169,22 +169,14 @@ public class BlueTeamStartClose extends LinearOpMode {
 
         trajectory = drive.trajectorySequenceBuilder(BLUE_START_POS_1)
                 .splineTo(BLUE_OBJECT_POS_3.vec(), BLUE_OBJECT_POS_3.getHeading())
-                .addTemporalMarker(() -> dropPurplePixel()) // This action should take X seconds or less, where X is the .waitSeconds below
+                .addTemporalMarker(() -> armSystem.dropPurplePixel('l')) // This action should take X seconds or less, where X is the .waitSeconds below
                 .waitSeconds(1)
                 .lineToLinearHeading(BLUE_BACKDROP_RIGHT)
-                .addTemporalMarker(() -> placeYellowPixel())
+                .addTemporalMarker(() -> armSystem.placeYellowPixel('r'))
                 .build();
 
         // Ready to test
     }
 
-    private void placeYellowPixel() {
-        //@TODO Implement placeYellowPixel()
-    }
-
-    private void dropPurplePixel() {
-        armSystem.driveToLevel(1, 2);
-        //@TODO Implement dropPurplePixel()
-    }
 
 }
