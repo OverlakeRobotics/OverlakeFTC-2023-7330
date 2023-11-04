@@ -20,6 +20,7 @@ public class ArmSystem {
     public static final int ARM_LIMIT = 100; //VALUE TBD
     public static final int SERVO_GROUND = 1; //VALUE TBD
     public static final double ENCODER_TO_SERVO = 0; //VALUE TBD
+    private static final int DROP_HEIGHT = 100;
 
     public enum Direction {
         UP,
@@ -172,4 +173,55 @@ public class ArmSystem {
             intakeRight.setPosition(OUTTAKE_POS);
         }
     }
+
+    public void placeYellowPixel(char armSide) {
+        while (!armToBackboard()) {
+
+        }
+        if (armSide == 'l') {
+            // outtakeLeft();
+        } else if (armSide == 'r') {
+            // outtakeRight();
+        } else {
+            throw new IllegalArgumentException("armSide should be 'l' or 'r'");
+        }
+
+        while (!armToDropHeight()) {
+
+        }
+
+
+    }
+
+    public void dropPurplePixel(char armSide) {
+        while (!armToGround()) {
+
+        }
+        if (armSide == 'l') {
+            //outtakeLeft();
+        } else if (armSide == 'r') {
+            // outtakeRight();
+        } else {
+            throw new IllegalArgumentException("armSide should be 'l' or 'r'");
+        }
+
+        while (!armToDropHeight()) {
+
+        }
+
+    }
+
+    private boolean armToDropHeight () {
+        if (driveToLevel(DROP_HEIGHT, 0.2)) {
+            armRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            armRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+            armRight.setPower(0.0);
+            armLeft.setPower(0.0);
+            return true;
+        }
+        return false;
+    }
+
+
 }
