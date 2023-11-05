@@ -78,17 +78,17 @@ public class RedTeamStartClose extends LinearOpMode {
             telemetry.update();
         }
 
-//        if (path == 'l') {
-//            buildLeftPath(drive);
-//        } else if (path == 'c') {
-//            buildCenterPath(drive);
-//        } else if (path == 'r') {
-//            buildRightPath(drive);
-//        } else {
-//            throw new IllegalStateException("Path was not 'c', 'l', or 'r'");
-//        }// build the appropriate path
+        if (path == 'l') {
+            buildLeftPath(drive);
+        } else if (path == 'c') {
+            buildCenterPath(drive);
+        } else if (path == 'r') {
+            buildRightPath(drive);
+        } else {
+            throw new IllegalStateException("Path was not 'c', 'l', or 'r'");
+        }// build the appropriate path
 
-        buildTestPath(drive);
+        //buildTestPath(drive);
 
     }
 
@@ -131,10 +131,10 @@ public class RedTeamStartClose extends LinearOpMode {
         trajectory = drive.trajectorySequenceBuilder(RED_START_POS_1)
                 .turn(Math.toRadians(-60))
                 .splineTo(RED_OBJECT_POS_3.vec(), RED_OBJECT_POS_3.getHeading())
-                .addTemporalMarker(() -> dropPurplePixel()) // This action should take X seconds or less, where X is the .waitSeconds below
+                .addTemporalMarker(() -> armSystem.dropPurplePixel('l')) // This action should take X seconds or less, where X is the .waitSeconds below
                 .waitSeconds(1)
                 .lineToLinearHeading(RED_BACKDROP_RIGHT)
-                .addTemporalMarker(() -> placeYellowPixel())
+                .addTemporalMarker(() -> armSystem.placeYellowPixel('r'))
                 .build();
     }
 
@@ -143,10 +143,10 @@ public class RedTeamStartClose extends LinearOpMode {
                 .turn(Math.toRadians(-60))
                 .splineTo(RED_OBJECT_POS_2_1.vec(), RED_OBJECT_POS_2_1.getHeading())
                 .splineTo(RED_OBJECT_POS_2_2.vec(), RED_OBJECT_POS_2_2.getHeading())
-                .addTemporalMarker(() -> dropPurplePixel()) // This action should take X seconds or less, where X is the .waitSeconds below
+                .addTemporalMarker(() -> armSystem.dropPurplePixel('l')) // This action should take X seconds or less, where X is the .waitSeconds below
                 .waitSeconds(1)
                 .lineToSplineHeading(RED_BACKDROP_CENTER)
-                .addTemporalMarker(() -> placeYellowPixel())
+                .addTemporalMarker(() -> armSystem.placeYellowPixel('r'))
                 .build();
 
     }
@@ -155,19 +155,11 @@ public class RedTeamStartClose extends LinearOpMode {
         trajectory = drive.trajectorySequenceBuilder(RED_START_POS_1)
                 .turn(Math.toRadians(-60))
                 .splineToSplineHeading(RED_OBJECT_POS_1, Math.toRadians(90))
-                .addTemporalMarker(() -> dropPurplePixel()) // This action should take X seconds or less, where X is the .waitSeconds below
+                .addTemporalMarker(() -> armSystem.dropPurplePixel('l')) // This action should take X seconds or less, where X is the .waitSeconds below
                 .waitSeconds(1)
                 .lineToSplineHeading(RED_BACKDROP_LEFT)
-                .addTemporalMarker(() -> placeYellowPixel())
+                .addTemporalMarker(() -> armSystem.placeYellowPixel('r'))
                 .build();
-    }
-
-    private void placeYellowPixel() {
-        //@TODO Implement placeYellowPixel()
-    }
-
-    private void dropPurplePixel() {
-        //@TODO Implement dropPurplePixel()
     }
 
 }

@@ -91,7 +91,7 @@ public class RedTeamStartFar extends LinearOpMode {
         );
         drive = new SampleMecanumDrive(hardwareMap);
 
-        detector = new TensorFlowDetector("2023_Blue_Team_Object_3770.tflite", new String[]{"Blue_Owl"}, telemetry, hardwareMap);
+        detector = new TensorFlowDetector("2023_Red_Team_Object_3770.tflite", new String[]{"Blue_Owl"}, telemetry, hardwareMap);
         detector.initModel();
 
 
@@ -125,6 +125,7 @@ public class RedTeamStartFar extends LinearOpMode {
         trajectory = drive.trajectorySequenceBuilder(RED_START_POS_2)
                 .splineToSplineHeading(RED_OBJECT_POS_5_1, Math.toRadians(100))
                 .splineToSplineHeading(RED_OBJECT_POS_5_2, Math.toRadians(90))
+                .addTemporalMarker(() -> armSystem.dropPurplePixel('r'))
                 .waitSeconds(1)
                 .lineToConstantHeading(RED_OBJECT_POS_5_4.vec())
                 .turn(Math.toRadians(60))
@@ -133,6 +134,7 @@ public class RedTeamStartFar extends LinearOpMode {
                 .splineToSplineHeading(RED_WAYPOINT_1_5, Math.toRadians(0))
                 .splineToSplineHeading(RED_WAYPOINT_2, Math.toRadians(-45))
                 .splineToSplineHeading(RED_BACKDROP_RIGHT, Math.toRadians(0))
+                .addTemporalMarker(() -> armSystem.placeYellowPixel('l'))
                 .build();
     }
 
@@ -140,12 +142,14 @@ public class RedTeamStartFar extends LinearOpMode {
         trajectory = drive.trajectorySequenceBuilder(RED_START_POS_2)
                 .splineToSplineHeading(RED_OBJECT_POS_6_1, Math.toRadians(100))
                 .splineToSplineHeading(RED_OBJECT_POS_6_2, Math.toRadians(90))
+                .addTemporalMarker(() -> armSystem.dropPurplePixel('r'))
                 .waitSeconds(1)
                 .splineToConstantHeading(RED_OBJECT_POS_6_3.vec(), RED_OBJECT_POS_6_3.getHeading())
                 .splineToSplineHeading(RED_WAYPOINT_1, Math.toRadians(0))
                 .splineToSplineHeading(RED_WAYPOINT_1_5, Math.toRadians(0))
                 .splineToSplineHeading(RED_WAYPOINT_2, Math.toRadians(-45))
                 .splineToSplineHeading(RED_BACKDROP_CENTER, Math.toRadians(0))
+                .addTemporalMarker(() -> armSystem.placeYellowPixel('l'))
                 .build();
 
     }
@@ -154,12 +158,14 @@ public class RedTeamStartFar extends LinearOpMode {
         trajectory = drive.trajectorySequenceBuilder(RED_START_POS_2)
                 .splineToSplineHeading(RED_OBJECT_POS_4_1, Math.toRadians(100))
                 .splineToSplineHeading(RED_OBJECT_POS_4_2, Math.toRadians(30))
+                .addTemporalMarker(() -> armSystem.dropPurplePixel('l'))
                 .waitSeconds(1)
                 .splineToSplineHeading(RED_OBJECT_POS_4_3, Math.toRadians(-135))
                 .splineToSplineHeading(RED_WAYPOINT_1, Math.toRadians(0))
                 .splineToSplineHeading(RED_WAYPOINT_1_5, Math.toRadians(0))
                 .splineToSplineHeading(RED_WAYPOINT_2, Math.toRadians(-45))
                 .splineToSplineHeading(RED_BACKDROP_RIGHT, Math.toRadians(0))
+                .addTemporalMarker(() -> armSystem.placeYellowPixel('r'))
                 .build();
     }
 

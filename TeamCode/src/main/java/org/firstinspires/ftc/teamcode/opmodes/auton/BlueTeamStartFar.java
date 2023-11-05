@@ -117,12 +117,15 @@ public class BlueTeamStartFar extends LinearOpMode {
         trajectory = drive.trajectorySequenceBuilder(BLUE_START_POS_2)
                 .splineToSplineHeading(BLUE_OBJECT_POS_4_1, Math.toRadians(-100))
                 .splineToSplineHeading(BLUE_OBJECT_POS_4_2, Math.toRadians(-30))
+                .addTemporalMarker(() -> armSystem.dropPurplePixel('l')) // This action should take X seconds or less, where X is the .waitSeconds below
                 .waitSeconds(1)
                 .splineToSplineHeading(BLUE_OBJECT_POS_4_3, Math.toRadians(135))
                 .splineToSplineHeading(BLUE_WAYPOINT_1, Math.toRadians(0))
                 .splineToSplineHeading(BLUE_WAYPOINT_1_5, Math.toRadians(0))
                 .splineToSplineHeading(BLUE_WAYPOINT_2, Math.toRadians(45))
                 .splineToSplineHeading(BLUE_BACKDROP_LEFT, Math.toRadians(0))
+                .addTemporalMarker(() -> armSystem.placeYellowPixel('r')) // This action should take X seconds or less, where X is the .waitSeconds below
+
                 .build();
 
         // Ready to Test
@@ -132,12 +135,14 @@ public class BlueTeamStartFar extends LinearOpMode {
         trajectory = drive.trajectorySequenceBuilder(BLUE_START_POS_2)
                 .splineToSplineHeading(BLUE_OBJECT_POS_6_1, Math.toRadians(-100))
                 .splineToSplineHeading(BLUE_OBJECT_POS_6_2, Math.toRadians(-90))
+                .addTemporalMarker(() -> armSystem.dropPurplePixel('l')) // This action should take X seconds or less, where X is the .waitSeconds below
                 .waitSeconds(1)
                 .splineToConstantHeading(BLUE_OBJECT_POS_6_3.vec(), BLUE_OBJECT_POS_6_3.getHeading())
                 .splineToSplineHeading(BLUE_WAYPOINT_1, Math.toRadians(0))
                 .splineToSplineHeading(BLUE_WAYPOINT_1_5, Math.toRadians(0))
                 .splineToSplineHeading(BLUE_WAYPOINT_2, Math.toRadians(45))
                 .splineToSplineHeading(BLUE_BACKDROP_CENTER, Math.toRadians(0))
+                .addTemporalMarker(() -> armSystem.dropPurplePixel('r')) // This action should take X seconds or less, where X is the .waitSeconds below
                 .build();
 
         // Ready to Test
@@ -147,6 +152,7 @@ public class BlueTeamStartFar extends LinearOpMode {
         trajectory = drive.trajectorySequenceBuilder(BLUE_START_POS_2)
                 .splineToSplineHeading(BLUE_OBJECT_POS_5_1, Math.toRadians(-100))
                 .splineToSplineHeading(BLUE_OBJECT_POS_5_2, Math.toRadians(-90))
+                .addTemporalMarker(() -> armSystem.dropPurplePixel('l')) // This action should take X seconds or less, where X is the .waitSeconds below
                 .waitSeconds(1)
                 .lineToConstantHeading(BLUE_OBJECT_POS_5_4.vec())
                 .turn(Math.toRadians(-60))
@@ -155,18 +161,11 @@ public class BlueTeamStartFar extends LinearOpMode {
                 .splineToSplineHeading(BLUE_WAYPOINT_1_5, Math.toRadians(0))
                 .splineToSplineHeading(BLUE_WAYPOINT_2, Math.toRadians(45))
                 .splineToSplineHeading(BLUE_BACKDROP_RIGHT, Math.toRadians(0))
+                .addTemporalMarker(() -> armSystem.placeYellowPixel('r')) // This action should take X seconds or less, where X is the .waitSeconds below
+
                 .build();
 
         // Ready to Test
-    }
-
-    private void placeYellowPixel() {
-        //@TODO Implement placeYellowPixel()
-    }
-
-    private void dropPurplePixel() {
-        armSystem.driveToLevel(1, 2);
-        //@TODO Implement dropPurplePixel()
     }
 
 }

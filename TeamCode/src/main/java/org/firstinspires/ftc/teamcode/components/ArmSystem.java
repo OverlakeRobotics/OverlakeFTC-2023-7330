@@ -36,19 +36,16 @@ public class ArmSystem {
     public Servo rightServo;
     public IntakeSystem intake;
     private int mTargetPosition;
-    private int mTargetPosition2;
 
     public ArmSystem(DcMotor motor1, DcMotor motor2, Servo servo1, Servo servo2, Servo intake1, Servo intake2){
         this.armLeft = motor1;
         this.armRight = motor2;
         this.leftServo = servo1;
         this.rightServo = servo2;
-        leftServo.setPosition(SERVO_GROUND);
-        rightServo.setPosition(SERVO_GROUND);
+        setArmServos(SERVO_GROUND);
         initMotors();
         intake = new IntakeSystem(intake1, intake2);
         mTargetPosition = 0;
-        mTargetPosition2 = 0;
     }
     public void initMotors() {
         armLeft.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -83,12 +80,12 @@ public class ArmSystem {
     public void armSystemUpdate(){
         if(drivingToPos)
         {
-            driveToLevel(mTargetPosition, 0.2);
+            driveToLevel(mTargetPosition, 0.4);
         }
     }
     public void setArmServos(double pos)
     {
-        leftServo.setPosition(pos);
+        leftServo.setPosition(1-pos);
         rightServo.setPosition(pos);
     }
     public boolean driveToLevel(int targetPosition, double power){
@@ -113,7 +110,7 @@ public class ArmSystem {
 
     public boolean armToGround(){
         setArmServos(SERVO_GROUND);
-        if(driveToLevel(GROUND, 0.2)) {
+        if(driveToLevel(GROUND, 0.4)) {
             armRight.setPower(0);
             armLeft.setPower(0);
             return true;
@@ -128,8 +125,7 @@ public class ArmSystem {
             armLeft.setPower(0);
             return true;
         }
-        leftServo.setPosition(SERVO_BACKBOARD_AUTON);
-        rightServo.setPosition(SERVO_BACKBOARD_AUTON);
+        setArmServos(SERVO_BACKBOARD_AUTON);
         return false;
     }
 
