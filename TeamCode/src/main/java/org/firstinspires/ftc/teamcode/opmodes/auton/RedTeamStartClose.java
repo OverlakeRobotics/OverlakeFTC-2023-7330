@@ -77,15 +77,17 @@ public class RedTeamStartClose extends LinearOpMode {
             telemetry.update();
         }
 
-        if (path == 'l') {
-            buildLeftPath(drive);
-        } else if (path == 'c') {
-            buildCenterPath(drive);
-        } else if (path == 'r') {
-            buildRightPath(drive);
-        } else {
-            throw new IllegalStateException("Path was not 'c', 'l', or 'r'");
-        }// build the appropriate path
+//        if (path == 'l') {
+//            buildLeftPath(drive);
+//        } else if (path == 'c') {
+//            buildCenterPath(drive);
+//        } else if (path == 'r') {
+//            buildRightPath(drive);
+//        } else {
+//            throw new IllegalStateException("Path was not 'c', 'l', or 'r'");
+//        }// build the appropriate path
+
+        buildTestPath(drive);
 
     }
 
@@ -94,13 +96,13 @@ public class RedTeamStartClose extends LinearOpMode {
         armSystem = new ArmSystem(
                 hardwareMap.get(DcMotor.class, "arm_left"),
                 hardwareMap.get(DcMotor.class, "arm_right"),
-                hardwareMap.get(Servo.class, "servo_left"),
-                hardwareMap.get(Servo.class, "servo_right"),
+                hardwareMap.get(Servo.class, "left_servo"),
+                hardwareMap.get(Servo.class, "right_servo"),
                 hardwareMap.get(Servo.class, "intake_left"),
                 hardwareMap.get(Servo.class, "intake_right")
         );
         drive = new SampleMecanumDrive(hardwareMap);
-        drive.setPoseEstimate(RED_START_POS_1);
+//        drive.setPoseEstimate(RED_START_POS_1);
 
         detector = new TensorFlowDetector("2023_Red_Team_Object_7330.tflite", new String[]{"Red_Owl"}, telemetry, hardwareMap);
         detector.initModel();
@@ -112,6 +114,17 @@ public class RedTeamStartClose extends LinearOpMode {
     //**********************************************************************************************
     //**************************************** PATHS ***********************************************
     //**********************************************************************************************
+
+    private void buildTestPath(SampleMecanumDrive drive) {
+        trajectory = drive.trajectorySequenceBuilder(RED_START_POS_1)
+                .forward(10)
+                .addTemporalMarker(() -> armSystem.dropPurplePixel('l')) // This action should take X seconds or less, where X is the .waitSeconds below
+                .waitSeconds(1)
+                .forward(-10)
+                .addTemporalMarker(() -> armSystem.placeYellowPixel('r'))
+                .build();
+    }
+
 
     private void buildLeftPath(SampleMecanumDrive drive) {
         trajectory = drive.trajectorySequenceBuilder(RED_START_POS_1)

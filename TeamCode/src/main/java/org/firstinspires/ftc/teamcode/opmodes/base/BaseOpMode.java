@@ -22,26 +22,26 @@ public abstract class BaseOpMode extends OpMode {
     public void init() {
 
         stopRequested = false;
-/*
+
         // Initialize Drive motors
         EnumMap<DriveSystem.MotorNames, DcMotor> driveMap = new EnumMap<>(DriveSystem.MotorNames.class);
         for(DriveSystem.MotorNames name : DriveSystem.MotorNames.values()){
             driveMap.put(name,hardwareMap.get(DcMotor.class, name.toString()));
         }
         driveSystem = new DriveSystem(driveMap);
-*/
+
         // Initialize Arm motors
         armSystem = new ArmSystem(
                 hardwareMap.get(DcMotor.class, "arm_left"),
                 hardwareMap.get(DcMotor.class, "arm_right"),
-                hardwareMap.get(Servo.class, "servo_left"),
-                hardwareMap.get(Servo.class, "servo_right"),
+                hardwareMap.get(Servo.class, "left_servo"),
+                hardwareMap.get(Servo.class, "right_servo"),
                 hardwareMap.get(Servo.class, "intake_left"),
                 hardwareMap.get(Servo.class, "intake_right")
         );
 
         // Initialize Launcher
- //       launcher = new Launcher(hardwareMap.get(Servo.class, "airplane_servo"));
+        launcher = new Launcher(hardwareMap.get(Servo.class, "airplane_servo"));
 
     }
 

@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.opmodes.teleop;
 
+import static android.os.SystemClock.sleep;
+
 import android.util.Log;
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -10,96 +12,101 @@ import org.firstinspires.ftc.teamcode.opmodes.base.BaseOpMode;
 
 @TeleOp(name = "Base TeleOp", group="TeleOp")
 public class BaseTeleOp extends BaseOpMode {
-    boolean armRaising = false;
-    boolean armLocked = false;
-    boolean driving = false;
-    boolean armLowering = false;
-    boolean firstCall;
-    ArmSystem.ArmState armState;
+    /*
+    Servo servoLeft;
+    Servo servoRight;
+    public void init()
+    {
+        servoLeft = hardwareMap.get(Servo.class, "left_servo");
+        servoRight = hardwareMap.get(Servo.class, "right_servo");
+        servoLeft.setDirection(Servo.Direction.REVERSE);
+        servoRight.setDirection(Servo.Direction.FORWARD);
+        servoRight.setPosition(0);
+        servoLeft.setPosition(0);
+    }
+    */
     public void loop() {
+        /*
+        servoLeft.setPosition(0);
+        servoRight.setPosition(0);
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        servoLeft.setPosition(1);
+        servoRight.setPosition(1);
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+            */
+
         float rx = (float) Math.pow(gamepad1.right_stick_x, 3);
         float lx = (float) Math.pow(gamepad1.left_stick_x, 3);
         float ly = (float) Math.pow(gamepad1.left_stick_y, 3);
 
-      //  driveSystem.drive(rx, lx, ly);
+//        driveSystem.slowDrive(true);
+        driveSystem.drive(rx, lx, ly);
 
-
-        // dpad up joystick arm up
-        if (gamepad1.dpad_up) {
-            armState = ArmSystem.ArmState.ARM_DRIVING_UP;
-            armSystem.driveArm(ArmSystem.Direction.UP, 0.5);
+        if(gamepad1.dpad_up){
+            armSystem.driveArm(ArmSystem.Direction.UP, 0.2);
+            armSystem.runManually();
         }
-        if(armState == ArmSystem.ArmState.ARM_DRIVING_UP && !gamepad1.dpad_up)
+        else if (gamepad1.dpad_down){
+            armSystem.driveArm(ArmSystem.Direction.DOWN, 0.2);
+            armSystem.runManually();
+        }
+        else if (gamepad1.y){
+            launcher.launch();
+        }
+        else if(gamepad1.x){
+            armSystem.setTargetPosition(ArmSystem.DROP_HEIGHT);
+            armSystem.setArmServos(ArmSystem.SERVO_GROUND);
+        }
+        else if(gamepad1.b){
+            armSystem.setArmServos(0);
+        }
+        else if (gamepad1.dpad_right){
+            armSystem.setTargetPosition(ArmSystem.BACKBOARD_LOW);
+            armSystem.setArmServos(ArmSystem.SERVO_BACKBOARD_LOW);
+        }
+        else if(gamepad1.dpad_left)
         {
-            armState = ArmSystem.ArmState.ARM_LOCKED;
-        }
-
-        //dpad down joystick arm down
-        if (gamepad1.dpad_down) {
-            armState = ArmSystem.ArmState.ARM_DRIVING_DOWN;
-            armSystem.driveArm(ArmSystem.Direction.DOWN, 0.5);
-        }
-        if(armState == ArmSystem.ArmState.ARM_DRIVING_DOWN && !gamepad1.dpad_down)
-        {
-            armState = ArmSystem.ArmState.ARM_LOCKED;
-        }
-
-        // y button airplane launch
-        if (gamepad1.y) {
-          //  launcher.launch();
-        }
-
-        if (gamepad1.x) {
-            armState = ArmSystem.ArmState.ARM_RAISING;
-        }
-        if(armState == ArmSystem.ArmState.ARM_RAISING && armSystem.armToBackboard())
-        {
-            armState = ArmSystem.ArmState.ARM_LOCKED;
-        }
-
-        if (gamepad1.a) {
-            armState = ArmSystem.ArmState.ARM_LOWERING;
-        }
-        if(armState == ArmSystem.ArmState.ARM_LOWERING && armSystem.armToGround())
-        {
-            armState = ArmSystem.ArmState.ARM_LOCKED;
-        }
-
-        if(armState == ArmSystem.ArmState.ARM_LOCKED)
-        {
-            //make lock system so that it locks and unlocks
-            if(firstCall)
-            {
-                Log.d("mystery", "true");
-                armSystem.killMotors();
-            }
-            armSystem.lockArm(firstCall);
-            firstCall = false;
+            armSystem.setTargetPosition(ArmSystem.BACKBOARD_HIGH);
+            armSystem.setArmServos(ArmSystem.SERVO_BACKBOARD_HIGH);
 
         }
-        else
-        {
-            firstCall = true;
+        else if (gamepad1.a){
+            armSystem.setTargetPosition(ArmSystem.GROUND);
+            armSystem.setArmServos(ArmSystem.SERVO_GROUND);
         }
-        Log.d("mystery", "" + armState);
-
-        // left trigger left intake expansion
-        if (gamepad1.left_trigger > 0) {
+        else if (gamepad1.left_trigger > 0){
             armSystem.intakeLeft();
         }
-        if(gamepad1.right_trigger > 0) {
+        else if (gamepad1.right_trigger > 0){
             armSystem.intakeRight();
         }
-        // left bumper left intake closing
-        if (gamepad1.left_bumper){
+        else if(gamepad1.left_bumper){
             armSystem.outtakeLeft();
         }
-        if (gamepad1.right_bumper){
+        else if(gamepad1.right_bumper){
             armSystem.outtakeRight();
         }
-        Log.d("mystery", "" + armSystem.getMotorPower());
+        else{
+            if(!armSystem.isDrivingtoPosition())
+            {
+                armSystem.killMotors();
+            }
+        }
+        armSystem.armSystemUpdate();
+        Log.d("Position", "" + (armSystem.returnPos()));
+        Log.d("xpressed", "" + gamepad1.x);
+        Log.d("bpressed", "" + gamepad1.b);
+        //Pos 1: 1759
+        //Pos 2: 2082
+        //Pos 3: 2224
+
+
     }
 }
-//make each servo one button
-//make make lock system on arm
-//check to make sure encoder values are recieved
