@@ -124,7 +124,9 @@ public class BlueTeamStartFar extends LinearOpMode {
                 .splineToSplineHeading(BLUE_WAYPOINT_1_5, Math.toRadians(0))
                 .splineToSplineHeading(BLUE_WAYPOINT_2, Math.toRadians(45))
                 .splineToSplineHeading(BLUE_BACKDROP_LEFT, Math.toRadians(0))
-                .addTemporalMarker(() -> armSystem.placeYellowPixel('r')) // This action should take X seconds or less, where X is the .waitSeconds below
+                .addTemporalMarker(() -> armSystem.placeYellowPixel('r'))
+                .waitSeconds(1.0)
+                .strafeRight(25)// This action should take X seconds or less, where X is the .waitSeconds below
 
                 .build();
 
@@ -142,7 +144,9 @@ public class BlueTeamStartFar extends LinearOpMode {
                 .splineToSplineHeading(BLUE_WAYPOINT_1_5, Math.toRadians(0))
                 .splineToSplineHeading(BLUE_WAYPOINT_2, Math.toRadians(45))
                 .splineToSplineHeading(BLUE_BACKDROP_CENTER, Math.toRadians(0))
-                .addTemporalMarker(() -> armSystem.dropPurplePixel('r')) // This action should take X seconds or less, where X is the .waitSeconds below
+                .addTemporalMarker(() -> armSystem.dropPurplePixel('r'))
+                .waitSeconds(1.0)
+                .strafeRight(25)// This action should take X seconds or less, where X is the .waitSeconds below
                 .build();
 
         // Ready to Test
@@ -161,7 +165,9 @@ public class BlueTeamStartFar extends LinearOpMode {
                 .splineToSplineHeading(BLUE_WAYPOINT_1_5, Math.toRadians(0))
                 .splineToSplineHeading(BLUE_WAYPOINT_2, Math.toRadians(45))
                 .splineToSplineHeading(BLUE_BACKDROP_RIGHT, Math.toRadians(0))
-                .addTemporalMarker(() -> armSystem.placeYellowPixel('r')) // This action should take X seconds or less, where X is the .waitSeconds below
+                .addTemporalMarker(() -> armSystem.placeYellowPixel('r'))
+                .waitSeconds(1.0)
+                .strafeRight(25)// This action should take X seconds or less, where X is the .waitSeconds below
 
                 .build();
 

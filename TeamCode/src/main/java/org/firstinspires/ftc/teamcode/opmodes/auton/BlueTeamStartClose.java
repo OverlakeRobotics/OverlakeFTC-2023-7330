@@ -147,6 +147,8 @@ public class BlueTeamStartClose extends LinearOpMode {
                 .waitSeconds(1)
                 .lineToSplineHeading(BLUE_BACKDROP_LEFT)
                 .addTemporalMarker(() -> armSystem.placeYellowPixel('l'))
+                .waitSeconds(1.0)
+                .strafeRight(25)
                 .build();
 
         // Ready to test
@@ -160,6 +162,8 @@ public class BlueTeamStartClose extends LinearOpMode {
                 .waitSeconds(1)
                 .lineToSplineHeading(BLUE_BACKDROP_CENTER)
                 .addTemporalMarker(() -> armSystem.placeYellowPixel('l'))
+                .waitSeconds(1.0)
+                .strafeRight(25)
                 .build();
 
         // Ready to test
@@ -173,6 +177,8 @@ public class BlueTeamStartClose extends LinearOpMode {
                 .waitSeconds(1)
                 .lineToLinearHeading(BLUE_BACKDROP_RIGHT)
                 .addTemporalMarker(() -> armSystem.placeYellowPixel('l'))
+                .waitSeconds(1.0)
+                .strafeRight(25)
                 .build();
 
         // Ready to test

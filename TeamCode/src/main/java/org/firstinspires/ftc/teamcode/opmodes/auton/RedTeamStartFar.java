@@ -135,6 +135,8 @@ public class RedTeamStartFar extends LinearOpMode {
                 .splineToSplineHeading(RED_WAYPOINT_2, Math.toRadians(-45))
                 .splineToSplineHeading(RED_BACKDROP_RIGHT, Math.toRadians(0))
                 .addTemporalMarker(() -> armSystem.placeYellowPixel('l'))
+                .waitSeconds(1.0)
+                .strafeLeft(25)
                 .build();
     }
 
@@ -150,6 +152,8 @@ public class RedTeamStartFar extends LinearOpMode {
                 .splineToSplineHeading(RED_WAYPOINT_2, Math.toRadians(-45))
                 .splineToSplineHeading(RED_BACKDROP_CENTER, Math.toRadians(0))
                 .addTemporalMarker(() -> armSystem.placeYellowPixel('l'))
+                .waitSeconds(1.0)
+                .strafeLeft(25)
                 .build();
 
     }
@@ -166,6 +170,8 @@ public class RedTeamStartFar extends LinearOpMode {
                 .splineToSplineHeading(RED_WAYPOINT_2, Math.toRadians(-45))
                 .splineToSplineHeading(RED_BACKDROP_RIGHT, Math.toRadians(0))
                 .addTemporalMarker(() -> armSystem.placeYellowPixel('r'))
+                .waitSeconds(1.0)
+                .strafeLeft(25)
                 .build();
     }
 

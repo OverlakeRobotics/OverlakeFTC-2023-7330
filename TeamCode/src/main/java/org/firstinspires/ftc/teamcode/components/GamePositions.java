@@ -46,7 +46,7 @@ public class GamePositions {
     //***************************************** RED TEAM *******************************************
     //**********************************************************************************************
 
-    public static final Pose2d RED_START_POS_1 = new Pose2d(10, -57.5, Math.toRadians(120));
+    public static final Pose2d RED_START_POS_1 = new Pose2d(7, -54, Math.toRadians(120));
 
     public static final Pose2d RED_OBJECT_POS_1 = new Pose2d(25, -42, Math.toRadians(90));
     public static final Pose2d RED_OBJECT_POS_2_1 = new Pose2d(32, -44, Math.toRadians(90));

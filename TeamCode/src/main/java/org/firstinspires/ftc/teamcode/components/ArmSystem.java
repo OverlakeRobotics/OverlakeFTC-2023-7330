@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.components;
 
+import static android.os.SystemClock.sleep;
 import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
 
 import android.util.Log;
@@ -19,9 +20,9 @@ public class ArmSystem {
     public static final int BACKBOARD_LOW = 2082;
     private static final int BACKBOARD_AUTON = 2224;
     public static final double SERVO_GROUND = 0.13; //VALUE TBD
-    public static final double SERVO_BACKBOARD_LOW = 0.6; //value tbd
-    public static final double SERVO_BACKBOARD_HIGH = 0.7; //value tbd
-    public static final double SERVO_BACKBOARD_AUTON =0.75; //value tbd
+    public static final double SERVO_BACKBOARD_LOW = 0.79; //value tbd
+    public static final double SERVO_BACKBOARD_HIGH = 1; //value tbd
+    public static final double SERVO_BACKBOARD_AUTON =0.85; //value tbd
     public static final int DROP_HEIGHT = 200;
 
 
@@ -120,7 +121,7 @@ public class ArmSystem {
         return false;
     }
     public boolean armToBackboard(){
-        if(driveToLevel(BACKBOARD_AUTON, 0.2)) {
+        if(driveToLevel(BACKBOARD_AUTON, 0.4)) {
             armRight.setPower(0);
             armLeft.setPower(0);
             return true;
@@ -234,6 +235,7 @@ public class ArmSystem {
             throw new IllegalArgumentException("armSide should be 'l' or 'r'");
         }
 
+        sleep(150);
         while (!armToDropHeight()) {
 
         }
@@ -241,7 +243,7 @@ public class ArmSystem {
     }
 
     private boolean armToDropHeight () {
-        if (driveToLevel(DROP_HEIGHT, 0.2)) {
+        if (driveToLevel(DROP_HEIGHT, 0.4)) {
             armRight.setPower(0.0);
             armLeft.setPower(0.0);
             return true;

@@ -78,19 +78,21 @@ public class BaseTeleOp extends BaseOpMode {
 
         }
         else if (gamepad1.a){
+            armSystem.outtakeLeft();
+            armSystem.outtakeRight();
             armSystem.setTargetPosition(ArmSystem.GROUND);
             armSystem.setArmServos(ArmSystem.SERVO_GROUND);
         }
-        else if (gamepad1.left_trigger > 0){
+        else if (gamepad1.left_bumper){
             armSystem.intakeLeft();
         }
-        else if (gamepad1.right_trigger > 0){
+        else if (gamepad1.right_bumper){
             armSystem.intakeRight();
         }
-        else if(gamepad1.left_bumper){
+        else if(gamepad1.left_trigger > 0){
             armSystem.outtakeLeft();
         }
-        else if(gamepad1.right_bumper){
+        else if(gamepad1.right_trigger > 0){
             armSystem.outtakeRight();
         }
         else{

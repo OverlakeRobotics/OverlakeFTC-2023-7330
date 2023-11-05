@@ -52,9 +52,9 @@ public class RedTeamStartClose extends LinearOpMode {
             telemetry.update();
             sleep(250);
             if (detector.getNumRecognitions() != 0) {
-                if (detector.getHighestConfidenceRecognition().getConfidence() > 0.95) {
-                    break;
-                }
+//                if (detector.getHighestConfidenceRecognition().getConfidence() > 0.95) {
+//                    break;
+//                }
             }
 
         }// Keep searching for the model until the opMode is started. If the model is found with
@@ -88,7 +88,7 @@ public class RedTeamStartClose extends LinearOpMode {
             throw new IllegalStateException("Path was not 'c', 'l', or 'r'");
         }// build the appropriate path
 
-        //buildTestPath(drive);
+//        buildTestPath(drive);
 
     }
 
@@ -103,7 +103,7 @@ public class RedTeamStartClose extends LinearOpMode {
                 hardwareMap.get(Servo.class, "intake_right")
         );
         drive = new SampleMecanumDrive(hardwareMap);
-//        drive.setPoseEstimate(RED_START_POS_1);
+        drive.setPoseEstimate(RED_START_POS_1); // HEY FUTURE DELTA LOOK HERE !!!!!!!!
 
         detector = new TensorFlowDetector("2023_Red_Team_Object_7330.tflite", new String[]{"Red_Owl"}, telemetry, hardwareMap);
         detector.initModel();
@@ -135,6 +135,8 @@ public class RedTeamStartClose extends LinearOpMode {
                 .waitSeconds(1)
                 .lineToLinearHeading(RED_BACKDROP_RIGHT)
                 .addTemporalMarker(() -> armSystem.placeYellowPixel('r'))
+                .waitSeconds(1.0)
+                .strafeRight(25)
                 .build();
     }
 
@@ -147,6 +149,8 @@ public class RedTeamStartClose extends LinearOpMode {
                 .waitSeconds(1)
                 .lineToSplineHeading(RED_BACKDROP_CENTER)
                 .addTemporalMarker(() -> armSystem.placeYellowPixel('r'))
+                .waitSeconds(1.0)
+                .strafeRight(25)
                 .build();
 
     }
@@ -159,6 +163,8 @@ public class RedTeamStartClose extends LinearOpMode {
                 .waitSeconds(1)
                 .lineToSplineHeading(RED_BACKDROP_LEFT)
                 .addTemporalMarker(() -> armSystem.placeYellowPixel('r'))
+                .waitSeconds(1.0)
+                .strafeRight(25)
                 .build();
     }
 
