@@ -36,6 +36,7 @@ public class ArmSystem {
     public Servo rightServo;
     public IntakeSystem intake;
     private int mTargetPosition;
+    private int mTargetPosition2;
 
     public ArmSystem(DcMotor motor1, DcMotor motor2, Servo servo1, Servo servo2, Servo intake1, Servo intake2){
         this.armLeft = motor1;
@@ -47,6 +48,7 @@ public class ArmSystem {
         initMotors();
         intake = new IntakeSystem(intake1, intake2);
         mTargetPosition = 0;
+        mTargetPosition2 = 0;
     }
     public void initMotors() {
         armLeft.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -71,6 +73,12 @@ public class ArmSystem {
     {
         mTargetPosition = position;
         drivingToPos = true;
+    }
+    public void reset()
+    {
+        killMotors();
+        armLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        armRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
     public void armSystemUpdate(){
         if(drivingToPos)
@@ -139,6 +147,8 @@ public class ArmSystem {
             armLeft.setPower(-pow);
             armRight.setPower(-pow);
         }
+        armLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        armRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
     public void killMotors()
     {
@@ -176,7 +186,8 @@ public class ArmSystem {
         public IntakeSystem(Servo intake1, Servo intake2){
             this.intakeLeft = intake1;
             this.intakeRight = intake2;
-
+            intakeLeft();
+            intakeRight();
         }
         public void intakeLeft(){
             intakeLeft.setPosition(INTAKE_POS_LEFT);
@@ -213,10 +224,12 @@ public class ArmSystem {
     }
 
     public void dropPurplePixel(char armSide) {
+        /*
         setArmServos(SERVO_GROUND);
         while (!armToGround()) {
 
         }
+        */
         if (armSide == 'l') {
             outtakeLeft();
         } else if (armSide == 'r') {
@@ -233,9 +246,6 @@ public class ArmSystem {
 
     private boolean armToDropHeight () {
         if (driveToLevel(DROP_HEIGHT, 0.2)) {
-            armRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-            armRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
             armRight.setPower(0.0);
             armLeft.setPower(0.0);
             return true;

@@ -65,7 +65,7 @@ public class BaseTeleOp extends BaseOpMode {
             armSystem.setArmServos(ArmSystem.SERVO_GROUND);
         }
         else if(gamepad1.b){
-            armSystem.setArmServos(0);
+            armSystem.reset();
         }
         else if (gamepad1.dpad_right){
             armSystem.setTargetPosition(ArmSystem.BACKBOARD_LOW);
