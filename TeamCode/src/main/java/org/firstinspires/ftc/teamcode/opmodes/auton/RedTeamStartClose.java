@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.opmodes.auton;
 
 import static org.firstinspires.ftc.teamcode.components.GamePositions.*;
 
+import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -116,7 +117,7 @@ public class RedTeamStartClose extends LinearOpMode {
     //**********************************************************************************************
 
     private void buildTestPath(SampleMecanumDrive drive) {
-        trajectory = drive.trajectorySequenceBuilder(RED_START_POS_1)
+        trajectory = drive.trajectorySequenceBuilder(new Pose2d())
                 .forward(10)
                 .addTemporalMarker(() -> armSystem.dropPurplePixel('l')) // This action should take X seconds or less, where X is the .waitSeconds below
                 .waitSeconds(1)

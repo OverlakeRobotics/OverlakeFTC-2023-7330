@@ -100,8 +100,8 @@ public class BlueTeamStartClose extends LinearOpMode {
         armSystem = new ArmSystem(
                 hardwareMap.get(DcMotor.class, "arm_left"),
                 hardwareMap.get(DcMotor.class, "arm_right"),
-                hardwareMap.get(Servo.class, "servo_left"),
-                hardwareMap.get(Servo.class, "servo_right"),
+                hardwareMap.get(Servo.class, "left_servo"),
+                hardwareMap.get(Servo.class, "right_servo"),
                 hardwareMap.get(Servo.class, "intake_left"),
                 hardwareMap.get(Servo.class, "intake_right")
         );
