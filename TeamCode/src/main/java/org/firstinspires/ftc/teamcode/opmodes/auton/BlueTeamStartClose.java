@@ -13,6 +13,9 @@ import org.firstinspires.ftc.teamcode.components.TensorFlowDetector;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
+import java.util.LinkedList;
+import java.util.Queue;
+
 @Autonomous(name = "Blue Team Autonomous Close", group = "Autonomous")
 public class BlueTeamStartClose extends LinearOpMode {
 
@@ -27,6 +30,8 @@ public class BlueTeamStartClose extends LinearOpMode {
     // Fields
     private char path;
     private TrajectorySequence trajectory;
+
+    private Queue<TrajectorySequence> trajectories = new LinkedList<>();
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -101,6 +106,7 @@ public class BlueTeamStartClose extends LinearOpMode {
                 hardwareMap.get(Servo.class, "intake_right")
         );
         drive = new SampleMecanumDrive(hardwareMap);
+        drive.setPoseEstimate (BLUE_START_POS_1);
 
         detector = new TensorFlowDetector("2023_Blue_Team_Object_3770.tflite", new String[]{"Blue_Owl"}, telemetry, hardwareMap);
         detector.initModel();
@@ -133,12 +139,14 @@ public class BlueTeamStartClose extends LinearOpMode {
     //**********************************************************************************************
 
     private void buildLeftPath(SampleMecanumDrive drive) {
+
+
         trajectory = drive.trajectorySequenceBuilder(BLUE_START_POS_1)
-                .splineToSplineHeading(BLUE_OBJECT_POS_1, Math.toRadians (-75))
-                .addTemporalMarker(() -> dropPurplePixel()) // This action should take X seconds or less, where X is the .waitSeconds below
+                .splineToSplineHeading(BLUE_OBJECT_POS_1, Math.toRadians(-90))
+                .addTemporalMarker(() -> armSystem.dropPurplePixel('l')) // This action should take X seconds or less, where X is the .waitSeconds below
                 .waitSeconds(1)
                 .lineToSplineHeading(BLUE_BACKDROP_LEFT)
-                .addTemporalMarker(() -> placeYellowPixel())
+                .addTemporalMarker(() -> armSystem.placeYellowPixel('r'))
                 .build();
 
         // Ready to test
@@ -148,10 +156,10 @@ public class BlueTeamStartClose extends LinearOpMode {
         trajectory = drive.trajectorySequenceBuilder(BLUE_START_POS_1)
                 .splineTo(BLUE_OBJECT_POS_2_1.vec(), BLUE_OBJECT_POS_2_1.getHeading())
                 .splineTo(BLUE_OBJECT_POS_2_2.vec(), BLUE_OBJECT_POS_2_2.getHeading())
-                .addTemporalMarker(() -> dropPurplePixel()) // This action should take X seconds or less, where X is the .waitSeconds below
+                .addTemporalMarker(() -> armSystem.dropPurplePixel('l')) // This action should take X seconds or less, where X is the .waitSeconds below
                 .waitSeconds(1)
                 .lineToSplineHeading(BLUE_BACKDROP_CENTER)
-                .addTemporalMarker(() -> placeYellowPixel())
+                .addTemporalMarker(() -> armSystem.placeYellowPixel('r'))
                 .build();
 
         // Ready to test
@@ -161,22 +169,14 @@ public class BlueTeamStartClose extends LinearOpMode {
 
         trajectory = drive.trajectorySequenceBuilder(BLUE_START_POS_1)
                 .splineTo(BLUE_OBJECT_POS_3.vec(), BLUE_OBJECT_POS_3.getHeading())
-                .addTemporalMarker(() -> dropPurplePixel()) // This action should take X seconds or less, where X is the .waitSeconds below
+                .addTemporalMarker(() -> armSystem.dropPurplePixel('l')) // This action should take X seconds or less, where X is the .waitSeconds below
                 .waitSeconds(1)
                 .lineToLinearHeading(BLUE_BACKDROP_RIGHT)
-                .addTemporalMarker(() -> placeYellowPixel())
+                .addTemporalMarker(() -> armSystem.placeYellowPixel('r'))
                 .build();
 
         // Ready to test
     }
 
-    private void placeYellowPixel() {
-        //@TODO Implement placeYellowPixel()
-    }
-
-    private void dropPurplePixel() {
-        armSystem.driveToLevel(1, 2);
-        //@TODO Implement dropPurplePixel()
-    }
 
 }
