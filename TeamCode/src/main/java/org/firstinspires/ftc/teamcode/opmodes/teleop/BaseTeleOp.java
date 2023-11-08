@@ -65,7 +65,8 @@ public class BaseTeleOp extends BaseOpMode {
             armSystem.setArmServos(ArmSystem.SERVO_GROUND);
         }
         else if(gamepad1.b){
-            armSystem.reset();
+            //armSystem.reset();
+            driveSystem.invertMotorsDirection();
         }
         else if (gamepad1.dpad_left){
             armSystem.setTargetPosition(ArmSystem.BACKBOARD_LOW);
