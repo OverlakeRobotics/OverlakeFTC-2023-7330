@@ -427,4 +427,18 @@ public class DriveSystem {
         return (int) Math.round(millimeters * TICKS_IN_MM);
     }
 
+    /**
+     * inverts the direction of the motors
+     * @return void
+     */
+    public void invertMotorsDirection() {
+        motors.forEach((name, motor) -> {
+            // Set motor directions to drive reverse
+            if (motor.getDirection() == DcMotorSimple.Direction.FORWARD) {
+                motor.setDirection(DcMotorSimple.Direction.REVERSE);
+            } else if (motor.getDirection() == DcMotorSimple.Direction.REVERSE){
+                motor.setDirection(DcMotorSimple.Direction.FORWARD);
+            }
+        });
+    }
 }
