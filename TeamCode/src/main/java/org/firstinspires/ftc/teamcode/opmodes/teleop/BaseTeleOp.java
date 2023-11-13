@@ -50,11 +50,11 @@ public class BaseTeleOp extends BaseOpMode {
         driveSystem.drive(rx, lx, ly);
 
         if(gamepad1.dpad_up){
-            armSystem.driveArm(ArmSystem.Direction.UP, 0.2);
+            armSystem.driveArm(ArmSystem.Direction.UP, 0.3);
             armSystem.runManually();
         }
         else if (gamepad1.dpad_down){
-            armSystem.driveArm(ArmSystem.Direction.DOWN, 0.2);
+            armSystem.driveArm(ArmSystem.Direction.DOWN, 0.3);
             armSystem.runManually();
         }
         else if (gamepad1.y){
@@ -62,7 +62,7 @@ public class BaseTeleOp extends BaseOpMode {
         }
         else if(gamepad1.x){
             armSystem.setTargetPosition(ArmSystem.DROP_HEIGHT);
-            armSystem.setArmServos(ArmSystem.SERVO_GROUND);
+
         }
         else if(gamepad1.b){
             armSystem.reset();
@@ -84,16 +84,19 @@ public class BaseTeleOp extends BaseOpMode {
             armSystem.setArmServos(ArmSystem.SERVO_GROUND);
         }
         else if (gamepad1.left_bumper){
-            armSystem.intakeLeft();
+
         }
         else if (gamepad1.right_bumper){
-            armSystem.intakeRight();
+
         }
         else if(gamepad1.left_trigger > 0){
-            armSystem.outtakeLeft();
+            armSystem.intakeLeft();
+            armSystem.intakeRight();
+
         }
         else if(gamepad1.right_trigger > 0){
             armSystem.outtakeRight();
+            armSystem.outtakeLeft();
         }
         else{
             if(!armSystem.isDrivingtoPosition())

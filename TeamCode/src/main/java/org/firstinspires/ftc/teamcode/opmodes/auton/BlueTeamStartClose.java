@@ -55,11 +55,11 @@ public class BlueTeamStartClose extends LinearOpMode {
             telemetry.addLine ("Current Threshold: " + detector.getConfidenceThreshold());
             telemetry.update();
             sleep (250);
-            if (detector.getNumRecognitions() != 0) {
-                if (detector.getHighestConfidenceRecognition().getConfidence() > 0.95) {
-                    break;
-                }
-            }
+//            if (detector.getNumRecognitions() != 0) {
+//                if (detector.getHighestConfidenceRecognition().getConfidence() > 0.95) {
+//                    break;
+//                }
+//            }
 
         }// Keep searching for the model until the opMode is started. If the model is found with
           // high confidence, stop searching lest the model breaks
@@ -148,7 +148,7 @@ public class BlueTeamStartClose extends LinearOpMode {
                 .lineToSplineHeading(BLUE_BACKDROP_LEFT)
                 .addTemporalMarker(() -> armSystem.placeYellowPixel('l'))
                 .waitSeconds(1.0)
-                .strafeRight(25)
+                .strafeLeft(25)
                 .build();
 
         // Ready to test
@@ -163,7 +163,7 @@ public class BlueTeamStartClose extends LinearOpMode {
                 .lineToSplineHeading(BLUE_BACKDROP_CENTER)
                 .addTemporalMarker(() -> armSystem.placeYellowPixel('l'))
                 .waitSeconds(1.0)
-                .strafeRight(25)
+                .strafeLeft(25)
                 .build();
 
         // Ready to test
@@ -178,7 +178,7 @@ public class BlueTeamStartClose extends LinearOpMode {
                 .lineToLinearHeading(BLUE_BACKDROP_RIGHT)
                 .addTemporalMarker(() -> armSystem.placeYellowPixel('l'))
                 .waitSeconds(1.0)
-                .strafeRight(25)
+                .strafeLeft(25)
                 .build();
 
         // Ready to test
