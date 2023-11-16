@@ -22,7 +22,6 @@ public class AutonTest extends LinearOpMode {
 
     private char team = 'n';
     private char closeFar = 'n';
-    private char path = 'n';
 
     private Pose2d startPos;
 
@@ -41,8 +40,6 @@ public class AutonTest extends LinearOpMode {
         waitForStart();
 
         drive.followTrajectorySequence(trajectory);
-
-
 
     }
 
@@ -85,6 +82,7 @@ public class AutonTest extends LinearOpMode {
             }
         }
 
+        char path;
         while (true) {
             telemetry.addData("Current Team - ", "%c", team == 'n' ? "none" : (team == 'b' ? "blue" : "red"));
             telemetry.addData("Current Start Position - ", "%s", closeFar == 'n' ? "none" : (closeFar == 'c' ? "close" : "far"));
