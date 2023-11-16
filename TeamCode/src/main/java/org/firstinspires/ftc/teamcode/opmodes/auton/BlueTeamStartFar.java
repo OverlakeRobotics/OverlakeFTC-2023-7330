@@ -113,7 +113,7 @@ public class BlueTeamStartFar extends LinearOpMode {
     //**************************************** PATHS ***********************************************
     //**********************************************************************************************
 
-    private void buildLeftPath(SampleMecanumDrive drive) {
+    public TrajectorySequence buildLeftPath(SampleMecanumDrive drive) {
         trajectory = drive.trajectorySequenceBuilder(BLUE_START_POS_2)
                 .splineToSplineHeading(BLUE_OBJECT_POS_4_1, Math.toRadians(-100))
                 .splineToSplineHeading(BLUE_OBJECT_POS_4_2, Math.toRadians(-30))
@@ -130,10 +130,12 @@ public class BlueTeamStartFar extends LinearOpMode {
 
                 .build();
 
+        return trajectory;
+
         // Ready to Test
     }
 
-    private void buildCenterPath(SampleMecanumDrive drive) {
+    public TrajectorySequence buildCenterPath(SampleMecanumDrive drive) {
         trajectory = drive.trajectorySequenceBuilder(BLUE_START_POS_2)
                 .splineToSplineHeading(BLUE_OBJECT_POS_6_1, Math.toRadians(-100))
                 .splineToSplineHeading(BLUE_OBJECT_POS_6_2, Math.toRadians(-90))
@@ -149,10 +151,12 @@ public class BlueTeamStartFar extends LinearOpMode {
                 .strafeRight(25)// This action should take X seconds or less, where X is the .waitSeconds below
                 .build();
 
+        return trajectory;
+
         // Ready to Test
     }
 
-    private void buildRightPath(SampleMecanumDrive drive) {
+    public TrajectorySequence buildRightPath(SampleMecanumDrive drive) {
         trajectory = drive.trajectorySequenceBuilder(BLUE_START_POS_2)
                 .splineToSplineHeading(BLUE_OBJECT_POS_5_1, Math.toRadians(-100))
                 .splineToSplineHeading(BLUE_OBJECT_POS_5_2, Math.toRadians(-90))
@@ -170,6 +174,8 @@ public class BlueTeamStartFar extends LinearOpMode {
                 .strafeRight(25)// This action should take X seconds or less, where X is the .waitSeconds below
 
                 .build();
+
+        return trajectory;
 
         // Ready to Test
     }

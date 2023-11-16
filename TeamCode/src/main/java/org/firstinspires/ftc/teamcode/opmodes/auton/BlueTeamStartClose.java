@@ -82,6 +82,7 @@ public class BlueTeamStartClose extends LinearOpMode {
             telemetry.update();
         } // Set the path to the appropriate path ('l'eft, 'r'ight, 'c'enter), and update the telemetry to let us know whats going on
 
+
         if (path == 'l') {
             buildLeftPath(drive);
         } else if (path == 'c') {
@@ -97,14 +98,14 @@ public class BlueTeamStartClose extends LinearOpMode {
 
     private void initialize() {
 
-//        armSystem = new ArmSystem(
-//                hardwareMap.get(DcMotor.class, "arm_left"),
-//                hardwareMap.get(DcMotor.class, "arm_right"),
-//                hardwareMap.get(Servo.class, "left_servo"),
-//                hardwareMap.get(Servo.class, "right_servo"),
-//                hardwareMap.get(Servo.class, "intake_left"),
-//                hardwareMap.get(Servo.class, "intake_right")
-//        );
+        armSystem = new ArmSystem(
+                hardwareMap.get(DcMotor.class, "arm_left"),
+                hardwareMap.get(DcMotor.class, "arm_right"),
+                hardwareMap.get(Servo.class, "left_servo"),
+                hardwareMap.get(Servo.class, "right_servo"),
+                hardwareMap.get(Servo.class, "intake_left"),
+                hardwareMap.get(Servo.class, "intake_right")
+        );
         drive = new SampleMecanumDrive(hardwareMap);
         drive.setPoseEstimate (BLUE_START_POS_1);
 
@@ -112,24 +113,6 @@ public class BlueTeamStartClose extends LinearOpMode {
         detector.initModel();
 
 
-        { // Old Code
-            //detector.updateRecognitions();
-            //Recognition teamObject = detector.getHighestConfidenceRecognition();
-
-//        if (teamObject == null) {
-//            telemetry.addData("Object Detected - ", "No object was detected with a confidence above %f", detector.getConfidenceThreshold());
-//            telemetry.addData("Path Chosen - ", "Estimated angle = NULL deg, ready to follow c path");
-//            path = 'r';
-//        } else {
-//            telemetry.addData("Object Detected - ", "A(n) %s was found with %f confidence", teamObject.getLabel(), teamObject.getConfidence());
-//            if (teamObject.estimateAngleToObject(AngleUnit.DEGREES) < DEG_THRESHOLD) {
-//                path = 'l';
-//            } else {
-//                path = 'c';
-//            }
-//            telemetry.addData("Path Chosen - ", "Estimated angle = %f deg, ready to follow %c path", teamObject.estimateAngleToObject(AngleUnit.DEGREES), path);
-//        }
-        }
 
     }
 
@@ -138,49 +121,59 @@ public class BlueTeamStartClose extends LinearOpMode {
     //**************************************** PATHS ***********************************************
     //**********************************************************************************************
 
-    private void buildLeftPath(SampleMecanumDrive drive) {
+    public TrajectorySequence buildLeftPath(SampleMecanumDrive drive) {
 
 
         trajectory = drive.trajectorySequenceBuilder(BLUE_START_POS_1)
                 .splineToSplineHeading(BLUE_OBJECT_POS_1, Math.toRadians(-90))
-                //.addTemporalMarker(() -> armSystem.dropPurplePixel('r')) // This action should take X seconds or less, where X is the .waitSeconds below
+                .waitSeconds(0.05)
+                .addTemporalMarker(() -> armSystem.dropPurplePixel('r')) // This action should take X seconds or less, where X is the .waitSeconds below
                 .waitSeconds(1)
                 .lineToSplineHeading(BLUE_BACKDROP_LEFT)
-                //.addTemporalMarker(() -> armSystem.placeYellowPixel('l'))
+                .waitSeconds(0.05)
+                .addTemporalMarker(() -> armSystem.placeYellowPixel('l'))
                 .waitSeconds(1.0)
-                .strafeLeft(25)
+                .strafeLeft(30)
                 .build();
 
+        return trajectory;
         // Ready to test
     }
 
-    private void buildCenterPath(SampleMecanumDrive drive) {
+    public TrajectorySequence buildCenterPath(SampleMecanumDrive drive) {
         trajectory = drive.trajectorySequenceBuilder(BLUE_START_POS_1)
-                .splineTo(BLUE_OBJECT_POS_2_1.vec(), BLUE_OBJECT_POS_2_1.getHeading())
-                .splineTo(BLUE_OBJECT_POS_2_2.vec(), BLUE_OBJECT_POS_2_2.getHeading())
-                //.addTemporalMarker(() -> armSystem.dropPurplePixel('r')) // This action should take X seconds or less, where X is the .waitSeconds below
+                //.splineTo(BLUE_OBJECT_POS_2_1.vec(), BLUE_OBJECT_POS_2_1.getHeading())
+                .splineToSplineHeading(BLUE_OBJECT_POS_2_2, Math.toRadians(-90))
+                .waitSeconds(0.05)
+                .addTemporalMarker(() -> armSystem.dropPurplePixel('r')) // This action should take X seconds or less, where X is the .waitSeconds below
                 .waitSeconds(1)
                 .lineToSplineHeading(BLUE_BACKDROP_CENTER)
-                //.addTemporalMarker(() -> armSystem.placeYellowPixel('l'))
+                .waitSeconds(0.05)
+                .addTemporalMarker(() -> armSystem.placeYellowPixel('l'))
                 .waitSeconds(1.0)
-                .strafeLeft(25)
+                .strafeLeft(20)
                 .build();
+
+        return trajectory;
 
         // Ready to test
     }
 
-    private void buildRightPath(SampleMecanumDrive drive) {
+    public TrajectorySequence buildRightPath(SampleMecanumDrive drive) {
 
         trajectory = drive.trajectorySequenceBuilder(BLUE_START_POS_1)
                 .splineTo(BLUE_OBJECT_POS_3.vec(), BLUE_OBJECT_POS_3.getHeading())
-                //.addTemporalMarker(() -> armSystem.dropPurplePixel('r')) // This action should take X seconds or less, where X is the .waitSeconds below
+                .waitSeconds(0.05)
+                .addTemporalMarker(() -> armSystem.dropPurplePixel('r')) // This action should take X seconds or less, where X is the .waitSeconds below
                 .waitSeconds(1)
                 .lineToLinearHeading(BLUE_BACKDROP_RIGHT)
-                //.addTemporalMarker(() -> armSystem.placeYellowPixel('l'))
+                .waitSeconds(0.05)
+                .addTemporalMarker(() -> armSystem.placeYellowPixel('l'))
                 .waitSeconds(1.0)
-                .strafeLeft(25)
+                .strafeLeft(15)
                 .build();
 
+        return trajectory;
         // Ready to test
     }
 
