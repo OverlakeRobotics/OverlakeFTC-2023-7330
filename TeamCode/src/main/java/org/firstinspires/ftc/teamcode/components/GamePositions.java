@@ -1,7 +1,10 @@
 package org.firstinspires.ftc.teamcode.components;
 
+import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 
+
+@Config
 public class GamePositions {
 
     //**********************************************************************************************
@@ -10,16 +13,16 @@ public class GamePositions {
 
     public static final Pose2d BLUE_START_POS_1 = new Pose2d(10, 57.5, Math.toRadians(-60));
 
-    public static final Pose2d BLUE_OBJECT_POS_1 = new Pose2d(24, 43, Math.toRadians(-90));
+    public static final Pose2d BLUE_OBJECT_POS_1 = new Pose2d(26.3, 38, Math.toRadians(-90));
     public static final Pose2d BLUE_OBJECT_POS_2_1 = new Pose2d(32, 44, Math.toRadians(-90));
     public static final Pose2d BLUE_OBJECT_POS_2_2 = new Pose2d(22, 24, Math.toRadians(-135));
 
 
-    public static final Pose2d BLUE_OBJECT_POS_3 = new Pose2d(12, 35, Math.toRadians(-150));
+    public static final Pose2d BLUE_OBJECT_POS_3 = new Pose2d(11.5, 33, Math.toRadians(-150));
 
-    public static final Pose2d BLUE_BACKDROP_LEFT = new Pose2d(48, 38, Math.toRadians(-180));
-    public static final Pose2d BLUE_BACKDROP_CENTER = new Pose2d(48, 31, Math.toRadians(-180));
-    public static final Pose2d BLUE_BACKDROP_RIGHT = new Pose2d(46, 27, Math.toRadians(-180));
+    public static final Pose2d BLUE_BACKDROP_LEFT = new Pose2d(45, 44.5, Math.toRadians(-180));
+    public static final Pose2d BLUE_BACKDROP_CENTER = new Pose2d(45, 39, Math.toRadians(-180));
+    public static final Pose2d BLUE_BACKDROP_RIGHT = new Pose2d(45, 31, Math.toRadians(-180));
 
 
     public static final Pose2d BLUE_START_POS_2 = new Pose2d(-36, 62, Math.toRadians(-60));
@@ -46,18 +49,18 @@ public class GamePositions {
     //***************************************** RED TEAM *******************************************
     //**********************************************************************************************
 
-    public static final Pose2d RED_START_POS_1 = new Pose2d(7, -54, Math.toRadians(120));
+    public static final Pose2d RED_START_POS_1 = new Pose2d(7.5, -57.5, Math.toRadians(60));
 
-    public static final Pose2d RED_OBJECT_POS_1 = new Pose2d(22, -38, Math.toRadians(90));
+    public static final Pose2d RED_OBJECT_POS_1 = new Pose2d(25.5, -38, Math.toRadians(90));
     public static final Pose2d RED_OBJECT_POS_2_1 = new Pose2d(32, -44, Math.toRadians(90));
     public static final Pose2d RED_OBJECT_POS_2_2 = new Pose2d(22, -24, Math.toRadians(135));
 
 
-    public static final Pose2d RED_OBJECT_POS_3 = new Pose2d(5, -35, Math.toRadians(150));
+    public static final Pose2d RED_OBJECT_POS_3 = new Pose2d(8, -30, Math.toRadians(150));
 
-    public static final Pose2d RED_BACKDROP_LEFT = new Pose2d(48, -36, Math.toRadians(180));
-    public static final Pose2d RED_BACKDROP_CENTER = new Pose2d(48, -31, Math.toRadians(180));
-    public static final Pose2d RED_BACKDROP_RIGHT = new Pose2d(46, -29, Math.toRadians(180));
+    public static final Pose2d RED_BACKDROP_LEFT = new Pose2d(45, -44, Math.toRadians(180));
+    public static final Pose2d RED_BACKDROP_CENTER = new Pose2d(45, -38, Math.toRadians(180));
+    public static final Pose2d RED_BACKDROP_RIGHT = new Pose2d(45, -31, Math.toRadians(180));
 
     public static final Pose2d RED_START_POS_2 = new Pose2d(-36, -62, Math.toRadians(60));
 
