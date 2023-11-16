@@ -30,6 +30,7 @@ public class TensorFlowDetector {
     protected HardwareMap hardwareMap;
     protected Telemetry telemetry;
     private String modelName;
+    private String cameraName;
 
     private List<Recognition> currentRecognitions;
 
@@ -43,6 +44,15 @@ public class TensorFlowDetector {
         this.labels = labels;
         this.telemetry = telemetry;
         this.hardwareMap = hardwaremap;
+    }
+
+    public TensorFlowDetector (String modelName, String[] labels, Telemetry telemetry,
+                               HardwareMap hardwaremap, String cameraName) {
+        this.modelName = modelName;
+        this.labels = labels;
+        this.telemetry = telemetry;
+        this.hardwareMap = hardwaremap;
+        this.cameraName = cameraName;
     }
 
     public TensorFlowDetector(Telemetry telemetry, HardwareMap hardwareMap) {
@@ -548,7 +558,12 @@ public class TensorFlowDetector {
         VisionPortal.Builder builder = new VisionPortal.Builder();
 
         if (USE_WEBCAM) {
-            builder.setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"));
+            if (cameraName == null) {
+                builder.setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"));
+            } else {
+                builder.setCamera(hardwareMap.get(WebcamName.class, cameraName));
+            }
+
         } else {
             builder.setCamera(BuiltinCameraDirection.BACK);
         }
