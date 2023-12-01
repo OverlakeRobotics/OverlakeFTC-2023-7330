@@ -76,6 +76,7 @@ public class DriveSystem {
             // Reset encoders
             motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             // Set motor directions to drive forwards
             switch(name) {
                 case FRONTLEFT:

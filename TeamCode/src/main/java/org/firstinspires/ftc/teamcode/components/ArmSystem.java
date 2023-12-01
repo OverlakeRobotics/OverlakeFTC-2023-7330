@@ -16,7 +16,7 @@ import org.firstinspires.ftc.teamcode.params.DriveParams;
 
 public class ArmSystem {
     public static final int GROUND = 0;
-    public static final int BACKBOARD_HIGH = 1759;
+    public static final int BACKBOARD_HIGH = 1709;
     public static final int BACKBOARD_LOW = 2082;
     private static final int BACKBOARD_AUTON = 2224;
     public static final double SERVO_GROUND = 0.13; //VALUE TBD
@@ -81,7 +81,7 @@ public class ArmSystem {
     public void armSystemUpdate(){
         if(drivingToPos)
         {
-            driveToLevel(mTargetPosition, 0.4);
+            driveToLevel(mTargetPosition, 0.8);
         }
     }
     public void setArmServos(double pos)
