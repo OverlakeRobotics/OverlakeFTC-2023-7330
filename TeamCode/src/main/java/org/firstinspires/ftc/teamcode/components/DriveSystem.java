@@ -76,6 +76,7 @@ public class DriveSystem {
             // Reset encoders
             motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             // Set motor directions to drive forwards
             switch(name) {
                 case FRONTLEFT:
@@ -154,6 +155,11 @@ public class DriveSystem {
         if (Math.abs(leftY) < 0.01) {
             leftY = 0.0f;
         }
+
+        rightX = rightX * rightX * (rightX < 0 ? -1 : 1);
+        leftX = leftX * leftX * (leftX < 0 ? -1 : 1);
+        leftY = leftY * leftY * (leftY < 0 ? -1 : 1);
+
 
         double frontLeftPower  = -leftY + rightX + leftX;
         double frontRightPower = -leftY - rightX - leftX;
@@ -427,4 +433,18 @@ public class DriveSystem {
         return (int) Math.round(millimeters * TICKS_IN_MM);
     }
 
+    /**
+     * inverts the direction of the motors
+     * @return void
+     */
+    public void invertMotorsDirection() {
+        motors.forEach((name, motor) -> {
+            // Set motor directions to drive reverse
+            if (motor.getDirection() == DcMotorSimple.Direction.FORWARD) {
+                motor.setDirection(DcMotorSimple.Direction.REVERSE);
+            } else if (motor.getDirection() == DcMotorSimple.Direction.REVERSE){
+                motor.setDirection(DcMotorSimple.Direction.FORWARD);
+            }
+        });
+    }
 }

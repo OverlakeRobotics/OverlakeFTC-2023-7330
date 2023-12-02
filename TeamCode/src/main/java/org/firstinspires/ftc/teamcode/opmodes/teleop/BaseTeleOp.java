@@ -62,7 +62,9 @@ public class BaseTeleOp extends BaseOpMode {
         }
         else if(gamepad1.x){
             armSystem.setTargetPosition(ArmSystem.DROP_HEIGHT);
-
+            armSystem.setArmServos(ArmSystem.SERVO_GROUND);
+            //armSystem.outtakeLeft();
+            //armSystem.outtakeRight();
         }
         else if(gamepad1.b){
             armSystem.reset();
@@ -90,9 +92,8 @@ public class BaseTeleOp extends BaseOpMode {
 
         }
         else if(gamepad1.left_trigger > 0){
-            armSystem.intakeLeft();
             armSystem.intakeRight();
-
+            armSystem.intakeLeft();
         }
         else if(gamepad1.right_trigger > 0){
             armSystem.outtakeRight();
