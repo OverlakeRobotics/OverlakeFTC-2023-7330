@@ -98,26 +98,7 @@ public class RedTeamStartFar extends LinearOpMode {
 
         detector = new TensorFlowDetector("2023_Red_Team_Object_7330.tflite", new String[]{"Red_Owl"}, telemetry, hardwareMap, "Webcam 2");
         detector.initModel();
-
-
-        { // Old Code
-            //detector.updateRecognitions();
-            //Recognition teamObject = detector.getHighestConfidenceRecognition();
-
-//        if (teamObject == null) {
-//            telemetry.addData("Object Detected - ", "No object was detected with a confidence above %f", detector.getConfidenceThreshold());
-//            telemetry.addData("Path Chosen - ", "Estimated angle = NULL deg, ready to follow c path");
-//            path = 'r';
-//        } else {
-//            telemetry.addData("Object Detected - ", "A(n) %s was found with %f confidence", teamObject.getLabel(), teamObject.getConfidence());
-//            if (teamObject.estimateAngleToObject(AngleUnit.DEGREES) < DEG_THRESHOLD) {
-//                path = 'l';
-//            } else {
-//                path = 'c';
-//            }
-//            telemetry.addData("Path Chosen - ", "Estimated angle = %f deg, ready to follow %c path", teamObject.estimateAngleToObject(AngleUnit.DEGREES), path);
-//        }
-        }
+        detector.setConfidenceThreshold(0.88f);
 
     }
 

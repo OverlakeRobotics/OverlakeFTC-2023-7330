@@ -104,6 +104,7 @@ public class BlueTeamStartFar extends LinearOpMode {
 
         detector = new TensorFlowDetector("2023_Blue_Team_Object_3770.tflite", new String[]{"Blue_Owl"}, telemetry, hardwareMap);
         detector.initModel();
+        detector.setConfidenceThreshold(0.88f);
 
 
     }

@@ -108,6 +108,7 @@ public class RedTeamStartClose extends LinearOpMode {
 
         detector = new TensorFlowDetector("2023_Red_Team_Object_7330.tflite", new String[]{"Red_Owl"}, telemetry, hardwareMap, "Webcam 2");
         detector.initModel();
+        detector.setConfidenceThreshold(0.88f);
 
 
     }
