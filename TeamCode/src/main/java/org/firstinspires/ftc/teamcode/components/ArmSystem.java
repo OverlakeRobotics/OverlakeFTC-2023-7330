@@ -25,6 +25,8 @@ public class ArmSystem {
     public static final double SERVO_BACKBOARD_AUTON =0.85; //value tbd
     public static final int DROP_HEIGHT = 200;
 
+    public static final double MOTOR_SPEED = 0.6;
+
 
     public enum Direction {
         UP,
@@ -81,7 +83,7 @@ public class ArmSystem {
     public void armSystemUpdate(){
         if(drivingToPos)
         {
-            driveToLevel(mTargetPosition, 0.8);
+            driveToLevel(mTargetPosition, MOTOR_SPEED);
         }
     }
     public void setArmServos(double pos)
@@ -111,7 +113,7 @@ public class ArmSystem {
 
     public boolean armToGround(){
         setArmServos(SERVO_GROUND);
-        if(driveToLevel(GROUND, 0.4)) {
+        if(driveToLevel(GROUND, MOTOR_SPEED)) {
             armRight.setPower(0);
             armLeft.setPower(0);
             return true;
@@ -121,7 +123,7 @@ public class ArmSystem {
         return false;
     }
     public boolean armToBackboard(){
-        if(driveToLevel(BACKBOARD_AUTON, 0.4)) {
+        if(driveToLevel(BACKBOARD_AUTON, MOTOR_SPEED)) {
             armRight.setPower(0);
             armLeft.setPower(0);
             return true;
@@ -174,7 +176,7 @@ public class ArmSystem {
         private final Servo intakeLeft;
         private final Servo intakeRight;
         private final double INTAKE_POS_LEFT = 0; //VALUE TBD
-        private final double OUTTAKE_POS_LEFT = 1; //VALUE TBD
+        private final double OUTTAKE_POS_LEFT = 0.95; //VALUE TBD
 
         private final double INTAKE_POS_RIGHT = 0;
         private final double OUTTAKE_POS_RIGHT = 1;
@@ -243,7 +245,7 @@ public class ArmSystem {
     }
 
     private boolean armToDropHeight () {
-        if (driveToLevel(DROP_HEIGHT, 0.4)) {
+        if (driveToLevel(DROP_HEIGHT, MOTOR_SPEED)) {
             armRight.setPower(0.0);
             armLeft.setPower(0.0);
             return true;
