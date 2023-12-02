@@ -50,12 +50,12 @@ public class BlueTeamStartFar extends LinearOpMode {
             telemetry.addLine("Current Threshold: " + detector.getConfidenceThreshold());
             telemetry.update();
             sleep(250);
-            if (detector.getNumRecognitions() != 0) {
-                if (detector.getHighestConfidenceRecognition().getConfidence() > 0.95) {
-                    break;
-                }
-            }
-
+//            if (detector.getNumRecognitions() != 0) {
+//                if (detector.getHighestConfidenceRecognition().getConfidence() > 0.95) {
+//                    break;
+//                }
+//            }
+ 
         }// Keep searching for the model until the opMode is started. If the model is found with
         // high confidence, stop searching lest the model breaks
 
@@ -78,11 +78,11 @@ public class BlueTeamStartFar extends LinearOpMode {
         }
 
         if (path == 'l') {
-            buildLeftPath(drive);
+            buildLeftPathSimple(drive);
         } else if (path == 'c') {
-            buildCenterPath(drive);
+            buildCenterPathSimple(drive);
         } else if (path == 'r') {
-            buildRightPath(drive);
+            buildRightPathSimple(drive);
         } else {
             throw new IllegalStateException("Path was not 'c', 'l', or 'r'");
         }// build the appropriate path
@@ -108,32 +108,45 @@ public class BlueTeamStartFar extends LinearOpMode {
 
     }
 
+    public void setArmSystem (ArmSystem armSystem) {
+        this.armSystem = armSystem;
+    }
+
 
     //**********************************************************************************************
     //**************************************** PATHS ***********************************************
     //**********************************************************************************************
 
-    private void buildLeftPath(SampleMecanumDrive drive) {
-        trajectory = drive.trajectorySequenceBuilder(BLUE_START_POS_2)
-                .splineToSplineHeading(BLUE_OBJECT_POS_4_1, Math.toRadians(-100))
-                .splineToSplineHeading(BLUE_OBJECT_POS_4_2, Math.toRadians(-30))
-                .addTemporalMarker(() -> armSystem.dropPurplePixel('l')) // This action should take X seconds or less, where X is the .waitSeconds below
-                .waitSeconds(1)
-                .splineToSplineHeading(BLUE_OBJECT_POS_4_3, Math.toRadians(135))
-                .splineToSplineHeading(BLUE_WAYPOINT_1, Math.toRadians(0))
-                .splineToSplineHeading(BLUE_WAYPOINT_1_5, Math.toRadians(0))
-                .splineToSplineHeading(BLUE_WAYPOINT_2, Math.toRadians(45))
-                .splineToSplineHeading(BLUE_BACKDROP_LEFT, Math.toRadians(0))
-                .addTemporalMarker(() -> armSystem.placeYellowPixel('r'))
-                .waitSeconds(1.0)
-                .strafeRight(25)// This action should take X seconds or less, where X is the .waitSeconds below
+    public TrajectorySequence buildLeftPath(SampleMecanumDrive drive) {
 
-                .build();
+//        trajectory = drive.trajectorySequenceBuilder(BLUE_START_FAR)
+//                .strafeRight(10)
+////                .waitSeconds(0.05)
+////                .splineToLinearHeading(BLUE_OBJECT_LEFT_FAR_POS_1, Math.toRadians(0))
+////
+////                .addTemporalMarker(() -> armSystem.dropPurplePixel('l')) // This action should take X seconds or less, where X is the .waitSeconds below
+////                .waitSeconds(1)
+////                .back(15)
+////                .splineToLinearHeading(BLUE_OBJECT_LEFT_FAR_POS_2, Math.toRadians(-90))
+////                .splineToLinearHeading(BLUE_OBJECT_LEFT_FAR_POS_3, Math.toRadians(-90))
+////                .splineToLinearHeading(BLUE_OBJECT_LEFT_FAR_POS_4, Math.toRadians(0))
+////                .splineToLinearHeading(BLUE_OBJECT_LEFT_FAR_POS_5, Math.toRadians(0))
+////                .splineToLinearHeading(BLUE_OBJECT_LEFT_FAR_POS_6, Math.toRadians(0) )
+////                .splineToLinearHeading(BLUE_BACKDROP_LEFT_2, Math.toRadians(45))
+////                .waitSeconds(0.2)
+////                .addTemporalMarker(() -> armSystem.placeYellowPixel('r'))
+////                .waitSeconds(1.0)
+////                .strafeRight(25)// This action should take X seconds or less, where X is the .waitSeconds below
+////
+//                .build();
+
+
+        return trajectory;
 
         // Ready to Test
     }
 
-    private void buildCenterPath(SampleMecanumDrive drive) {
+    public TrajectorySequence buildCenterPath(SampleMecanumDrive drive) {
         trajectory = drive.trajectorySequenceBuilder(BLUE_START_POS_2)
                 .splineToSplineHeading(BLUE_OBJECT_POS_6_1, Math.toRadians(-100))
                 .splineToSplineHeading(BLUE_OBJECT_POS_6_2, Math.toRadians(-90))
@@ -149,10 +162,12 @@ public class BlueTeamStartFar extends LinearOpMode {
                 .strafeRight(25)// This action should take X seconds or less, where X is the .waitSeconds below
                 .build();
 
+        return trajectory;
+
         // Ready to Test
     }
 
-    private void buildRightPath(SampleMecanumDrive drive) {
+    public TrajectorySequence buildRightPath(SampleMecanumDrive drive) {
         trajectory = drive.trajectorySequenceBuilder(BLUE_START_POS_2)
                 .splineToSplineHeading(BLUE_OBJECT_POS_5_1, Math.toRadians(-100))
                 .splineToSplineHeading(BLUE_OBJECT_POS_5_2, Math.toRadians(-90))
@@ -171,7 +186,71 @@ public class BlueTeamStartFar extends LinearOpMode {
 
                 .build();
 
+        return trajectory;
+
         // Ready to Test
     }
 
+    public TrajectorySequence buildLeftPathSimple(SampleMecanumDrive drive) {
+        trajectory = drive.trajectorySequenceBuilder(BLUE_START_POS_2)
+                .turn(Math.toRadians(-30))
+                .forward(22)
+                .turn(Math.toRadians(90))
+                .forward (4)
+                .addTemporalMarker(() -> armSystem.dropPurplePixel('r')) // This action should take X seconds or less, where X is the .waitSeconds below
+                .waitSeconds(1.1)
+                .back(4)
+                .strafeLeft(22)
+                .forward(82)
+                .turn(Math.toRadians(180))
+                .strafeLeft(13)
+                .addTemporalMarker(() -> armSystem.placeYellowPixel('l')) // This action should take X seconds or less, where X is the .waitSeconds below
+                .waitSeconds(1.1)
+                .strafeLeft(34)
+                .build();
+        return trajectory;
+    }
+
+    public TrajectorySequence buildCenterPathSimple(SampleMecanumDrive drive) {
+        trajectory = drive.trajectorySequenceBuilder(BLUE_START_POS_2)
+                .turn(Math.toRadians(-30))
+                .forward(22)
+                .forward (6)
+                .addTemporalMarker(() -> armSystem.dropPurplePixel('r')) // This action should take X seconds or less, where X is the .waitSeconds below
+                .waitSeconds(1.1)
+                .back(27.5)
+                .turn(Math.toRadians(-90))
+                .back(80)
+                .strafeLeft(24)
+                .addTemporalMarker(() -> armSystem.placeYellowPixel('l')) // This action should take X seconds or less, where X is the .waitSeconds below
+                .waitSeconds(1.1)
+                .strafeLeft(23)
+                .build();
+
+        return trajectory;
+    }
+
+    public TrajectorySequence buildRightPathSimple(SampleMecanumDrive drive) {
+        trajectory = drive.trajectorySequenceBuilder(BLUE_START_POS_2)
+                .turn(Math.toRadians(-30))
+                .forward(28)
+                .turn(Math.toRadians(-90))
+                .forward (0.1)
+                .waitSeconds(0.1)
+                .addTemporalMarker(() -> armSystem.dropPurplePixel('r')) // This action should take X seconds or less, where X is the .waitSeconds below
+                .waitSeconds(1.1)
+                .back (3)
+                .strafeRight(14)
+                .forward(3)
+                .strafeRight(13)
+                .turn(Math.toRadians(0))
+                .back(81)
+                .strafeLeft(27.5)
+                .addTemporalMarker(() -> armSystem.placeYellowPixel('l')) // This action should take X seconds or less, where X is the .waitSeconds below
+                .waitSeconds(1.1)
+                .strafeLeft(16.5)
+                .build();
+
+        return trajectory;
+    }
 }
