@@ -156,6 +156,11 @@ public class DriveSystem {
             leftY = 0.0f;
         }
 
+        rightX = rightX * rightX * (rightX < 0 ? -1 : 1);
+        leftX = leftX * leftX * (leftX < 0 ? -1 : 1);
+        leftY = leftY * leftY * (leftY < 0 ? -1 : 1);
+
+
         double frontLeftPower  = -leftY + rightX + leftX;
         double frontRightPower = -leftY - rightX - leftX;
         double backLeftPower   = -leftY + rightX - leftX;
