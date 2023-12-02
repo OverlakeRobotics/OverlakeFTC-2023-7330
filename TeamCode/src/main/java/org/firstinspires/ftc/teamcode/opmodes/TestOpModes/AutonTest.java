@@ -1,10 +1,16 @@
 package org.firstinspires.ftc.teamcode.opmodes.TestOpModes;
 
+import static org.firstinspires.ftc.teamcode.components.GamePositions.*;
+
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.components.ArmSystem;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.opmodes.auton.BlueTeamStartClose;
 import org.firstinspires.ftc.teamcode.opmodes.auton.BlueTeamStartFar;
@@ -15,22 +21,13 @@ import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 @Autonomous(name = "Auton Test", group="TeleOp")
 public class AutonTest extends LinearOpMode {
 
-
-
-    private Pose2d startPosition;
-
-
     private char team = 'n';
     private char closeFar = 'n';
 
-    private Pose2d startPos;
-
+    private SampleMecanumDrive drive;
     private LinearOpMode opMode;
-
-    private Telemetry telemetry;
-    private final SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
-
     private TrajectorySequence trajectory;
+    private ArmSystem armSystem;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -45,18 +42,29 @@ public class AutonTest extends LinearOpMode {
 
     private void initialize() {
 
+        drive = new SampleMecanumDrive(hardwareMap);
+
+        armSystem = new ArmSystem(
+                hardwareMap.get(DcMotor.class, "arm_left"),
+                hardwareMap.get(DcMotor.class, "arm_right"),
+                hardwareMap.get(Servo.class, "left_servo"),
+                hardwareMap.get(Servo.class, "right_servo"),
+                hardwareMap.get(Servo.class, "intake_left"),
+                hardwareMap.get(Servo.class, "intake_right")
+        );
+
         while (true) {
-            telemetry.addData("Current Team - ", "%c", team == 'n' ? "none" : (team == 'b' ? "blue" : "red"));
+            telemetry.addData("Current Team - ", "%s", team == 'n' ? "none" : (team == 'b' ? "blue" : "red"));
             telemetry.addData("Current Start Position - ", "%s", closeFar == 'n' ? "none" : (closeFar == 'c' ? "close" : "far"));
             if (team == 'n') {
-                telemetry.addLine("Press d-pad left for blue team \n Press d-pad right for red team");
+                telemetry.addLine("Press d-pad left for blue team \nPress d-pad right for red team");
                 if (gamepad1.dpad_left) {
                     team = 'b';
                 } else if (gamepad1.dpad_right) {
                     team = 'r';
                 }
             } else {
-                telemetry.addLine("Press d-pad up for close start \n Press d-pad down for far start");
+                telemetry.addLine("Press d-pad up for close start \nPress d-pad down for far start");
                 if (gamepad1.dpad_up) {
                     closeFar = 'c';
                     break;
@@ -71,29 +79,36 @@ public class AutonTest extends LinearOpMode {
         if (team == 'b') {
             if (closeFar == 'c'){
                 opMode = new BlueTeamStartClose();
+                drive.setPoseEstimate(BLUE_START_POS_1);
             } else {
                 opMode = new BlueTeamStartFar();
+                drive.setPoseEstimate(BLUE_START_POS_2);
             }
         } else {
             if (closeFar == 'c') {
                 opMode = new RedTeamStartClose();
+                drive.setPoseEstimate(RED_START_POS_1);
             } else {
                 opMode = new RedTeamStartFar();
+                drive.setPoseEstimate(RED_START_POS_2);
             }
         }
 
+        sleep(250);
+
         char path;
         while (true) {
-            telemetry.addData("Current Team - ", "%c", team == 'n' ? "none" : (team == 'b' ? "blue" : "red"));
+            telemetry.addData("Current Team - ", "%s", team == 'n' ? "none" : (team == 'b' ? "blue" : "red"));
             telemetry.addData("Current Start Position - ", "%s", closeFar == 'n' ? "none" : (closeFar == 'c' ? "close" : "far"));
 
-            telemetry.addLine ("press d-pad left for left path, press d-pad up for center path, press d-pad right for right path");
+            telemetry.addLine ("press d-pad left for left path, \npress d-pad up for center path, \npress d-pad right for right path");
 
             if (gamepad1.dpad_left) {
                 path = 'l';
                 if (team == 'b') {
                     if (closeFar == 'c'){
                         trajectory = ((BlueTeamStartClose) opMode).buildLeftPath(drive);
+
                     } else {
                         trajectory = ((BlueTeamStartFar) opMode).buildLeftPath(drive);
                     }
@@ -138,7 +153,7 @@ public class AutonTest extends LinearOpMode {
                 }
                 break;
             }
-
+            ((BlueTeamStartClose) opMode).setArmSystem(armSystem);
             telemetry.update();
         }
 

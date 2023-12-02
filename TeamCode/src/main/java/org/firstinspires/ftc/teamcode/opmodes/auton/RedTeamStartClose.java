@@ -112,6 +112,10 @@ public class RedTeamStartClose extends LinearOpMode {
 
     }
 
+    public void setArmSystem (ArmSystem armSystem) {
+        this.armSystem = armSystem;
+    }
+
 
     //**********************************************************************************************
     //**************************************** PATHS ***********************************************

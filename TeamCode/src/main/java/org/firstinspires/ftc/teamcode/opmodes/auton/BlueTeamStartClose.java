@@ -116,14 +116,16 @@ public class BlueTeamStartClose extends LinearOpMode {
 
     }
 
+    public void setArmSystem (ArmSystem armSystem) {
+        this.armSystem = armSystem;
+    }
+
 
     //**********************************************************************************************
     //**************************************** PATHS ***********************************************
     //**********************************************************************************************
 
     public TrajectorySequence buildLeftPath(SampleMecanumDrive drive) {
-
-
         trajectory = drive.trajectorySequenceBuilder(BLUE_START_POS_1)
                 .splineToSplineHeading(BLUE_OBJECT_POS_1, Math.toRadians(-90))
                 .waitSeconds(0.05)
@@ -133,7 +135,7 @@ public class BlueTeamStartClose extends LinearOpMode {
                 .waitSeconds(0.05)
                 .addTemporalMarker(() -> armSystem.placeYellowPixel('l'))
                 .waitSeconds(1.0)
-                .strafeLeft(30)
+                .strafeLeft(35)
                 .build();
 
         return trajectory;
@@ -151,7 +153,7 @@ public class BlueTeamStartClose extends LinearOpMode {
                 .waitSeconds(0.05)
                 .addTemporalMarker(() -> armSystem.placeYellowPixel('l'))
                 .waitSeconds(1.0)
-                .strafeLeft(20)
+                .strafeLeft(28)
                 .build();
 
         return trajectory;
@@ -170,7 +172,7 @@ public class BlueTeamStartClose extends LinearOpMode {
                 .waitSeconds(0.05)
                 .addTemporalMarker(() -> armSystem.placeYellowPixel('l'))
                 .waitSeconds(1.0)
-                .strafeLeft(15)
+                .strafeLeft(20)
                 .build();
 
         return trajectory;

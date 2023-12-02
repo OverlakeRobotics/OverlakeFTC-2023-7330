@@ -18,7 +18,7 @@ public class ArmSystem {
     public static final int GROUND = 0;
     public static final int BACKBOARD_HIGH = 1759;
     public static final int BACKBOARD_LOW = 2082;
-    private static final int BACKBOARD_AUTON = 2224;
+    private static final int BACKBOARD_AUTON = 2350;
     public static final double SERVO_GROUND = 0.13; //VALUE TBD
     public static final double SERVO_BACKBOARD_LOW = 0.75; //value tbd
     public static final double SERVO_BACKBOARD_HIGH = 0.95; //value tbd

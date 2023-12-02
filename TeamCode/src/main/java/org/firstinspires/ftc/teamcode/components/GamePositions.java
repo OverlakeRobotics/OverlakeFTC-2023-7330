@@ -22,10 +22,12 @@ public class GamePositions {
 
     public static final Pose2d BLUE_BACKDROP_LEFT = new Pose2d(45, 44.5, Math.toRadians(-180));
     public static final Pose2d BLUE_BACKDROP_CENTER = new Pose2d(45, 39, Math.toRadians(-180));
-    public static final Pose2d BLUE_BACKDROP_RIGHT = new Pose2d(45, 31, Math.toRadians(-180));
+    public static final Pose2d BLUE_BACKDROP_RIGHT = new Pose2d(45, 34, Math.toRadians(-180));
 
 
     public static final Pose2d BLUE_START_POS_2 = new Pose2d(-36, 62, Math.toRadians(-60));
+
+
 
     public static final Pose2d BLUE_OBJECT_POS_4_1 = new Pose2d(-56, 48, Math.toRadians(45));
     public static final Pose2d BLUE_OBJECT_POS_4_2 = new Pose2d(-33, 37, Math.toRadians(-30));
@@ -45,13 +47,29 @@ public class GamePositions {
     public static final Pose2d BLUE_OBJECT_POS_6_3 = new Pose2d(-60, 30, Math.toRadians(-45));
 
 
+
+
+
+    public static final Pose2d BLUE_START_FAR = new Pose2d(-36, 62, Math.toRadians(-60));
+    public static final Pose2d BLUE_OBJECT_LEFT_FAR_POS_1 = new Pose2d(-25, 32, Math.toRadians(-30));
+    public static final Pose2d BLUE_OBJECT_LEFT_FAR_POS_2 = new Pose2d(-40, 40, Math.toRadians(-180));
+    public static final Pose2d BLUE_OBJECT_LEFT_FAR_POS_3 = new Pose2d(-40,15, Math.toRadians(-180));
+    public static final Pose2d BLUE_OBJECT_LEFT_FAR_POS_4 = new Pose2d(-16, 10, Math.toRadians(-180));
+    public static final Pose2d BLUE_OBJECT_LEFT_FAR_POS_5 = new Pose2d(20, 10, Math.toRadians(-180));
+    public static final Pose2d BLUE_OBJECT_LEFT_FAR_POS_6 = new Pose2d(38, 30, Math.toRadians(-180));
+
+
+    public static final Pose2d BLUE_BACKDROP_LEFT_2 = new Pose2d(47, 48, Math.toRadians(-180));
+
+
+
     //**********************************************************************************************
     //***************************************** RED TEAM *******************************************
     //**********************************************************************************************
 
     public static final Pose2d RED_START_POS_1 = new Pose2d(7.5, -57.5, Math.toRadians(60));
 
-    public static final Pose2d RED_OBJECT_POS_1 = new Pose2d(25.5, -38, Math.toRadians(90));
+    public static final Pose2d RED_OBJECT_POS_1 = new Pose2d(20.5, -38, Math.toRadians(90));
     public static final Pose2d RED_OBJECT_POS_2_1 = new Pose2d(32, -44, Math.toRadians(90));
     public static final Pose2d RED_OBJECT_POS_2_2 = new Pose2d(22, -24, Math.toRadians(135));
 
