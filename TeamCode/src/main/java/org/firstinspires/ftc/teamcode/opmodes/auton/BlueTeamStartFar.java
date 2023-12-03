@@ -198,6 +198,8 @@ public class BlueTeamStartFar extends LinearOpMode {
                 .forward(22)
                 .turn(Math.toRadians(90))
                 .forward (4)
+                .addTemporalMarker(() -> armSystem.intakeLeft())
+                .waitSeconds(0.1)
                 .addTemporalMarker(() -> armSystem.dropPurplePixel('r')) // This action should take X seconds or less, where X is the .waitSeconds below
                 .waitSeconds(1.1)
                 .back(4)
@@ -217,6 +219,8 @@ public class BlueTeamStartFar extends LinearOpMode {
                 .turn(Math.toRadians(-30))
                 .forward(22)
                 .forward (6)
+                .addTemporalMarker(() -> armSystem.intakeLeft())
+                .waitSeconds(0.1)
                 .addTemporalMarker(() -> armSystem.dropPurplePixel('r')) // This action should take X seconds or less, where X is the .waitSeconds below
                 .waitSeconds(1.1)
                 .back(27.5)
@@ -237,6 +241,7 @@ public class BlueTeamStartFar extends LinearOpMode {
                 .forward(28)
                 .turn(Math.toRadians(-90))
                 .forward (0.1)
+                .addTemporalMarker(() -> armSystem.intakeLeft())
                 .waitSeconds(0.1)
                 .addTemporalMarker(() -> armSystem.dropPurplePixel('r')) // This action should take X seconds or less, where X is the .waitSeconds below
                 .waitSeconds(1.1)

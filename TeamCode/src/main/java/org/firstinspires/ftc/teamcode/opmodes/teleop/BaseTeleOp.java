@@ -50,11 +50,11 @@ public class BaseTeleOp extends BaseOpMode {
         driveSystem.drive(rx, lx, ly);
 
         if(gamepad1.dpad_up){
-            armSystem.driveArm(ArmSystem.Direction.UP, 0.3);
+            armSystem.driveArm(ArmSystem.Direction.UP, 0.5);
             armSystem.runManually();
         }
         else if (gamepad1.dpad_down){
-            armSystem.driveArm(ArmSystem.Direction.DOWN, 0.3);
+            armSystem.driveArm(ArmSystem.Direction.DOWN, 0.5);
             armSystem.runManually();
         }
         else if (gamepad1.y){
