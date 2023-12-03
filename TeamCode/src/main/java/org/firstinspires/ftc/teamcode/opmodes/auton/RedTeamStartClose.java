@@ -138,6 +138,8 @@ public class RedTeamStartClose extends LinearOpMode {
                 //.turn(Math.toRadians(-60))
                 .splineTo(RED_OBJECT_POS_3.vec(), RED_OBJECT_POS_3.getHeading())
                 .waitSeconds(0.05)
+                .addTemporalMarker(() -> armSystem.intakeRight())
+                .waitSeconds(0.1)
                 .addTemporalMarker(() -> armSystem.dropPurplePixel('l')) // This action should take X seconds or less, where X is the .waitSeconds below
                 .waitSeconds(1)
                 .lineToLinearHeading(RED_BACKDROP_RIGHT)
@@ -157,6 +159,8 @@ public class RedTeamStartClose extends LinearOpMode {
                 .splineTo(RED_OBJECT_POS_2_1.vec(), RED_OBJECT_POS_2_1.getHeading())
                 .splineTo(RED_OBJECT_POS_2_2.vec(), RED_OBJECT_POS_2_2.getHeading())
                 .waitSeconds(0.05)
+                .addTemporalMarker(() -> armSystem.intakeRight())
+                .waitSeconds(0.1)
                 .addTemporalMarker(() -> armSystem.dropPurplePixel('l')) // This action should take X seconds or less, where X is the .waitSeconds below
                 .waitSeconds(1)
                 .lineToSplineHeading(RED_BACKDROP_CENTER)
@@ -175,6 +179,8 @@ public class RedTeamStartClose extends LinearOpMode {
                 //.turn(Math.toRadians(-60))
                 .splineToSplineHeading(RED_OBJECT_POS_1, Math.toRadians(90))
                 .waitSeconds(0.05)
+                .addTemporalMarker(() -> armSystem.intakeRight())
+                .waitSeconds(0.1)
                 .addTemporalMarker(() -> armSystem.dropPurplePixel('l')) // This action should take X seconds or less, where X is the .waitSeconds below
                 .waitSeconds(1)
                 .lineToSplineHeading(RED_BACKDROP_LEFT)

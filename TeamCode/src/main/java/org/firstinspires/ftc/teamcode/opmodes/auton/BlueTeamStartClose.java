@@ -130,6 +130,8 @@ public class BlueTeamStartClose extends LinearOpMode {
         trajectory = drive.trajectorySequenceBuilder(BLUE_START_POS_1)
                 .splineToSplineHeading(BLUE_OBJECT_POS_1, Math.toRadians(-90))
                 .waitSeconds(0.05)
+                .addTemporalMarker(() -> armSystem.intakeLeft())
+                .waitSeconds(0.1)
                 .addTemporalMarker(() -> armSystem.dropPurplePixel('r')) // This action should take X seconds or less, where X is the .waitSeconds below
                 .waitSeconds(1)
                 .lineToSplineHeading(BLUE_BACKDROP_LEFT)
@@ -148,6 +150,8 @@ public class BlueTeamStartClose extends LinearOpMode {
                 //.splineTo(BLUE_OBJECT_POS_2_1.vec(), BLUE_OBJECT_POS_2_1.getHeading())
                 .splineToSplineHeading(BLUE_OBJECT_POS_2_2, Math.toRadians(-90))
                 .waitSeconds(0.05)
+                .addTemporalMarker(() -> armSystem.intakeLeft())
+                .waitSeconds(0.1)
                 .addTemporalMarker(() -> armSystem.dropPurplePixel('r')) // This action should take X seconds or less, where X is the .waitSeconds below
                 .waitSeconds(1)
                 .lineToSplineHeading(BLUE_BACKDROP_CENTER)
@@ -167,6 +171,8 @@ public class BlueTeamStartClose extends LinearOpMode {
         trajectory = drive.trajectorySequenceBuilder(BLUE_START_POS_1)
                 .splineTo(BLUE_OBJECT_POS_3.vec(), BLUE_OBJECT_POS_3.getHeading())
                 .waitSeconds(0.05)
+                .addTemporalMarker(() -> armSystem.intakeLeft())
+                .waitSeconds(0.1)
                 .addTemporalMarker(() -> armSystem.dropPurplePixel('r')) // This action should take X seconds or less, where X is the .waitSeconds below
                 .waitSeconds(1)
                 .lineToLinearHeading(BLUE_BACKDROP_RIGHT)

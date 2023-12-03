@@ -180,6 +180,8 @@ public class RedTeamStartFar extends LinearOpMode {
                 .waitSeconds(0.1)
                 .forward (3)
                 .waitSeconds(0.1)
+                .addTemporalMarker(() -> armSystem.intakeRight())
+                .waitSeconds(0.1)
                 .addTemporalMarker(() -> armSystem.dropPurplePixel('l')) // This action should take X seconds or less, where X is the .waitSeconds below
                 .waitSeconds(1.1)
                 .back (5)
@@ -202,6 +204,8 @@ public class RedTeamStartFar extends LinearOpMode {
                 .turn(Math.toRadians(30))
                 .forward(22)
                 .forward (5)
+                .addTemporalMarker(() -> armSystem.intakeRight())
+                .waitSeconds(0.1)
                 .addTemporalMarker(() -> armSystem.dropPurplePixel('l')) // This action should take X seconds or less, where X is the .waitSeconds below
                 .waitSeconds(1.1)
                 .back (5)
@@ -223,6 +227,8 @@ public class RedTeamStartFar extends LinearOpMode {
                 .forward(24)
                 .turn(Math.toRadians(-90))
                 .forward (4)
+                .addTemporalMarker(() -> armSystem.intakeRight())
+                .waitSeconds(0.1)
                 .addTemporalMarker(() -> armSystem.dropPurplePixel('l')) // This action should take X seconds or less, where X is the .waitSeconds below
                 .waitSeconds(1.1)
                 .back (4)
