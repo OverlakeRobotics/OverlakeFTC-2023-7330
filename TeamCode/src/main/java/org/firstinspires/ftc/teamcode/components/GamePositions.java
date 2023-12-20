@@ -20,31 +20,32 @@ public class GamePositions {
 
     public static final Pose2d BLUE_OBJECT_POS_3 = new Pose2d(8, 33, Math.toRadians(-150));
 
-    public static final Pose2d BLUE_BACKDROP_LEFT = new Pose2d(49, 44.5, Math.toRadians(-180));
-    public static final Pose2d BLUE_BACKDROP_CENTER = new Pose2d(49, 39, Math.toRadians(-180));
-    public static final Pose2d BLUE_BACKDROP_RIGHT = new Pose2d(49, 30, Math.toRadians(-180));
+    public static final Pose2d BLUE_BACKDROP_LEFT = new Pose2d(49, 39.5, Math.toRadians(-180));
+    public static final Pose2d BLUE_BACKDROP_CENTER = new Pose2d(49, 32.5, Math.toRadians(-180));
+    public static final Pose2d BLUE_BACKDROP_RIGHT = new Pose2d(49, 24, Math.toRadians(-180));
 
 
-    public static final Pose2d BLUE_START_POS_2 = new Pose2d(-36, 62, Math.toRadians(-60));
+    public static final Pose2d BLUE_START_POS_2 = new Pose2d(-38, 61, Math.toRadians(-90));
 
 
 
-    public static final Pose2d BLUE_OBJECT_POS_4_1 = new Pose2d(-56, 48, Math.toRadians(45));
-    public static final Pose2d BLUE_OBJECT_POS_4_2 = new Pose2d(-33, 37, Math.toRadians(-30));
-    public static final Pose2d BLUE_OBJECT_POS_4_3 = new Pose2d(-40, 37, Math.toRadians(-30));
-    public static final Pose2d BLUE_WAYPOINT_1 = new Pose2d(-42, 12, Math.toRadians(180));
-    public static final Pose2d BLUE_WAYPOINT_1_5 = new Pose2d(-12, 10, Math.toRadians(180));
-    public static final Pose2d BLUE_WAYPOINT_2 = new Pose2d(24, 16, Math.toRadians(-90));
+    public static final Pose2d BLUE_OBJECT_POS_4 = new Pose2d(-31.5, 35, Math.toRadians(-45));
+//    public static final Pose2d BLUE_OBJECT_POS_4_2 = new Pose2d(-33, 37, Math.toRadians(-30));
+//    public static final Pose2d BLUE_OBJECT_POS_4_3 = new Pose2d(-40, 37, Math.toRadians(-30));
 
-    public static final Pose2d BLUE_OBJECT_POS_5_1 = new Pose2d(-52, 50, Math.toRadians(-30));
-    public static final Pose2d BLUE_OBJECT_POS_5_2 = new Pose2d(-56, 40, Math.toRadians(-30));
-    public static final Pose2d BLUE_OBJECT_POS_5_3 = new Pose2d(-56, 20, Math.toRadians(-30));
-    public static final Pose2d BLUE_OBJECT_POS_5_4 = new Pose2d(-56, 50, Math.toRadians(-30));
+    public static final Pose2d BLUE_WAYPOINT_1 = new Pose2d(-35, 12, Math.toRadians(180));
+//    public static final Pose2d BLUE_WAYPOINT_1_5 = new Pose2d(0, 0, Math.toRadians(0));
+    public static final Pose2d BLUE_WAYPOINT_2 = new Pose2d(37, 11, Math.toRadians(180));
+
+    public static final Pose2d BLUE_OBJECT_POS_5 = new Pose2d(-38, 17.5, Math.toRadians(65));
+//    public static final Pose2d BLUE_OBJECT_POS_5_2 = new Pose2d(-56, 40, Math.toRadians(-30));
+//    public static final Pose2d BLUE_OBJECT_POS_5_3 = new Pose2d(-56, 20, Math.toRadians(-30));
+//    public static final Pose2d BLUE_OBJECT_POS_5_4 = new Pose2d(-56, 50, Math.toRadians(-30));
 
 
-    public static final Pose2d BLUE_OBJECT_POS_6_1 = new Pose2d(-48, 46, Math.toRadians(-90));
-    public static final Pose2d BLUE_OBJECT_POS_6_2 = new Pose2d(-48, 30, Math.toRadians(-45));
-    public static final Pose2d BLUE_OBJECT_POS_6_3 = new Pose2d(-60, 30, Math.toRadians(-45));
+    public static final Pose2d BLUE_OBJECT_POS_6 = new Pose2d(-44, 22, Math.toRadians(90));
+//    public static final Pose2d BLUE_OBJECT_POS_6_2 = new Pose2d(-48, 30, Math.toRadians(-45));
+//    public static final Pose2d BLUE_OBJECT_POS_6_3 = new Pose2d(-60, 30, Math.toRadians(-45));
 
 
 
