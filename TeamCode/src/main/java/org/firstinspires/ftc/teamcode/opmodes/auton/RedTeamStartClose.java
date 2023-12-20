@@ -50,7 +50,7 @@ public class RedTeamStartClose extends LinearOpMode {
             detector.updateTelemetry(true, true, true, true, true);
             telemetry.addLine("Current Threshold: " + detector.getConfidenceThreshold());
             telemetry.update();
-            sleep(250);
+            sleep(100);
             if (detector.getNumRecognitions() != 0) {
 //                if (detector.getHighestConfidenceRecognition().getConfidence() > 0.95) {
 //                    break;
@@ -135,7 +135,6 @@ public class RedTeamStartClose extends LinearOpMode {
 
     public TrajectorySequence buildLeftPath(SampleMecanumDrive drive) {
         trajectory = drive.trajectorySequenceBuilder(RED_START_POS_1)
-                //.turn(Math.toRadians(-60))
                 .splineTo(RED_OBJECT_POS_3.vec(), RED_OBJECT_POS_3.getHeading())
                 .waitSeconds(0.05)
                 .addTemporalMarker(() -> armSystem.intakeRight())
@@ -155,9 +154,8 @@ public class RedTeamStartClose extends LinearOpMode {
 
     public TrajectorySequence buildCenterPath(SampleMecanumDrive drive) {
         trajectory = drive.trajectorySequenceBuilder(RED_START_POS_1)
-                //.turn(Math.toRadians(-60))
-                .splineTo(RED_OBJECT_POS_2_1.vec(), RED_OBJECT_POS_2_1.getHeading())
-                .splineTo(RED_OBJECT_POS_2_2.vec(), RED_OBJECT_POS_2_2.getHeading())
+                //.splineTo(RED_OBJECT_POS_2_1.vec(), RED_OBJECT_POS_2_1.getHeading())
+                .splineToLinearHeading(RED_OBJECT_POS_2_2, Math.toRadians(135))
                 .waitSeconds(0.05)
                 .addTemporalMarker(() -> armSystem.intakeRight())
                 .waitSeconds(0.1)
@@ -176,7 +174,6 @@ public class RedTeamStartClose extends LinearOpMode {
 
     public TrajectorySequence buildRightPath(SampleMecanumDrive drive) {
         trajectory = drive.trajectorySequenceBuilder(RED_START_POS_1)
-                //.turn(Math.toRadians(-60))
                 .splineToSplineHeading(RED_OBJECT_POS_1, Math.toRadians(90))
                 .waitSeconds(0.05)
                 .addTemporalMarker(() -> armSystem.intakeRight())
@@ -187,7 +184,7 @@ public class RedTeamStartClose extends LinearOpMode {
                 .waitSeconds(0.05)
                 .addTemporalMarker(() -> armSystem.placeYellowPixel('r'))
                 .waitSeconds(1.0)
-                .strafeRight(38)
+                .strafeRight(35)
                 .build();
         return trajectory;
 

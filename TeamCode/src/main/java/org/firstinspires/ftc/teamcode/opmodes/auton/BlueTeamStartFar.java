@@ -49,7 +49,7 @@ public class BlueTeamStartFar extends LinearOpMode {
             detector.updateTelemetry(true, true, true, true, true);
             telemetry.addLine("Current Threshold: " + detector.getConfidenceThreshold());
             telemetry.update();
-            sleep(250);
+            sleep(100);
 //            if (detector.getNumRecognitions() != 0) {
 //                if (detector.getHighestConfidenceRecognition().getConfidence() > 0.95) {
 //                    break;

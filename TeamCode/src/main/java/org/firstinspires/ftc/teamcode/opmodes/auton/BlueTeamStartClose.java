@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.components.ArmSystem;
 import org.firstinspires.ftc.teamcode.components.TensorFlowDetector;
@@ -33,6 +34,10 @@ public class BlueTeamStartClose extends LinearOpMode {
 
     private Queue<TrajectorySequence> trajectories = new LinkedList<>();
 
+    private TrajectorySequence trajL;
+    private TrajectorySequence trajC;
+    private TrajectorySequence trajR;
+
     @Override
     public void runOpMode() throws InterruptedException {
         telemetry.addLine("test 1");
@@ -54,7 +59,7 @@ public class BlueTeamStartClose extends LinearOpMode {
             detector.updateTelemetry(true, true, true, true, true);
             telemetry.addLine ("Current Threshold: " + detector.getConfidenceThreshold());
             telemetry.update();
-            sleep (250);
+            sleep (100);
 //            if (detector.getNumRecognitions() != 0) {
 //                if (detector.getHighestConfidenceRecognition().getConfidence() > 0.95) {
 //                    break;
@@ -113,22 +118,11 @@ public class BlueTeamStartClose extends LinearOpMode {
         detector.initModel();
         detector.setConfidenceThreshold(0.88f);
 
+        telemetry.addLine("Detector Initialized, generating trajectories...");
+        telemetry.update();
 
-
-    }
-
-    public void setArmSystem (ArmSystem armSystem) {
-        this.armSystem = armSystem;
-    }
-
-
-    //**********************************************************************************************
-    //**************************************** PATHS ***********************************************
-    //**********************************************************************************************
-
-    public TrajectorySequence buildLeftPath(SampleMecanumDrive drive) {
-        trajectory = drive.trajectorySequenceBuilder(BLUE_START_POS_1)
-                .splineToSplineHeading(BLUE_OBJECT_POS_1, Math.toRadians(-90))
+        trajL = drive.trajectorySequenceBuilder(BLUE_START_POS_1)
+                .splineToLinearHeading(BLUE_OBJECT_POS_1, Math.toRadians(-135))
                 .waitSeconds(0.05)
                 .addTemporalMarker(() -> armSystem.intakeLeft())
                 .waitSeconds(0.1)
@@ -141,12 +135,7 @@ public class BlueTeamStartClose extends LinearOpMode {
                 .strafeLeft(35)
                 .build();
 
-        return trajectory;
-        // Ready to test
-    }
-
-    public TrajectorySequence buildCenterPath(SampleMecanumDrive drive) {
-        trajectory = drive.trajectorySequenceBuilder(BLUE_START_POS_1)
+        trajC = drive.trajectorySequenceBuilder(BLUE_START_POS_1)
                 //.splineTo(BLUE_OBJECT_POS_2_1.vec(), BLUE_OBJECT_POS_2_1.getHeading())
                 .splineToSplineHeading(BLUE_OBJECT_POS_2_2, Math.toRadians(-90))
                 .waitSeconds(0.05)
@@ -161,14 +150,7 @@ public class BlueTeamStartClose extends LinearOpMode {
                 .strafeLeft(28)
                 .build();
 
-        return trajectory;
-
-        // Ready to test
-    }
-
-    public TrajectorySequence buildRightPath(SampleMecanumDrive drive) {
-
-        trajectory = drive.trajectorySequenceBuilder(BLUE_START_POS_1)
+        trajR = drive.trajectorySequenceBuilder(BLUE_START_POS_1)
                 .splineTo(BLUE_OBJECT_POS_3.vec(), BLUE_OBJECT_POS_3.getHeading())
                 .waitSeconds(0.05)
                 .addTemporalMarker(() -> armSystem.intakeLeft())
@@ -181,6 +163,39 @@ public class BlueTeamStartClose extends LinearOpMode {
                 .waitSeconds(1.0)
                 .strafeLeft(20)
                 .build();
+
+        telemetry.addLine("Trajectories generated. Searching for objects...");
+        telemetry.update();
+
+    }
+
+    public void setArmSystem (ArmSystem armSystem) {
+        this.armSystem = armSystem;
+    }
+
+
+    //**********************************************************************************************
+    //**************************************** PATHS ***********************************************
+    //**********************************************************************************************
+
+    public TrajectorySequence buildLeftPath(SampleMecanumDrive drive) {
+        trajectory = trajL;
+
+        return trajectory;
+        // Ready to test
+    }
+
+    public TrajectorySequence buildCenterPath(SampleMecanumDrive drive) {
+        trajectory = trajC;
+
+        return trajectory;
+
+        // Ready to test
+    }
+
+    public TrajectorySequence buildRightPath(SampleMecanumDrive drive) {
+
+        trajectory = trajR;
 
         return trajectory;
         // Ready to test
