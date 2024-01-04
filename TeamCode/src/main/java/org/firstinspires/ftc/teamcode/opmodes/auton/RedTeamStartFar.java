@@ -28,6 +28,10 @@ public class RedTeamStartFar extends LinearOpMode {
     private char path;
     private TrajectorySequence trajectory;
 
+    private TrajectorySequence trajL;
+    private TrajectorySequence trajC;
+    private TrajectorySequence trajR;
+
     @Override
     public void runOpMode() throws InterruptedException {
 
@@ -100,19 +104,8 @@ public class RedTeamStartFar extends LinearOpMode {
         detector.initModel();
         detector.setConfidenceThreshold(0.88f);
 
-    }
 
-    public void setArmSystem (ArmSystem armSystem) {
-        this.armSystem = armSystem;
-    }
-
-
-    //**********************************************************************************************
-    //**************************************** PATHS ***********************************************
-    //**********************************************************************************************
-
-    public TrajectorySequence buildLeftPath(SampleMecanumDrive drive) {
-        trajectory = drive.trajectorySequenceBuilder(RED_START_POS_2)
+        trajL = drive.trajectorySequenceBuilder(RED_START_POS_2)
                 .splineToSplineHeading(RED_OBJECT_POS_5_1, Math.toRadians(100))
                 .splineToSplineHeading(RED_OBJECT_POS_5_2, Math.toRadians(90))
                 .addTemporalMarker(() -> armSystem.dropPurplePixel('r'))
@@ -128,12 +121,8 @@ public class RedTeamStartFar extends LinearOpMode {
                 .waitSeconds(1.0)
                 .strafeLeft(25)
                 .build();
-        return trajectory;
 
-    }
-
-    public TrajectorySequence buildCenterPath(SampleMecanumDrive drive) {
-        trajectory = drive.trajectorySequenceBuilder(RED_START_POS_2)
+        trajC = drive.trajectorySequenceBuilder(RED_START_POS_2)
                 .splineToSplineHeading(RED_OBJECT_POS_6_1, Math.toRadians(100))
                 .splineToSplineHeading(RED_OBJECT_POS_6_2, Math.toRadians(90))
                 .addTemporalMarker(() -> armSystem.dropPurplePixel('r'))
@@ -148,12 +137,7 @@ public class RedTeamStartFar extends LinearOpMode {
                 .strafeLeft(25)
                 .build();
 
-        return trajectory;
-
-    }
-
-    public TrajectorySequence buildRightPath(SampleMecanumDrive drive) {
-        trajectory = drive.trajectorySequenceBuilder(RED_START_POS_2)
+        trajR = drive.trajectorySequenceBuilder(RED_START_POS_2)
                 .splineToSplineHeading(RED_OBJECT_POS_4_1, Math.toRadians(100))
                 .splineToSplineHeading(RED_OBJECT_POS_4_2, Math.toRadians(30))
                 .addTemporalMarker(() -> armSystem.dropPurplePixel('l'))
@@ -167,6 +151,32 @@ public class RedTeamStartFar extends LinearOpMode {
                 .waitSeconds(1.0)
                 .strafeLeft(25)
                 .build();
+    }
+
+    public void setArmSystem (ArmSystem armSystem) {
+        this.armSystem = armSystem;
+    }
+
+
+    //**********************************************************************************************
+    //**************************************** PATHS ***********************************************
+    //**********************************************************************************************
+
+    public TrajectorySequence buildLeftPath(SampleMecanumDrive drive) {
+        trajectory = trajL;
+        return trajectory;
+
+    }
+
+    public TrajectorySequence buildCenterPath(SampleMecanumDrive drive) {
+        trajectory = trajC;
+
+        return trajectory;
+
+    }
+
+    public TrajectorySequence buildRightPath(SampleMecanumDrive drive) {
+        trajectory = trajR;
         return trajectory;
 
     }
