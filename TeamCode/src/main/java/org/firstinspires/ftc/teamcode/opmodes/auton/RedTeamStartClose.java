@@ -130,7 +130,7 @@ public class RedTeamStartClose extends LinearOpMode {
 
         trajC = drive.trajectorySequenceBuilder(RED_START_POS_1)
                 //.splineTo(RED_OBJECT_POS_2_1.vec(), RED_OBJECT_POS_2_1.getHeading())
-                .splineToLinearHeading(RED_OBJECT_POS_2_2, Math.toRadians(135))
+                .splineToLinearHeading(RED_OBJECT_POS_2, Math.toRadians(135))
                 .waitSeconds(0.05)
                 .addTemporalMarker(() -> armSystem.intakeRight())
                 .waitSeconds(0.1)

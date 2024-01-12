@@ -18,27 +18,24 @@ public class MeepMeepTesting {
                 // Set bot constraints: maxVel, maxAccel, maxAngVel, maxAngAccel, track width
                 .setConstraints(45, 45, Math.toRadians(220), Math.toRadians(220), 15.6)
                 .followTrajectorySequence(drive ->
-                        drive.trajectorySequenceBuilder(BLUE_START_POS_2)
-                                .splineToLinearHeading(BLUE_OBJECT_POS_5, Math.toRadians(-60))
+                        drive.trajectorySequenceBuilder(RED_START_POS_2)
+                                .splineToLinearHeading(RED_OBJECT_POS_6, Math.toRadians(90))
                                 .waitSeconds(0.1)
-                                //.addTemporalMarker(() -> armSystem.intakeRight())
+                                .addTemporalMarker(() -> intakeLeft())
                                 .waitSeconds(0.1)
-                                .addTemporalMarker(() -> dropPurplePixel('l'))
+                                .addTemporalMarker(() -> dropPurplePixel('r'))
                                 .waitSeconds(1.0)
                                 .setReversed(true)
-                                .splineToSplineHeading(BLUE_WAYPOINT_1, Math.toRadians(0))
-
-                                .splineToSplineHeading(BLUE_WAYPOINT_2, Math.toRadians(0))
+                                .splineToSplineHeading(RED_WAYPOINT_1, Math.toRadians(0))
+                                .splineToSplineHeading(RED_WAYPOINT_2, Math.toRadians(0))
                                 //.setVelConstraint(new MecanumVelocityConstraint(30, DriveConstants.TRACK_WIDTH))
-                                .splineToLinearHeading(BLUE_BACKDROP_CENTER, Math.toRadians(90))
+                                .splineToLinearHeading(RED_BACKDROP_LEFT_F, Math.toRadians(-90))
                                 .waitSeconds(0.5)
-                                .addTemporalMarker(() -> placeYellowPixel('r'))
+                                .addTemporalMarker(() -> placeYellowPixel('l'))
                                 .waitSeconds(1.0)
                                 .setReversed(false)
-                                .strafeLeft(20)
+                                .strafeRight(5)
                                 .build()
-
-
                 );
 
 
@@ -49,6 +46,10 @@ public class MeepMeepTesting {
                 .start();
     }
     private static void dropPurplePixel(char c) {
+
+    }
+
+    private static void intakeLeft() {
 
     }
     private static void placeYellowPixel(char c) {

@@ -7,7 +7,6 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.components.ArmSystem;
 import org.firstinspires.ftc.teamcode.components.TensorFlowDetector;
@@ -137,7 +136,7 @@ public class BlueTeamStartClose extends LinearOpMode {
 
         trajC = drive.trajectorySequenceBuilder(BLUE_START_POS_1)
                 //.splineTo(BLUE_OBJECT_POS_2_1.vec(), BLUE_OBJECT_POS_2_1.getHeading())
-                .splineToSplineHeading(BLUE_OBJECT_POS_2_2, Math.toRadians(-90))
+                .splineToSplineHeading(BLUE_OBJECT_POS_2, Math.toRadians(-90))
                 .waitSeconds(0.05)
                 .addTemporalMarker(() -> armSystem.intakeLeft())
                 .waitSeconds(0.1)

@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.opmodes.auton;
 
 import static org.firstinspires.ftc.teamcode.components.GamePositions.*;
 
+import com.acmerobotics.roadrunner.trajectory.constraints.MecanumVelocityConstraint;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -10,6 +11,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.components.ArmSystem;
 import org.firstinspires.ftc.teamcode.components.TensorFlowDetector;
+import org.firstinspires.ftc.teamcode.drive.DriveConstants;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
@@ -106,50 +108,61 @@ public class RedTeamStartFar extends LinearOpMode {
 
 
         trajL = drive.trajectorySequenceBuilder(RED_START_POS_2)
-                .splineToSplineHeading(RED_OBJECT_POS_5_1, Math.toRadians(100))
-                .splineToSplineHeading(RED_OBJECT_POS_5_2, Math.toRadians(90))
-                .addTemporalMarker(() -> armSystem.dropPurplePixel('r'))
-                .waitSeconds(1)
-                .lineToConstantHeading(RED_OBJECT_POS_5_4.vec())
-                .turn(Math.toRadians(60))
-                .lineToConstantHeading(RED_OBJECT_POS_5_3.vec())
-                .splineToSplineHeading(RED_WAYPOINT_1, Math.toRadians(0))
-                .splineToSplineHeading(RED_WAYPOINT_1_5, Math.toRadians(0))
-                .splineToSplineHeading(RED_WAYPOINT_2, Math.toRadians(-45))
-                .splineToSplineHeading(RED_BACKDROP_RIGHT, Math.toRadians(0))
-                .addTemporalMarker(() -> armSystem.placeYellowPixel('l'))
-                .waitSeconds(1.0)
-                .strafeLeft(25)
-                .build();
+                        .splineToLinearHeading(RED_OBJECT_POS_6, Math.toRadians(90))
+                        .waitSeconds(0.1)
+                        .addTemporalMarker(() -> armSystem.intakeLeft())
+                        .waitSeconds(0.1)
+                        .addTemporalMarker(() -> armSystem.dropPurplePixel('r'))
+                        .waitSeconds(1.0)
+                        .setReversed(true)
+                        .splineToSplineHeading(RED_WAYPOINT_1, Math.toRadians(0))
+                        .splineToSplineHeading(RED_WAYPOINT_2, Math.toRadians(0))
+                        //.setVelConstraint(new MecanumVelocityConstraint(30, DriveConstants.TRACK_WIDTH))
+                        .splineToLinearHeading(RED_BACKDROP_LEFT_F, Math.toRadians(-90))
+                        .waitSeconds(0.5)
+                        .addTemporalMarker(() -> armSystem.placeYellowPixel('l'))
+                        .waitSeconds(1.0)
+                        .setReversed(false)
+                        .strafeRight(5)
+                        .build();
 
         trajC = drive.trajectorySequenceBuilder(RED_START_POS_2)
-                .splineToSplineHeading(RED_OBJECT_POS_6_1, Math.toRadians(100))
-                .splineToSplineHeading(RED_OBJECT_POS_6_2, Math.toRadians(90))
+                .splineToLinearHeading(RED_OBJECT_POS_5, Math.toRadians(60))
+                .waitSeconds(0.1)
+                .addTemporalMarker(() -> armSystem.intakeLeft())
+                .waitSeconds(0.1)
                 .addTemporalMarker(() -> armSystem.dropPurplePixel('r'))
-                .waitSeconds(1)
-                .splineToConstantHeading(RED_OBJECT_POS_6_3.vec(), RED_OBJECT_POS_6_3.getHeading())
-                .splineToSplineHeading(RED_WAYPOINT_1, Math.toRadians(0))
-                .splineToSplineHeading(RED_WAYPOINT_1_5, Math.toRadians(0))
-                .splineToSplineHeading(RED_WAYPOINT_2, Math.toRadians(-45))
-                .splineToSplineHeading(RED_BACKDROP_CENTER, Math.toRadians(0))
+                .waitSeconds(1.0)
+                .setReversed(true)
+//                .splineToSplineHeading(RED_WAYPOINT_1, Math.toRadians(0))
+                .splineToSplineHeading(RED_WAYPOINT_C, 0)
+                .splineToSplineHeading(RED_WAYPOINT_2, Math.toRadians(0))
+                .setVelConstraint(new MecanumVelocityConstraint(30, DriveConstants.TRACK_WIDTH))
+                .splineToLinearHeading(RED_BACKDROP_CENTER_F, Math.toRadians(-90))
+                .waitSeconds(0.5)
                 .addTemporalMarker(() -> armSystem.placeYellowPixel('l'))
                 .waitSeconds(1.0)
-                .strafeLeft(25)
+                .setReversed(false)
+                .strafeRight(18)
                 .build();
 
         trajR = drive.trajectorySequenceBuilder(RED_START_POS_2)
-                .splineToSplineHeading(RED_OBJECT_POS_4_1, Math.toRadians(100))
-                .splineToSplineHeading(RED_OBJECT_POS_4_2, Math.toRadians(30))
-                .addTemporalMarker(() -> armSystem.dropPurplePixel('l'))
-                .waitSeconds(1)
-                .splineToSplineHeading(RED_OBJECT_POS_4_3, Math.toRadians(-135))
-                .splineToSplineHeading(RED_WAYPOINT_1, Math.toRadians(0))
-                .splineToSplineHeading(RED_WAYPOINT_1_5, Math.toRadians(0))
-                .splineToSplineHeading(RED_WAYPOINT_2, Math.toRadians(-45))
-                .splineToSplineHeading(RED_BACKDROP_RIGHT, Math.toRadians(0))
-                .addTemporalMarker(() -> armSystem.placeYellowPixel('r'))
+                .splineToLinearHeading(RED_OBJECT_POS_4, Math.toRadians(30))
+                .waitSeconds(0.1)
+                .addTemporalMarker(() -> armSystem.intakeLeft())
+                .waitSeconds(0.1)
+                .addTemporalMarker(() -> armSystem.dropPurplePixel('r'))
                 .waitSeconds(1.0)
-                .strafeLeft(25)
+                .setReversed(true)
+                .splineToSplineHeading(RED_WAYPOINT_1, Math.toRadians(0))
+                .splineToSplineHeading(RED_WAYPOINT_2, Math.toRadians(0))
+                .setVelConstraint(new MecanumVelocityConstraint(30, DriveConstants.TRACK_WIDTH))
+                .splineToLinearHeading(RED_BACKDROP_RIGHT_F, Math.toRadians(-90))
+                .waitSeconds(0.5)
+                .addTemporalMarker(() -> armSystem.placeYellowPixel('l'))
+                .waitSeconds(1.0)
+                .setReversed(false)
+                .strafeRight(12)
                 .build();
     }
 
