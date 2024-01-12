@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.components.ArmSystem;
 import org.firstinspires.ftc.teamcode.components.TensorFlowDetector;
@@ -33,6 +34,10 @@ public class BlueTeamStartClose extends LinearOpMode {
 
     private Queue<TrajectorySequence> trajectories = new LinkedList<>();
 
+    private TrajectorySequence trajL;
+    private TrajectorySequence trajC;
+    private TrajectorySequence trajR;
+
     @Override
     public void runOpMode() throws InterruptedException {
         telemetry.addLine("test 1");
@@ -54,7 +59,7 @@ public class BlueTeamStartClose extends LinearOpMode {
             detector.updateTelemetry(true, true, true, true, true);
             telemetry.addLine ("Current Threshold: " + detector.getConfidenceThreshold());
             telemetry.update();
-            sleep (250);
+            sleep (100);
 //            if (detector.getNumRecognitions() != 0) {
 //                if (detector.getHighestConfidenceRecognition().getConfidence() > 0.95) {
 //                    break;
@@ -111,8 +116,56 @@ public class BlueTeamStartClose extends LinearOpMode {
 
         detector = new TensorFlowDetector("2023_Blue_Team_Object_3770.tflite", new String[]{"Blue_Owl"}, telemetry, hardwareMap);
         detector.initModel();
+        detector.setConfidenceThreshold(0.88f);
 
+        telemetry.addLine("Detector Initialized, generating trajectories...");
+        telemetry.update();
 
+        trajL = drive.trajectorySequenceBuilder(BLUE_START_POS_1)
+                .splineToLinearHeading(BLUE_OBJECT_POS_1, Math.toRadians(-135))
+                .waitSeconds(0.05)
+                .addTemporalMarker(() -> armSystem.intakeLeft())
+                .waitSeconds(0.1)
+                .addTemporalMarker(() -> armSystem.dropPurplePixel('r')) // This action should take X seconds or less, where X is the .waitSeconds below
+                .waitSeconds(1)
+                .lineToSplineHeading(BLUE_BACKDROP_LEFT)
+                .waitSeconds(0.05)
+                .addTemporalMarker(() -> armSystem.placeYellowPixel('l'))
+                .waitSeconds(1.0)
+                .strafeLeft(35)
+                .build();
+
+        trajC = drive.trajectorySequenceBuilder(BLUE_START_POS_1)
+                //.splineTo(BLUE_OBJECT_POS_2_1.vec(), BLUE_OBJECT_POS_2_1.getHeading())
+                .splineToSplineHeading(BLUE_OBJECT_POS_2_2, Math.toRadians(-90))
+                .waitSeconds(0.05)
+                .addTemporalMarker(() -> armSystem.intakeLeft())
+                .waitSeconds(0.1)
+                .addTemporalMarker(() -> armSystem.dropPurplePixel('r')) // This action should take X seconds or less, where X is the .waitSeconds below
+                .waitSeconds(1)
+                .lineToSplineHeading(BLUE_BACKDROP_CENTER)
+                .waitSeconds(0.05)
+                .addTemporalMarker(() -> armSystem.placeYellowPixel('l'))
+                .waitSeconds(1.0)
+                .strafeLeft(28)
+                .build();
+
+        trajR = drive.trajectorySequenceBuilder(BLUE_START_POS_1)
+                .splineTo(BLUE_OBJECT_POS_3.vec(), BLUE_OBJECT_POS_3.getHeading())
+                .waitSeconds(0.05)
+                .addTemporalMarker(() -> armSystem.intakeLeft())
+                .waitSeconds(0.1)
+                .addTemporalMarker(() -> armSystem.dropPurplePixel('r')) // This action should take X seconds or less, where X is the .waitSeconds below
+                .waitSeconds(1)
+                .lineToLinearHeading(BLUE_BACKDROP_RIGHT)
+                .waitSeconds(0.05)
+                .addTemporalMarker(() -> armSystem.placeYellowPixel('l'))
+                .waitSeconds(1.0)
+                .strafeLeft(20)
+                .build();
+
+        telemetry.addLine("Trajectories generated. Searching for objects...");
+        telemetry.update();
 
     }
 
@@ -126,35 +179,14 @@ public class BlueTeamStartClose extends LinearOpMode {
     //**********************************************************************************************
 
     public TrajectorySequence buildLeftPath(SampleMecanumDrive drive) {
-        trajectory = drive.trajectorySequenceBuilder(BLUE_START_POS_1)
-                .splineToSplineHeading(BLUE_OBJECT_POS_1, Math.toRadians(-90))
-                .waitSeconds(0.05)
-                .addTemporalMarker(() -> armSystem.dropPurplePixel('r')) // This action should take X seconds or less, where X is the .waitSeconds below
-                .waitSeconds(1)
-                .lineToSplineHeading(BLUE_BACKDROP_LEFT)
-                .waitSeconds(0.05)
-                .addTemporalMarker(() -> armSystem.placeYellowPixel('l'))
-                .waitSeconds(1.0)
-                .strafeLeft(35)
-                .build();
+        trajectory = trajL;
 
         return trajectory;
         // Ready to test
     }
 
     public TrajectorySequence buildCenterPath(SampleMecanumDrive drive) {
-        trajectory = drive.trajectorySequenceBuilder(BLUE_START_POS_1)
-                //.splineTo(BLUE_OBJECT_POS_2_1.vec(), BLUE_OBJECT_POS_2_1.getHeading())
-                .splineToSplineHeading(BLUE_OBJECT_POS_2_2, Math.toRadians(-90))
-                .waitSeconds(0.05)
-                .addTemporalMarker(() -> armSystem.dropPurplePixel('r')) // This action should take X seconds or less, where X is the .waitSeconds below
-                .waitSeconds(1)
-                .lineToSplineHeading(BLUE_BACKDROP_CENTER)
-                .waitSeconds(0.05)
-                .addTemporalMarker(() -> armSystem.placeYellowPixel('l'))
-                .waitSeconds(1.0)
-                .strafeLeft(28)
-                .build();
+        trajectory = trajC;
 
         return trajectory;
 
@@ -163,17 +195,7 @@ public class BlueTeamStartClose extends LinearOpMode {
 
     public TrajectorySequence buildRightPath(SampleMecanumDrive drive) {
 
-        trajectory = drive.trajectorySequenceBuilder(BLUE_START_POS_1)
-                .splineTo(BLUE_OBJECT_POS_3.vec(), BLUE_OBJECT_POS_3.getHeading())
-                .waitSeconds(0.05)
-                .addTemporalMarker(() -> armSystem.dropPurplePixel('r')) // This action should take X seconds or less, where X is the .waitSeconds below
-                .waitSeconds(1)
-                .lineToLinearHeading(BLUE_BACKDROP_RIGHT)
-                .waitSeconds(0.05)
-                .addTemporalMarker(() -> armSystem.placeYellowPixel('l'))
-                .waitSeconds(1.0)
-                .strafeLeft(20)
-                .build();
+        trajectory = trajR;
 
         return trajectory;
         // Ready to test

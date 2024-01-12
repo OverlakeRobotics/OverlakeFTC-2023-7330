@@ -3,6 +3,9 @@ package com.example.meepmeeptesting;
 import static com.example.meepmeeptesting.GamePositions.*;
 
 
+import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.acmerobotics.roadrunner.geometry.Vector2d;
+import com.acmerobotics.roadrunner.trajectory.constraints.MecanumVelocityConstraint;
 import com.noahbres.meepmeep.MeepMeep;
 import com.noahbres.meepmeep.roadrunner.DefaultBotBuilder;
 import com.noahbres.meepmeep.roadrunner.entity.RoadRunnerBotEntity;
@@ -13,39 +16,29 @@ public class MeepMeepTesting {
 
                 RoadRunnerBotEntity myBot = new DefaultBotBuilder(meepMeep)
                 // Set bot constraints: maxVel, maxAccel, maxAngVel, maxAngAccel, track width
-                .setConstraints(30, 30, Math.toRadians(180), Math.toRadians(180), 15)
+                .setConstraints(45, 45, Math.toRadians(220), Math.toRadians(220), 15.6)
                 .followTrajectorySequence(drive ->
                         drive.trajectorySequenceBuilder(BLUE_START_POS_2)
-                                .turn(Math.toRadians(-30))
-                                .forward(30)
-                                .turn(Math.toRadians(-90))
-                                .forward (4)
-                                .waitSeconds(1.1)
-                                .back (4)
-                                .strafeRight(26)
-                                .turn(Math.toRadians(0))
-                                .back(80)
-                                .strafeLeft(24)
-                                .waitSeconds(1.1)
-                                .strafeLeft(23)
+                                .splineToLinearHeading(BLUE_OBJECT_POS_5, Math.toRadians(-60))
+                                .waitSeconds(0.1)
+                                //.addTemporalMarker(() -> armSystem.intakeRight())
+                                .waitSeconds(0.1)
+                                .addTemporalMarker(() -> dropPurplePixel('l'))
+                                .waitSeconds(1.0)
+                                .setReversed(true)
+                                .splineToSplineHeading(BLUE_WAYPOINT_1, Math.toRadians(0))
+
+                                .splineToSplineHeading(BLUE_WAYPOINT_2, Math.toRadians(0))
+                                //.setVelConstraint(new MecanumVelocityConstraint(30, DriveConstants.TRACK_WIDTH))
+                                .splineToLinearHeading(BLUE_BACKDROP_CENTER, Math.toRadians(90))
+                                .waitSeconds(0.5)
+                                .addTemporalMarker(() -> placeYellowPixel('r'))
+                                .waitSeconds(1.0)
+                                .setReversed(false)
+                                .strafeLeft(20)
                                 .build()
 
-//                        drive.trajectorySequenceBuilder(RED_START_POS_2)
-//                                .turn(Math.toRadians(30))
-//                                .forward(22)
-//                                .turn(Math.toRadians(-90))
-//                                .forward (4)
-//                                .addTemporalMarker(() -> dropPurplePixel()) // This action should take X seconds or less, where X is the .waitSeconds below
-//                                .waitSeconds(1.1)
-//                                .back (4)
-//                                .strafeRight(22)
-//                                .turn(Math.toRadians(180))
-//                                .back(80)
-//                                .strafeRight(14)
-//                                .addTemporalMarker(() -> placeYellowPixel()) // This action should take X seconds or less, where X is the .waitSeconds below
-//                                .waitSeconds(1.1)
-//                                .strafeRight(37)
-//                                .build()
+
                 );
 
 
@@ -55,10 +48,10 @@ public class MeepMeepTesting {
                 .addEntity(myBot)
                 .start();
     }
-    private static void dropPurplePixel() {
+    private static void dropPurplePixel(char c) {
 
     }
-    private static void placeYellowPixel() {
+    private static void placeYellowPixel(char c) {
 
     }
 }

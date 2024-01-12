@@ -2,14 +2,22 @@ package org.firstinspires.ftc.teamcode.opmodes.auton;
 
 import static org.firstinspires.ftc.teamcode.components.GamePositions.*;
 
+import androidx.annotation.NonNull;
+
+import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.acmerobotics.roadrunner.profile.VelocityConstraint;
+import com.acmerobotics.roadrunner.trajectory.constraints.MecanumVelocityConstraint;
+import com.acmerobotics.roadrunner.trajectory.constraints.TrajectoryVelocityConstraint;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 import org.firstinspires.ftc.teamcode.components.ArmSystem;
 import org.firstinspires.ftc.teamcode.components.TensorFlowDetector;
+import org.firstinspires.ftc.teamcode.drive.DriveConstants;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
@@ -27,6 +35,10 @@ public class BlueTeamStartFar extends LinearOpMode {
     // Fields
     private char path;
     private TrajectorySequence trajectory;
+
+    private TrajectorySequence trajL;
+    private TrajectorySequence trajC;
+    private TrajectorySequence trajR;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -49,7 +61,7 @@ public class BlueTeamStartFar extends LinearOpMode {
             detector.updateTelemetry(true, true, true, true, true);
             telemetry.addLine("Current Threshold: " + detector.getConfidenceThreshold());
             telemetry.update();
-            sleep(250);
+            sleep(100);
 //            if (detector.getNumRecognitions() != 0) {
 //                if (detector.getHighestConfidenceRecognition().getConfidence() > 0.95) {
 //                    break;
@@ -78,11 +90,11 @@ public class BlueTeamStartFar extends LinearOpMode {
         }
 
         if (path == 'l') {
-            buildLeftPathSimple(drive);
+            buildLeftPath(drive);
         } else if (path == 'c') {
-            buildCenterPathSimple(drive);
+            buildCenterPath(drive);
         } else if (path == 'r') {
-            buildRightPathSimple(drive);
+            buildRightPath(drive);
         } else {
             throw new IllegalStateException("Path was not 'c', 'l', or 'r'");
         }// build the appropriate path
@@ -104,6 +116,66 @@ public class BlueTeamStartFar extends LinearOpMode {
 
         detector = new TensorFlowDetector("2023_Blue_Team_Object_3770.tflite", new String[]{"Blue_Owl"}, telemetry, hardwareMap);
         detector.initModel();
+        detector.setConfidenceThreshold(0.88f);
+
+        trajL = drive.trajectorySequenceBuilder(BLUE_START_POS_2)
+                .splineToLinearHeading(BLUE_OBJECT_POS_4, Math.toRadians(-30))
+                .waitSeconds(0.1)
+                .addTemporalMarker(() -> armSystem.intakeRight())
+                .waitSeconds(0.1)
+                .addTemporalMarker(() -> armSystem.dropPurplePixel('l'))
+                .waitSeconds(1.0)
+                .setReversed(true)
+                .splineToSplineHeading(BLUE_WAYPOINT_1, Math.toRadians(0))
+                .splineToSplineHeading(BLUE_WAYPOINT_2, Math.toRadians(0))
+                .setVelConstraint(new MecanumVelocityConstraint(30, DriveConstants.TRACK_WIDTH))
+                .splineToLinearHeading(BLUE_BACKDROP_LEFT_F, Math.toRadians(90))
+                .waitSeconds(0.5)
+                .addTemporalMarker(() -> armSystem.placeYellowPixel('r'))
+                .waitSeconds(1.0)
+                .setReversed(false)
+                .strafeLeft(24)
+                .build();
+
+        trajC = drive.trajectorySequenceBuilder(BLUE_START_POS_2)
+                .splineToLinearHeading(BLUE_OBJECT_POS_5, Math.toRadians(-60))
+                .waitSeconds(0.1)
+                .addTemporalMarker(() -> armSystem.intakeRight())
+                .waitSeconds(0.1)
+                .addTemporalMarker(() -> armSystem.dropPurplePixel('l'))
+                .waitSeconds(1.0)
+                .setReversed(true)
+//                .splineToSplineHeading(BLUE_WAYPOINT_1, Math.toRadians(0))
+                .splineToSplineHeading(BLUE_WAYPOINT_C, 0)
+                .splineToSplineHeading(BLUE_WAYPOINT_2, Math.toRadians(0))
+                .setVelConstraint(new MecanumVelocityConstraint(30, DriveConstants.TRACK_WIDTH))
+                .splineToLinearHeading(BLUE_BACKDROP_CENTER_F, Math.toRadians(90))
+                .waitSeconds(0.5)
+                .addTemporalMarker(() -> armSystem.placeYellowPixel('r'))
+                .waitSeconds(1.0)
+                .setReversed(false)
+                .strafeLeft(20)
+                .build();
+
+        trajR = drive.trajectorySequenceBuilder(BLUE_START_POS_2)
+                .splineToLinearHeading(BLUE_OBJECT_POS_6, Math.toRadians(-90))
+                .waitSeconds(0.1)
+                .addTemporalMarker(() -> armSystem.intakeRight())
+                .waitSeconds(0.1)
+                .addTemporalMarker(() -> armSystem.dropPurplePixel('l'))
+                .waitSeconds(1.0)
+                .setReversed(true)
+                .splineToSplineHeading(BLUE_WAYPOINT_1, Math.toRadians(0))
+                .splineToSplineHeading(BLUE_WAYPOINT_2, Math.toRadians(0))
+                .setVelConstraint(new MecanumVelocityConstraint(30, DriveConstants.TRACK_WIDTH))
+                .splineToLinearHeading(BLUE_BACKDROP_RIGHT_F, Math.toRadians(90))
+                .waitSeconds(0.5)
+                .addTemporalMarker(() -> armSystem.placeYellowPixel('r'))
+                .waitSeconds(1.0)
+                .setReversed(false)
+                .strafeLeft(13)
+                .build();
+
 
 
     }
@@ -119,26 +191,11 @@ public class BlueTeamStartFar extends LinearOpMode {
 
     public TrajectorySequence buildLeftPath(SampleMecanumDrive drive) {
 
-//        trajectory = drive.trajectorySequenceBuilder(BLUE_START_FAR)
-//                .strafeRight(10)
-////                .waitSeconds(0.05)
-////                .splineToLinearHeading(BLUE_OBJECT_LEFT_FAR_POS_1, Math.toRadians(0))
-////
-////                .addTemporalMarker(() -> armSystem.dropPurplePixel('l')) // This action should take X seconds or less, where X is the .waitSeconds below
-////                .waitSeconds(1)
-////                .back(15)
-////                .splineToLinearHeading(BLUE_OBJECT_LEFT_FAR_POS_2, Math.toRadians(-90))
-////                .splineToLinearHeading(BLUE_OBJECT_LEFT_FAR_POS_3, Math.toRadians(-90))
-////                .splineToLinearHeading(BLUE_OBJECT_LEFT_FAR_POS_4, Math.toRadians(0))
-////                .splineToLinearHeading(BLUE_OBJECT_LEFT_FAR_POS_5, Math.toRadians(0))
-////                .splineToLinearHeading(BLUE_OBJECT_LEFT_FAR_POS_6, Math.toRadians(0) )
-////                .splineToLinearHeading(BLUE_BACKDROP_LEFT_2, Math.toRadians(45))
-////                .waitSeconds(0.2)
-////                .addTemporalMarker(() -> armSystem.placeYellowPixel('r'))
-////                .waitSeconds(1.0)
-////                .strafeRight(25)// This action should take X seconds or less, where X is the .waitSeconds below
-////
-//                .build();
+        // UPDATED
+
+
+
+        trajectory = trajL;
 
 
         return trajectory;
@@ -147,48 +204,23 @@ public class BlueTeamStartFar extends LinearOpMode {
     }
 
     public TrajectorySequence buildCenterPath(SampleMecanumDrive drive) {
-        trajectory = drive.trajectorySequenceBuilder(BLUE_START_POS_2)
-                .splineToSplineHeading(BLUE_OBJECT_POS_6_1, Math.toRadians(-100))
-                .splineToSplineHeading(BLUE_OBJECT_POS_6_2, Math.toRadians(-90))
-                .addTemporalMarker(() -> armSystem.dropPurplePixel('l')) // This action should take X seconds or less, where X is the .waitSeconds below
-                .waitSeconds(1)
-                .splineToConstantHeading(BLUE_OBJECT_POS_6_3.vec(), BLUE_OBJECT_POS_6_3.getHeading())
-                .splineToSplineHeading(BLUE_WAYPOINT_1, Math.toRadians(0))
-                .splineToSplineHeading(BLUE_WAYPOINT_1_5, Math.toRadians(0))
-                .splineToSplineHeading(BLUE_WAYPOINT_2, Math.toRadians(45))
-                .splineToSplineHeading(BLUE_BACKDROP_CENTER, Math.toRadians(0))
-                .addTemporalMarker(() -> armSystem.dropPurplePixel('r'))
-                .waitSeconds(1.0)
-                .strafeRight(25)// This action should take X seconds or less, where X is the .waitSeconds below
-                .build();
+
+        // UPDATED
+
+        trajectory = trajC;
 
         return trajectory;
 
-        // Ready to Test
     }
 
     public TrajectorySequence buildRightPath(SampleMecanumDrive drive) {
-        trajectory = drive.trajectorySequenceBuilder(BLUE_START_POS_2)
-                .splineToSplineHeading(BLUE_OBJECT_POS_5_1, Math.toRadians(-100))
-                .splineToSplineHeading(BLUE_OBJECT_POS_5_2, Math.toRadians(-90))
-                .addTemporalMarker(() -> armSystem.dropPurplePixel('l')) // This action should take X seconds or less, where X is the .waitSeconds below
-                .waitSeconds(1)
-                .lineToConstantHeading(BLUE_OBJECT_POS_5_4.vec())
-                .turn(Math.toRadians(-60))
-                .lineToConstantHeading(BLUE_OBJECT_POS_5_3.vec())
-                .splineToSplineHeading(BLUE_WAYPOINT_1, Math.toRadians(0))
-                .splineToSplineHeading(BLUE_WAYPOINT_1_5, Math.toRadians(0))
-                .splineToSplineHeading(BLUE_WAYPOINT_2, Math.toRadians(45))
-                .splineToSplineHeading(BLUE_BACKDROP_RIGHT, Math.toRadians(0))
-                .addTemporalMarker(() -> armSystem.placeYellowPixel('r'))
-                .waitSeconds(1.0)
-                .strafeRight(25)// This action should take X seconds or less, where X is the .waitSeconds below
 
-                .build();
+        // UPDATED
+
+        trajectory = trajR;
 
         return trajectory;
 
-        // Ready to Test
     }
 
     public TrajectorySequence buildLeftPathSimple(SampleMecanumDrive drive) {
@@ -197,6 +229,8 @@ public class BlueTeamStartFar extends LinearOpMode {
                 .forward(22)
                 .turn(Math.toRadians(90))
                 .forward (4)
+                .addTemporalMarker(() -> armSystem.intakeLeft())
+                .waitSeconds(0.1)
                 .addTemporalMarker(() -> armSystem.dropPurplePixel('r')) // This action should take X seconds or less, where X is the .waitSeconds below
                 .waitSeconds(1.1)
                 .back(4)
@@ -216,6 +250,8 @@ public class BlueTeamStartFar extends LinearOpMode {
                 .turn(Math.toRadians(-30))
                 .forward(22)
                 .forward (6)
+                .addTemporalMarker(() -> armSystem.intakeLeft())
+                .waitSeconds(0.1)
                 .addTemporalMarker(() -> armSystem.dropPurplePixel('r')) // This action should take X seconds or less, where X is the .waitSeconds below
                 .waitSeconds(1.1)
                 .back(27.5)
@@ -236,6 +272,7 @@ public class BlueTeamStartFar extends LinearOpMode {
                 .forward(28)
                 .turn(Math.toRadians(-90))
                 .forward (0.1)
+                .addTemporalMarker(() -> armSystem.intakeLeft())
                 .waitSeconds(0.1)
                 .addTemporalMarker(() -> armSystem.dropPurplePixel('r')) // This action should take X seconds or less, where X is the .waitSeconds below
                 .waitSeconds(1.1)

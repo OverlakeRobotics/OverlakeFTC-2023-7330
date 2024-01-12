@@ -29,6 +29,10 @@ public class RedTeamStartClose extends LinearOpMode {
     private char path;
     private TrajectorySequence trajectory;
 
+    private TrajectorySequence trajL;
+    private TrajectorySequence trajC;
+    private TrajectorySequence trajR;
+
     @Override
     public void runOpMode() throws InterruptedException {
         telemetry.addLine("test 1");
@@ -50,7 +54,7 @@ public class RedTeamStartClose extends LinearOpMode {
             detector.updateTelemetry(true, true, true, true, true);
             telemetry.addLine("Current Threshold: " + detector.getConfidenceThreshold());
             telemetry.update();
-            sleep(250);
+            sleep(100);
             if (detector.getNumRecognitions() != 0) {
 //                if (detector.getHighestConfidenceRecognition().getConfidence() > 0.95) {
 //                    break;
@@ -108,8 +112,50 @@ public class RedTeamStartClose extends LinearOpMode {
 
         detector = new TensorFlowDetector("2023_Red_Team_Object_7330.tflite", new String[]{"Red_Owl"}, telemetry, hardwareMap, "Webcam 2");
         detector.initModel();
+        detector.setConfidenceThreshold(0.88f);
 
+        trajL = drive.trajectorySequenceBuilder(RED_START_POS_1)
+                .splineTo(RED_OBJECT_POS_3.vec(), RED_OBJECT_POS_3.getHeading())
+                .waitSeconds(0.05)
+                .addTemporalMarker(() -> armSystem.intakeRight())
+                .waitSeconds(0.1)
+                .addTemporalMarker(() -> armSystem.dropPurplePixel('l')) // This action should take X seconds or less, where X is the .waitSeconds below
+                .waitSeconds(1)
+                .lineToLinearHeading(RED_BACKDROP_RIGHT)
+                .waitSeconds(0.05)
+                .addTemporalMarker(() -> armSystem.placeYellowPixel('r'))
+                .waitSeconds(1.0)
+                .strafeRight(18)
+                .build();
 
+        trajC = drive.trajectorySequenceBuilder(RED_START_POS_1)
+                //.splineTo(RED_OBJECT_POS_2_1.vec(), RED_OBJECT_POS_2_1.getHeading())
+                .splineToLinearHeading(RED_OBJECT_POS_2_2, Math.toRadians(135))
+                .waitSeconds(0.05)
+                .addTemporalMarker(() -> armSystem.intakeRight())
+                .waitSeconds(0.1)
+                .addTemporalMarker(() -> armSystem.dropPurplePixel('l')) // This action should take X seconds or less, where X is the .waitSeconds below
+                .waitSeconds(1)
+                .lineToSplineHeading(RED_BACKDROP_CENTER)
+                .waitSeconds(0.05)
+                .addTemporalMarker(() -> armSystem.placeYellowPixel('r'))
+                .waitSeconds(1.0)
+                .strafeRight(28)
+                .build();
+
+        trajR = drive.trajectorySequenceBuilder(RED_START_POS_1)
+                .splineToSplineHeading(RED_OBJECT_POS_1, Math.toRadians(90))
+                .waitSeconds(0.05)
+                .addTemporalMarker(() -> armSystem.intakeRight())
+                .waitSeconds(0.1)
+                .addTemporalMarker(() -> armSystem.dropPurplePixel('l')) // This action should take X seconds or less, where X is the .waitSeconds below
+                .waitSeconds(1)
+                .lineToSplineHeading(RED_BACKDROP_LEFT)
+                .waitSeconds(0.05)
+                .addTemporalMarker(() -> armSystem.placeYellowPixel('r'))
+                .waitSeconds(1.0)
+                .strafeRight(35)
+                .build();
     }
 
     public void setArmSystem (ArmSystem armSystem) {
@@ -133,55 +179,21 @@ public class RedTeamStartClose extends LinearOpMode {
 
 
     public TrajectorySequence buildLeftPath(SampleMecanumDrive drive) {
-        trajectory = drive.trajectorySequenceBuilder(RED_START_POS_1)
-                //.turn(Math.toRadians(-60))
-                .splineTo(RED_OBJECT_POS_3.vec(), RED_OBJECT_POS_3.getHeading())
-                .waitSeconds(0.05)
-                .addTemporalMarker(() -> armSystem.dropPurplePixel('l')) // This action should take X seconds or less, where X is the .waitSeconds below
-                .waitSeconds(1)
-                .lineToLinearHeading(RED_BACKDROP_RIGHT)
-                .waitSeconds(0.05)
-                .addTemporalMarker(() -> armSystem.placeYellowPixel('r'))
-                .waitSeconds(1.0)
-                .strafeRight(18)
-                .build();
+        trajectory = trajL;
 
         return trajectory;
 
     }
 
     public TrajectorySequence buildCenterPath(SampleMecanumDrive drive) {
-        trajectory = drive.trajectorySequenceBuilder(RED_START_POS_1)
-                //.turn(Math.toRadians(-60))
-                .splineTo(RED_OBJECT_POS_2_1.vec(), RED_OBJECT_POS_2_1.getHeading())
-                .splineTo(RED_OBJECT_POS_2_2.vec(), RED_OBJECT_POS_2_2.getHeading())
-                .waitSeconds(0.05)
-                .addTemporalMarker(() -> armSystem.dropPurplePixel('l')) // This action should take X seconds or less, where X is the .waitSeconds below
-                .waitSeconds(1)
-                .lineToSplineHeading(RED_BACKDROP_CENTER)
-                .waitSeconds(0.05)
-                .addTemporalMarker(() -> armSystem.placeYellowPixel('r'))
-                .waitSeconds(1.0)
-                .strafeRight(28)
-                .build();
+        trajectory = trajC;
 
         return trajectory;
 
     }
 
     public TrajectorySequence buildRightPath(SampleMecanumDrive drive) {
-        trajectory = drive.trajectorySequenceBuilder(RED_START_POS_1)
-                //.turn(Math.toRadians(-60))
-                .splineToSplineHeading(RED_OBJECT_POS_1, Math.toRadians(90))
-                .waitSeconds(0.05)
-                .addTemporalMarker(() -> armSystem.dropPurplePixel('l')) // This action should take X seconds or less, where X is the .waitSeconds below
-                .waitSeconds(1)
-                .lineToSplineHeading(RED_BACKDROP_LEFT)
-                .waitSeconds(0.05)
-                .addTemporalMarker(() -> armSystem.placeYellowPixel('r'))
-                .waitSeconds(1.0)
-                .strafeRight(38)
-                .build();
+        trajectory = trajR;
         return trajectory;
 
     }

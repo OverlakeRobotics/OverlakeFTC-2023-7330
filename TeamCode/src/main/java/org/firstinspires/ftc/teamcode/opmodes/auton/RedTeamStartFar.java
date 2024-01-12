@@ -28,6 +28,10 @@ public class RedTeamStartFar extends LinearOpMode {
     private char path;
     private TrajectorySequence trajectory;
 
+    private TrajectorySequence trajL;
+    private TrajectorySequence trajC;
+    private TrajectorySequence trajR;
+
     @Override
     public void runOpMode() throws InterruptedException {
 
@@ -49,7 +53,7 @@ public class RedTeamStartFar extends LinearOpMode {
             detector.updateTelemetry(true, true, true, true, true);
             telemetry.addLine("Current Threshold: " + detector.getConfidenceThreshold());
             telemetry.update();
-            sleep (250);
+            sleep (100);
 //            if (detector.getHighestConfidenceRecognition().getConfidence() > 0.95) {
 //                break;
 //            }
@@ -98,40 +102,10 @@ public class RedTeamStartFar extends LinearOpMode {
 
         detector = new TensorFlowDetector("2023_Red_Team_Object_7330.tflite", new String[]{"Red_Owl"}, telemetry, hardwareMap, "Webcam 2");
         detector.initModel();
+        detector.setConfidenceThreshold(0.88f);
 
 
-        { // Old Code
-            //detector.updateRecognitions();
-            //Recognition teamObject = detector.getHighestConfidenceRecognition();
-
-//        if (teamObject == null) {
-//            telemetry.addData("Object Detected - ", "No object was detected with a confidence above %f", detector.getConfidenceThreshold());
-//            telemetry.addData("Path Chosen - ", "Estimated angle = NULL deg, ready to follow c path");
-//            path = 'r';
-//        } else {
-//            telemetry.addData("Object Detected - ", "A(n) %s was found with %f confidence", teamObject.getLabel(), teamObject.getConfidence());
-//            if (teamObject.estimateAngleToObject(AngleUnit.DEGREES) < DEG_THRESHOLD) {
-//                path = 'l';
-//            } else {
-//                path = 'c';
-//            }
-//            telemetry.addData("Path Chosen - ", "Estimated angle = %f deg, ready to follow %c path", teamObject.estimateAngleToObject(AngleUnit.DEGREES), path);
-//        }
-        }
-
-    }
-
-    public void setArmSystem (ArmSystem armSystem) {
-        this.armSystem = armSystem;
-    }
-
-
-    //**********************************************************************************************
-    //**************************************** PATHS ***********************************************
-    //**********************************************************************************************
-
-    public TrajectorySequence buildLeftPath(SampleMecanumDrive drive) {
-        trajectory = drive.trajectorySequenceBuilder(RED_START_POS_2)
+        trajL = drive.trajectorySequenceBuilder(RED_START_POS_2)
                 .splineToSplineHeading(RED_OBJECT_POS_5_1, Math.toRadians(100))
                 .splineToSplineHeading(RED_OBJECT_POS_5_2, Math.toRadians(90))
                 .addTemporalMarker(() -> armSystem.dropPurplePixel('r'))
@@ -147,12 +121,8 @@ public class RedTeamStartFar extends LinearOpMode {
                 .waitSeconds(1.0)
                 .strafeLeft(25)
                 .build();
-        return trajectory;
 
-    }
-
-    public TrajectorySequence buildCenterPath(SampleMecanumDrive drive) {
-        trajectory = drive.trajectorySequenceBuilder(RED_START_POS_2)
+        trajC = drive.trajectorySequenceBuilder(RED_START_POS_2)
                 .splineToSplineHeading(RED_OBJECT_POS_6_1, Math.toRadians(100))
                 .splineToSplineHeading(RED_OBJECT_POS_6_2, Math.toRadians(90))
                 .addTemporalMarker(() -> armSystem.dropPurplePixel('r'))
@@ -167,12 +137,7 @@ public class RedTeamStartFar extends LinearOpMode {
                 .strafeLeft(25)
                 .build();
 
-        return trajectory;
-
-    }
-
-    public TrajectorySequence buildRightPath(SampleMecanumDrive drive) {
-        trajectory = drive.trajectorySequenceBuilder(RED_START_POS_2)
+        trajR = drive.trajectorySequenceBuilder(RED_START_POS_2)
                 .splineToSplineHeading(RED_OBJECT_POS_4_1, Math.toRadians(100))
                 .splineToSplineHeading(RED_OBJECT_POS_4_2, Math.toRadians(30))
                 .addTemporalMarker(() -> armSystem.dropPurplePixel('l'))
@@ -186,6 +151,32 @@ public class RedTeamStartFar extends LinearOpMode {
                 .waitSeconds(1.0)
                 .strafeLeft(25)
                 .build();
+    }
+
+    public void setArmSystem (ArmSystem armSystem) {
+        this.armSystem = armSystem;
+    }
+
+
+    //**********************************************************************************************
+    //**************************************** PATHS ***********************************************
+    //**********************************************************************************************
+
+    public TrajectorySequence buildLeftPath(SampleMecanumDrive drive) {
+        trajectory = trajL;
+        return trajectory;
+
+    }
+
+    public TrajectorySequence buildCenterPath(SampleMecanumDrive drive) {
+        trajectory = trajC;
+
+        return trajectory;
+
+    }
+
+    public TrajectorySequence buildRightPath(SampleMecanumDrive drive) {
+        trajectory = trajR;
         return trajectory;
 
     }
@@ -198,6 +189,8 @@ public class RedTeamStartFar extends LinearOpMode {
                 .turn(Math.toRadians(90))
                 .waitSeconds(0.1)
                 .forward (3)
+                .waitSeconds(0.1)
+                .addTemporalMarker(() -> armSystem.intakeRight())
                 .waitSeconds(0.1)
                 .addTemporalMarker(() -> armSystem.dropPurplePixel('l')) // This action should take X seconds or less, where X is the .waitSeconds below
                 .waitSeconds(1.1)
@@ -221,6 +214,8 @@ public class RedTeamStartFar extends LinearOpMode {
                 .turn(Math.toRadians(30))
                 .forward(22)
                 .forward (5)
+                .addTemporalMarker(() -> armSystem.intakeRight())
+                .waitSeconds(0.1)
                 .addTemporalMarker(() -> armSystem.dropPurplePixel('l')) // This action should take X seconds or less, where X is the .waitSeconds below
                 .waitSeconds(1.1)
                 .back (5)
@@ -242,6 +237,8 @@ public class RedTeamStartFar extends LinearOpMode {
                 .forward(24)
                 .turn(Math.toRadians(-90))
                 .forward (4)
+                .addTemporalMarker(() -> armSystem.intakeRight())
+                .waitSeconds(0.1)
                 .addTemporalMarker(() -> armSystem.dropPurplePixel('l')) // This action should take X seconds or less, where X is the .waitSeconds below
                 .waitSeconds(1.1)
                 .back (4)
