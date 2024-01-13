@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.opmodes.base;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.components.ArmSystem;
@@ -28,7 +29,7 @@ public abstract class BaseOpMode extends OpMode {
         for(DriveSystem.MotorNames name : DriveSystem.MotorNames.values()){
             driveMap.put(name,hardwareMap.get(DcMotor.class, name.toString()));
         }
-        driveSystem = new DriveSystem(driveMap);
+        driveSystem = new DriveSystem(driveMap, hardwareMap.get(DistanceSensor.class, "distance_sensor"));
 
         // Initialize Arm motors
         armSystem = new ArmSystem(

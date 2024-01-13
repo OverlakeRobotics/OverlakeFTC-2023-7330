@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.components;
 
+
 import android.os.Build;
 import android.util.Log;
 
@@ -8,8 +9,10 @@ import androidx.annotation.RequiresApi;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.util.Range;
 
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.params.DriveParams;
 
 import java.util.EnumMap;
@@ -27,8 +30,9 @@ public class DriveSystem {
         private static boolean isStrafe(Direction direction) {
             return direction == LEFT || direction == RIGHT;
         }
-    }
 
+    }
+    public boolean slowPlace = false;
     /*********************** HARDWARE CONSTANTS **************************************************/
     private final double TICKS_IN_MM = ticksInMm();
     // Logging tag
@@ -36,6 +40,7 @@ public class DriveSystem {
 
     /******************************** Systems **************************************************/
     public EnumMap<MotorNames, DcMotor> motors;
+    public DistanceSensor distanceSensor;
     public IMUSystem imuSystem;
 
     // Target position to run to when driving to position
@@ -44,6 +49,7 @@ public class DriveSystem {
     private double mTargetHeading;
     // Are we slow-driving?
     public boolean mSlowDrive;
+    public double SLOW_DRIVE_CONSTANT = 80;
 
     /******************************** INIT **************************************************/
 
@@ -62,8 +68,9 @@ public class DriveSystem {
      * Handles the data for the abstract creation of a drive system with four wheels without IMU
      */
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public DriveSystem(EnumMap<MotorNames, DcMotor> motors) {
+    public DriveSystem(EnumMap<MotorNames, DcMotor> motors, DistanceSensor distanceSensor) {
         this.motors = motors;
+        this.distanceSensor = distanceSensor;
         mTargetTicks = 0;
         initMotors();
     }
@@ -133,6 +140,11 @@ public class DriveSystem {
         mTargetHeading = 0;
         setRunMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
+    /*********************************** Sensor **************************************************/
+    public double getDistance()
+    {
+        return distanceSensor.getDistance(DistanceUnit.CM);
+    }
 
     /*********************************** DRIVE **************************************************/
 
@@ -166,19 +178,34 @@ public class DriveSystem {
         double backLeftPower   = -leftY + rightX - leftX;
         double backRightPower  = -leftY - rightX + leftX;
 
+        if(slowPlace && (leftY < 0))
+        {
+            double reductionFactor = Math.pow(SLOW_DRIVE_CONSTANT/(getDistance() + 0.0000001), 3);
+            Log.d("Distance", "" + getDistance());
+            frontLeftPower  = frontLeftPower/reductionFactor;
+            frontRightPower = frontRightPower/reductionFactor;
+            backLeftPower   = backLeftPower/reductionFactor;
+            backRightPower  = backRightPower/reductionFactor;
+        }
+
+
+        double finalFrontRightPower = frontRightPower;
+        double finalBackLeftPower = backLeftPower;
+        double finalFrontLeftPower = frontLeftPower;
+        double finalBackRightPower = backRightPower;
         motors.forEach((name, motor) -> {
             switch(name) {
                 case FRONTRIGHT:
-                    setDriveSpeed(motor, frontRightPower);
+                    setDriveSpeed(motor, finalFrontRightPower);
                     break;
                 case BACKLEFT:
-                    setDriveSpeed(motor, backLeftPower);
+                    setDriveSpeed(motor, finalBackLeftPower);
                     break;
                 case FRONTLEFT:
-                    setDriveSpeed(motor, frontLeftPower);
+                    setDriveSpeed(motor, finalFrontLeftPower);
                     break;
                 case BACKRIGHT:
-                    setDriveSpeed(motor, backRightPower);
+                    setDriveSpeed(motor, finalBackRightPower);
                     break;
             }
         });
