@@ -32,6 +32,7 @@ package org.firstinspires.ftc.teamcode.opmodes.TestOpModes;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -54,7 +55,7 @@ import java.util.List;
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list.
  */
 @TeleOp(name = "TensorFlow Test", group = "Concept")
-// @Disabled
+@Disabled
 public class TensorFlowTest extends LinearOpMode {
 
     Vector2d myVector = new Vector2d(10, 5);

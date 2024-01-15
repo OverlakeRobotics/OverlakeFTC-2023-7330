@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 //feel free to change if necessary - Ved
 
 @TeleOp(name = "AirplaneLaunch", group = "Concept")
+@Disabled
 public class AirplaneLaunch extends LinearOpMode {
     Servo airplaneServo;
 

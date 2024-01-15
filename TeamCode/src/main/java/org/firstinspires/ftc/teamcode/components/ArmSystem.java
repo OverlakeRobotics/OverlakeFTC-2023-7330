@@ -5,6 +5,8 @@ import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.tel
 
 import android.util.Log;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+
+import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
@@ -14,14 +16,22 @@ import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.params.DriveParams;
 
+@Config
 public class ArmSystem {
     public static final int GROUND = 0;
     public static final int BACKBOARD_HIGH = 1809;
     public static final int BACKBOARD_LOW = 2082;
     private static final int BACKBOARD_AUTON = 2350;
-    public static final double SERVO_GROUND = 0.10; //VALUE TBD
-    public static final double SERVO_BACKBOARD_LOW = 0.75; //value tbd
-    public static final double SERVO_BACKBOARD_HIGH = 0.95; //value tbd
+    public static final double SERVO_GROUND_L = 0.26; //VALUE TBD
+    public static final double SERVO_GROUND_R = 0.06; //VALUE TBD
+
+
+    public static final double SERVO_BACKBOARD_LOW_L = 0.80; //value tbd
+    public static final double SERVO_BACKBOARD_LOW_R = 0.60; //value tbd
+
+    public static final double SERVO_BACKBOARD_HIGH_L = 1; //value tbd
+    public static final double SERVO_BACKBOARD_HIGH_R = 0.80; //value tbd
+
     public static final double SERVO_BACKBOARD_AUTON =0.85; //value tbd
     public static final int DROP_HEIGHT = 200;
 
@@ -45,7 +55,7 @@ public class ArmSystem {
         this.armRight = motor2;
         this.leftServo = servo1;
         this.rightServo = servo2;
-        setArmServos(SERVO_GROUND);
+        setArmServos(SERVO_GROUND_L, SERVO_GROUND_R);
         initMotors();
         intake = new IntakeSystem(intake1, intake2);
         mTargetPosition = 0;
@@ -91,6 +101,12 @@ public class ArmSystem {
         leftServo.setPosition(1-pos + 0.01);
         rightServo.setPosition(pos);
     }
+
+    public void setArmServos(double posL, double posR)
+    {
+        leftServo.setPosition(1-posL + 0.01);
+        rightServo.setPosition(posR);
+    }
     public boolean driveToLevel(int targetPosition, double power){
 
             armLeft.setTargetPosition(targetPosition);
@@ -112,14 +128,14 @@ public class ArmSystem {
     }
 
     public boolean armToGround(){
-        setArmServos(SERVO_GROUND);
+        setArmServos(SERVO_GROUND_L);
         if(driveToLevel(GROUND, MOTOR_SPEED)) {
             armRight.setPower(0);
             armLeft.setPower(0);
             return true;
         }
-        leftServo.setPosition(SERVO_GROUND + 0.01);
-        rightServo.setPosition(SERVO_GROUND);
+        leftServo.setPosition(SERVO_GROUND_L + 0.01);
+        rightServo.setPosition(SERVO_GROUND_R);
         return false;
     }
     public boolean armToBackboard(){

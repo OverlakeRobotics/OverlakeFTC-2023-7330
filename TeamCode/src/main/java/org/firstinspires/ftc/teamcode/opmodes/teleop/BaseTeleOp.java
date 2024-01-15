@@ -42,9 +42,9 @@ public class BaseTeleOp extends BaseOpMode {
             throw new RuntimeException(e);
             */
 
-        float rx = (float) Math.pow(gamepad1.right_stick_x, 3);
-        float lx = (float) Math.pow(gamepad1.left_stick_x, 3);
-        float ly = (float) Math.pow(gamepad1.left_stick_y, 3);
+        float rx = (float) Math.pow(gamepad1.right_stick_x, 1);
+        float lx = (float) Math.pow(gamepad1.left_stick_x, 1);
+        float ly = (float) Math.pow(gamepad1.left_stick_y, 1);
 
 //        driveSystem.slowDrive(true);
         driveSystem.drive(rx, lx, ly);
@@ -62,7 +62,7 @@ public class BaseTeleOp extends BaseOpMode {
         }
         else if(gamepad1.x){
             armSystem.setTargetPosition(ArmSystem.DROP_HEIGHT);
-            armSystem.setArmServos(ArmSystem.SERVO_GROUND);
+            armSystem.setArmServos(ArmSystem.SERVO_GROUND_L, ArmSystem.SERVO_GROUND_R);
             //armSystem.outtakeLeft();
             //armSystem.outtakeRight();
         }
@@ -71,25 +71,25 @@ public class BaseTeleOp extends BaseOpMode {
         }
         else if (gamepad1.dpad_left){
             armSystem.setTargetPosition(ArmSystem.BACKBOARD_LOW);
-            armSystem.setArmServos(ArmSystem.SERVO_BACKBOARD_LOW);
+            armSystem.setArmServos(ArmSystem.SERVO_BACKBOARD_LOW_L, ArmSystem.SERVO_BACKBOARD_LOW_R);
         }
         else if(gamepad1.dpad_right)
         {
             armSystem.setTargetPosition(ArmSystem.BACKBOARD_HIGH);
-            armSystem.setArmServos(ArmSystem.SERVO_BACKBOARD_HIGH);
+            armSystem.setArmServos(ArmSystem.SERVO_BACKBOARD_HIGH_L, ArmSystem.SERVO_BACKBOARD_HIGH_R);
 
         }
         else if (gamepad1.a){
             armSystem.outtakeLeft();
             armSystem.outtakeRight();
             armSystem.setTargetPosition(ArmSystem.GROUND);
-            armSystem.setArmServos(ArmSystem.SERVO_GROUND);
+            armSystem.setArmServos(ArmSystem.SERVO_GROUND_L, ArmSystem.SERVO_GROUND_R);
         }
         else if (gamepad1.left_bumper){
-
+            armSystem.outtakeLeft();
         }
         else if (gamepad1.right_bumper){
-
+            armSystem.outtakeRight();
         }
         else if(gamepad1.left_trigger > 0){
             armSystem.intakeRight();

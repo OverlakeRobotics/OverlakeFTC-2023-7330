@@ -4,6 +4,7 @@ import static org.firstinspires.ftc.teamcode.components.GamePositions.*;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -19,6 +20,7 @@ import org.firstinspires.ftc.teamcode.opmodes.auton.RedTeamStartFar;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
 @Autonomous(name = "Auton Test", group="TeleOp")
+@Disabled
 public class AutonTest extends LinearOpMode {
 
     private char team = 'n';

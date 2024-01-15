@@ -26,7 +26,7 @@ public class MeepMeepTesting {
                                 .addTemporalMarker(() -> dropPurplePixel('r'))
                                 .waitSeconds(1.0)
                                 .setReversed(true)
-                                .splineToSplineHeading(RED_WAYPOINT_1, Math.toRadians(0))
+                                .splineToConstantHeading(RED_WAYPOINT_1.vec(), Math.toRadians(90))
                                 .splineToSplineHeading(RED_WAYPOINT_2, Math.toRadians(0))
                                 //.setVelConstraint(new MecanumVelocityConstraint(30, DriveConstants.TRACK_WIDTH))
                                 .splineToLinearHeading(RED_BACKDROP_LEFT_F, Math.toRadians(-90))
