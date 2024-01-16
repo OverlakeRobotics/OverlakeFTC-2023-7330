@@ -136,7 +136,7 @@ public class BlueTeamStartClose extends LinearOpMode {
                 .waitSeconds(0.05)
                 .addTemporalMarker(() -> armSystem.placeYellowPixel('l'))
                 .waitSeconds(1.0)
-                .strafeLeft(35)
+                .strafeRight(23)
                 .build();
 
         trajC = drive.trajectorySequenceBuilder(BLUE_START_POS_1)
@@ -151,7 +151,7 @@ public class BlueTeamStartClose extends LinearOpMode {
                 .waitSeconds(0.05)
                 .addTemporalMarker(() -> armSystem.placeYellowPixel('l'))
                 .waitSeconds(1.0)
-                .strafeLeft(28)
+                .strafeRight(31)
                 .build();
 
         trajR = drive.trajectorySequenceBuilder(BLUE_START_POS_1)
@@ -165,7 +165,7 @@ public class BlueTeamStartClose extends LinearOpMode {
                 .waitSeconds(0.05)
                 .addTemporalMarker(() -> armSystem.placeYellowPixel('l'))
                 .waitSeconds(1.0)
-                .strafeLeft(20)
+                .strafeRight(29)
                 .build();
 
         telemetry.addLine("Trajectories generated. Searching for objects...");
